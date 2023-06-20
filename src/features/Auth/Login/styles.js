@@ -10,6 +10,13 @@ export const PageContainer = styled.div`
   width: 100%;
 `;
 
+export const Container = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
 export const LoginForm = styled.form`
   width: 100%;
 `;

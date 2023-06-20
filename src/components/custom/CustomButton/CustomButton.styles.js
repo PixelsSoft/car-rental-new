@@ -7,7 +7,7 @@ export const Button = styled.button`
   border: ${(props) =>
     props.outline ? `1px solid ${props.theme.colors.primary}` : "none"};
   background-color: ${(props) =>
-    props.outline ? props.theme.colors.white : props.theme.colors.primary};
+    props.outline ? "transparent" : props.theme.colors.primary};
   color: ${(props) =>
     props.outline ? props.theme.colors.primary : props.theme.colors.white};
   font-size: 16px;

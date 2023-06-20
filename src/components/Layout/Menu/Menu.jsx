@@ -21,9 +21,14 @@ export default function Menu() {
     <>
       <MenuNav>
         <MenuWrap>
-          {/* <div>
-            <h1 style={{ textAlign: "center" }}>Logo</h1>
-          </div> */}
+          <div style={{ textAlign: "center", marginTop: 20, marginBottom: 20 }}>
+            <img
+              src={require("../../../assets/images/logo.png")}
+              width={180}
+              height={80}
+              alt=""
+            />
+          </div>
           {MenuData.map((item, idx) => {
             return <SubMenu item={item} key={idx} />;
           })}

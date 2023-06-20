@@ -31,18 +31,22 @@ export default function Invoice() {
         </div>
 
         <div>
-          <p>
-            <strong>Invoice Number: </strong>5774
-          </p>
-          <p>
-            <strong>Invoice Date: </strong>May 25, 2023
-          </p>
-          <p>
-            <strong>Payment Due: </strong>May 25, 2023
-          </p>
-          <p>
-            <strong>Amount Due: </strong>$2,000.00
-          </p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <strong>Invoice Number:</strong>
+            <span style={{ marginLeft: 10 }}>5574</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <strong>Invoice Date:</strong>
+            <span style={{ marginLeft: 10 }}>23 May, 2023</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <strong>Payment Due:</strong>
+            <span style={{ marginLeft: 10 }}>25 May, 2023</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <strong>Amount Due: </strong>
+            <span style={{ marginLeft: 10 }}>$5574.00</span>
+          </div>
         </div>
       </Details>
 

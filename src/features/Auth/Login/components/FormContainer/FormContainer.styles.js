@@ -8,6 +8,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 68vh;
+  justify-content: center;
 
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     width: 100%;

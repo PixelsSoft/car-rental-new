@@ -55,7 +55,7 @@ export const ItemsTable = styled.table`
   }
 
   td {
-    padding: 10px 10px;
+    padding: 10px 0px;
   }
 
   tbody {
