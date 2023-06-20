@@ -1,5 +1,5 @@
 const palette = {
-  subtleblue: "#e8effd",
+  subtleblue: "#f6f8fe",
   darkblue: "#2046cf",
   lightBlue: "#001b66",
   skyblue: "#a6c8e7",

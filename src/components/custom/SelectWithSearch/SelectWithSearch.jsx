@@ -29,11 +29,11 @@ const SelectWithSearch = ({
     setIsOpen(false);
   };
 
-  //   const handleClickOutside = (event) => {
-  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //       setIsOpen(false);
-  //     }
-  //   };
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
 
   const handleButtonClick = (event) => {
     event.stopPropagation();
@@ -41,13 +41,9 @@ const SelectWithSearch = ({
   };
 
   useEffect(() => {
-    const closeAllDropdowns = () => {
-      setIsOpen(false);
-    };
-
-    document.addEventListener("click", closeAllDropdowns);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("click", closeAllDropdowns);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 

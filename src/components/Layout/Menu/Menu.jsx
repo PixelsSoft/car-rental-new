@@ -21,11 +21,23 @@ export default function Menu() {
     <>
       <MenuNav>
         <MenuWrap>
-          <div style={{ textAlign: "center", marginTop: 20, marginBottom: 20 }}>
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: 20,
+              marginBottom: 20,
+              backgroundColor: "#e3ebfd",
+              padding: 10,
+              borderRadius: 10,
+              width: "90%",
+              marginRight: "auto",
+              marginLeft: " auto",
+            }}
+          >
             <img
               src={require("../../../assets/images/logo.png")}
-              width={180}
-              height={80}
+              width={140}
+              height={50}
               alt=""
             />
           </div>
