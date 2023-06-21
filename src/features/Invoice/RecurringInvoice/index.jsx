@@ -5,12 +5,16 @@ import CustomBreadcumb from "../../../components/custom/CustomBreadcumb/CustomBr
 import { Content } from "./styles";
 import SelectWithSearch from "../../../components/custom/SelectWithSearch/SelectWithSearch";
 import CustomTable from "../../../components/custom/CustomTable/CustomTable";
+import { useNavigate } from "react-router-dom";
 
 export default function RecurringInvoice() {
+  const navigate = useNavigate();
   return (
     <PageLayout>
       <Header pageTitle="Recurring Invoice">
-        <CustomButton width={250}>Create a recurring invoice</CustomButton>
+        <CustomButton width={250} onClick={() => navigate("/invoices/create")}>
+          Create a recurring invoice
+        </CustomButton>
       </Header>
 
       <Content>

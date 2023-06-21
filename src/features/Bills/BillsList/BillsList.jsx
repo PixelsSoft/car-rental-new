@@ -5,12 +5,16 @@ import { Content } from "./BillsList.styles";
 import SelectWithSearch from "../../../components/custom/SelectWithSearch/SelectWithSearch";
 import OutlineCustomInput from "../../../components/custom/OutlineCustomInput/OutlineCustomInput";
 import CustomTable from "../../../components/custom/CustomTable/CustomTable";
+import { useNavigate } from "react-router-dom";
 
 export default function BillsList() {
+  const navigate = useNavigate();
   return (
     <PageLayout>
       <Header pageTitle="Bills">
-        <CustomButton width={200}>Create Bill</CustomButton>
+        <CustomButton width={200} onClick={() => navigate("/invoices/create")}>
+          Create Bill
+        </CustomButton>
       </Header>
 
       <Content>
