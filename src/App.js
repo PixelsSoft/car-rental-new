@@ -14,6 +14,7 @@ import AddCustomer from "./features/Customers/AddCustomer";
 import CustomerProfile from "./features/Customers/CustomerProfile/CustomerProfile";
 import AddVendor from "./features/Vendors/AddVendor/AddVendor";
 import AddVehicle from "./features/Vehicles/AddVehicle/AddVehicle";
+import Settings from "./features/Settings/Settings";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/vendors/add" element={<AddVendor />} />
         <Route path="/vehicles" element={<VehiclesList />} />
         <Route path="/vehicles/add" element={<AddVehicle />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </>
   );
