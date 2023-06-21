@@ -87,5 +87,5 @@ export default function Basic() {
     { name: "Outflow", data: [30, 40, 50, 22, 449, 222, 212, 299] },
   ];
 
-  return <Chart options={options} series={series} type="bar" width={700} />;
+  return <Chart options={options} series={series} type="bar" width={600} />;
 }

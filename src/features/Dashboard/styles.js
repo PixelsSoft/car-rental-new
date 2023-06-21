@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 export const Content = styled.div`
-  width: 90%;
+  width: 89%;
+
+  margin-top: 30px;
 `;
 
 export const Section = styled.div`
