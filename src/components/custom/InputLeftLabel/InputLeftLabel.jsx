@@ -12,9 +12,9 @@ export default function InputLeftLabel({
   ...rest
 }) {
   return (
-    <Container mt={mt} mb={mb} ml={ml} mr={mr}>
+    <Container mt={mt} mb={mb} ml={ml} mr={mr} width={width}>
       <Label>{label}</Label>
-      <CustomInput width={width} {...rest} />
+      <CustomInput {...rest} />
     </Container>
   );
 }

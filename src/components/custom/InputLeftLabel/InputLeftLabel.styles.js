@@ -8,6 +8,7 @@ export const Container = styled.div`
   margin-left: ${(props) => props.ml + "px"};
   margin-right: ${(props) => props.mr + "px"};
   margin-bottom: ${(props) => props.mb + "px"};
+  width: ${(props) => (props.width ? props.width : "100%")};
 `;
 
 export const Label = styled.label`
@@ -15,4 +16,5 @@ export const Label = styled.label`
   color: ${(props) => props.theme.colors.labels};
   font-size: 14px;
   margin-right: 10px;
+  width: 50%;
 `;

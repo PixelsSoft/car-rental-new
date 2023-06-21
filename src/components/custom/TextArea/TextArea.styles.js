@@ -6,7 +6,7 @@ export const Container = styled.div`
   align-items: ${(props) => (props.row ? "center" : "start")};
   justify-content: ${(props) =>
     props.row ? "space-between" : "justify-start"};
-
+  width: ${(props) => (props.width ? props.width : "100%")};
   margin-top: ${(props) => props.mt + "px"};
   margin-right: ${(props) => props.mr + "px"};
   margin-left: ${(props) => props.ml + "px"};
@@ -15,12 +15,15 @@ export const Container = styled.div`
 
 export const Label = styled.label`
   font-size: 14px;
-  color: ${(props) => props.theme.colors.labels};
   font-weight: bold;
+  color: ${(props) => props.theme.colors.labels};
+  width: 35%;
 `;
 
 export const StyledTextArea = styled.textarea`
   border: 1px solid ${(props) => props.theme.colors.inputBorder};
   border-radius: 9px;
-  width: ${(props) => (props.width ? props.width + "px" : "100%")};
+  width: 65%;
+  resize: none;
+  padding: 10px;
 `;

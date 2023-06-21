@@ -27,9 +27,14 @@ export const MenuData = [
     iconClosed: <MdIcons.MdKeyboardArrowDown size={20} />,
     iconOpened: <MdIcons.MdKeyboardArrowUp size={20} />,
     subNav: [
-      { title: "Bills", path: "/purchases/bills" },
-      { title: "Vendors", path: "/purchases/vendors" },
+      { title: "Bills", path: "/bills" },
+      { title: "Vendors", path: "/vendors" },
     ],
+  },
+  {
+    title: "Vehicles",
+    path: "/vehicles",
+    icon: <AiIcons.AiFillCar size={20} />,
   },
   {
     title: "Settings",

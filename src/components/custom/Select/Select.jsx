@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Button, Dropdown, DropdownItem } from "./Select.styles";
 import * as MdIcons from "react-icons/md";
 
-const Select = () => {
+const Select = ({ label }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -17,7 +17,7 @@ const Select = () => {
   return (
     <Container>
       <Button onClick={toggleDropdown}>
-        Create a new{" "}
+        {label}
         {isOpen ? (
           <MdIcons.MdOutlineKeyboardArrowUp />
         ) : (

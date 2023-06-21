@@ -4,9 +4,9 @@ export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: ${(props) => props.theme.textVariants.header.fontSize};
-  border-bottom: 1px solid ${(props) => props.theme.colors.borders};
+  /* border-bottom: 1px solid ${(props) => props.theme.colors.borders}; */
   width: 100%;
-  padding: ${(props) => props.theme.spacing.m};
+  padding: ${(props) => props.theme.spacing.m} 0px;
 `;
 
 export const HeaderTitle = styled.h1`

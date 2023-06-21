@@ -4,7 +4,13 @@ import Status from "../Status/Status";
 import STATUS from "../../../constants/status";
 import RecordPayment from "../RecordPayment/RecordPayment";
 
-export default function CustomTable({ mt = 0, mb = 0, ml = 0, mr = 0 }) {
+export default function CustomTable({
+  mt = 0,
+  mb = 0,
+  ml = 0,
+  mr = 0,
+  viewRoute,
+}) {
   return (
     <Table mt={mt} mb={mb} ml={ml} mr={mr}>
       <TRow>
@@ -31,7 +37,7 @@ export default function CustomTable({ mt = 0, mb = 0, ml = 0, mr = 0 }) {
         <TDataAction>
           <div>
             <RecordPayment />
-            <TableActionDropdown />
+            <TableActionDropdown viewRoute={viewRoute} />
           </div>
         </TDataAction>
       </TRow>

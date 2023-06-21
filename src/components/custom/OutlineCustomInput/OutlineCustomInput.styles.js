@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   position: relative;
-  width: ${(props) => (props.width ? props.width : "100%")};
+  width: ${(props) => (props.width ? props.width + "px" : "100%")};
   border-radius: 14px;
   border: 1px solid ${(props) => props.theme.colors.primary};
   display: flex;

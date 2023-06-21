@@ -11,9 +11,9 @@ export default function TextArea({
   ...rest
 }) {
   return (
-    <Container row={row} ml={ml} mr={mr} mt={mt} mb={mb}>
+    <Container width={width} row={row} ml={ml} mr={mr} mt={mt} mb={mb}>
       <Label>{label}</Label>
-      <StyledTextArea width={width} {...rest} rows={7} />
+      <StyledTextArea {...rest} rows={7} />
     </Container>
   );
 }

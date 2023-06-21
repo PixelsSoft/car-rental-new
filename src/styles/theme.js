@@ -33,6 +33,7 @@ const theme = {
     successBg: palette.greenLight,
     partialBg: palette.yellowLight,
     partialText: palette.yellowDark,
+    skyblue: palette.skyblue,
   },
   textVariants: {
     header: {
