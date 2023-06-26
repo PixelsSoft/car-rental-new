@@ -15,6 +15,7 @@ import CustomerProfile from "./features/Customers/CustomerProfile/CustomerProfil
 import AddVendor from "./features/Vendors/AddVendor/AddVendor";
 import AddVehicle from "./features/Vehicles/AddVehicle/AddVehicle";
 import Settings from "./features/Settings/Settings";
+import Calendar from "./features/Calendar/Calendar";
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/vehicles" element={<VehiclesList />} />
         <Route path="/vehicles/add" element={<AddVehicle />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/calendar" element={<Calendar />} />
       </Routes>
     </>
   );
