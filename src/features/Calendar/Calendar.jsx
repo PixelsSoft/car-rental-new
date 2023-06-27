@@ -10,37 +10,37 @@ import Header from "../../components/custom/Header/Header";
 import { Content } from "./Calendar.styles";
 
 const events = [
-  { title: "All Day Event", start: getDate("YEAR-MONTH-01") },
+  { title: "Nissan Cube", start: getDate("YEAR-MONTH-01") },
   {
-    title: "Long Event",
+    title: "Honda Civic",
     start: getDate("YEAR-MONTH-07"),
     end: getDate("YEAR-MONTH-10"),
   },
-  {
-    groupId: "999",
-    title: "Repeating Event",
-    start: getDate("YEAR-MONTH-09T16:00:00+00:00"),
-  },
-  {
-    groupId: "999",
-    title: "Repeating Event",
-    start: getDate("YEAR-MONTH-16T16:00:00+00:00"),
-  },
-  {
-    title: "Conference",
-    start: "YEAR-MONTH-17",
-    end: getDate("YEAR-MONTH-19"),
-  },
-  {
-    title: "Meeting",
-    start: getDate("YEAR-MONTH-18T10:30:00+00:00"),
-    end: getDate("YEAR-MONTH-18T12:30:00+00:00"),
-  },
-  { title: "Lunch", start: getDate("YEAR-MONTH-18T12:00:00+00:00") },
-  { title: "Birthday Party", start: getDate("YEAR-MONTH-19T07:00:00+00:00") },
-  { title: "Meeting", start: getDate("YEAR-MONTH-18T14:30:00+00:00") },
-  { title: "Happy Hour", start: getDate("YEAR-MONTH-18T17:30:00+00:00") },
-  { title: "Dinner", start: getDate("YEAR-MONTH-18T20:00:00+00:00") },
+  //   {
+  //     groupId: "999",
+  //     title: "Repeating Event",
+  //     start: getDate("YEAR-MONTH-09T16:00:00+00:00"),
+  //   },
+  //   {
+  //     groupId: "999",
+  //     title: "Repeating Event",
+  //     start: getDate("YEAR-MONTH-16T16:00:00+00:00"),
+  //   },
+  //   {
+  //     title: "Conference",
+  //     start: "YEAR-MONTH-17",
+  //     end: getDate("YEAR-MONTH-19"),
+  //   },
+  //   {
+  //     title: "Meeting",
+  //     start: getDate("YEAR-MONTH-18T10:30:00+00:00"),
+  //     end: getDate("YEAR-MONTH-18T12:30:00+00:00"),
+  //   },
+  //   { title: "Lunch", start: getDate("YEAR-MONTH-18T12:00:00+00:00") },
+  //   { title: "Birthday Party", start: getDate("YEAR-MONTH-19T07:00:00+00:00") },
+  //   { title: "Meeting", start: getDate("YEAR-MONTH-18T14:30:00+00:00") },
+  //   { title: "Happy Hour", start: getDate("YEAR-MONTH-18T17:30:00+00:00") },
+  //   { title: "Dinner", start: getDate("YEAR-MONTH-18T20:00:00+00:00") },
 ];
 
 function getDate(dayString) {
