@@ -7,7 +7,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 // import "@fullcalendar/timegrid/main.css";
 import PageLayout from "../../components/Layout/PageLayout/PageLayout";
 import Header from "../../components/custom/Header/Header";
-import { Content } from "./Calendar.styles";
+import { Content, OverviewSection } from "./Calendar.styles";
+import { useState } from "react";
+import Modal from "../../components/custom/Modal/Modal";
+import { BsArrowRightCircleFill } from "react-icons/bs";
+import CustomButton from "../../components/custom/CustomButton/CustomButton";
+import { useNavigate } from "react-router-dom";
 
 const events = [
   { title: "Nissan Cube", start: getDate("YEAR-MONTH-01") },
@@ -56,6 +61,12 @@ function getDate(dayString) {
 }
 
 export default function Calendar() {
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
+
+  const navigate = useNavigate();
+
   return (
     <PageLayout>
       <Header pageTitle="Calendar"></Header>
@@ -71,9 +82,56 @@ export default function Calendar() {
           plugins={[dayGridPlugin, interactionPlugin]}
           editable={true}
           selectable={true}
+          eventClick={toggle}
           events={events}
+          //   dateClick={toggle}
+          height={"700px"}
         />
       </Content>
+      <Modal open={modal} title="Order # 1" onClose={toggle} width="500px">
+        <OverviewSection>
+          <span>06-06-2023 09:00</span>
+          <BsArrowRightCircleFill size={20} />
+          <span>10-07-2023 15:00</span>
+        </OverviewSection>
+
+        <OverviewSection>
+          <div style={{ width: "100%" }}>
+            <p>
+              <strong>Jason Devieu</strong>
+            </p>
+            <p>Bahamasbillionaire@gmail.com</p>
+          </div>
+        </OverviewSection>
+
+        <OverviewSection>
+          <div>
+            <span>1x</span>
+            <span style={{ marginLeft: 10 }}>Nissan Cube</span>
+          </div>
+          <span>$250.00</span>
+        </OverviewSection>
+
+        <OverviewSection>
+          <span>Total Incl. taxes</span>
+          <strong>$250.00</strong>
+        </OverviewSection>
+
+        <OverviewSection>
+          <strong>Paid</strong>
+          <strong>$0.00</strong>
+        </OverviewSection>
+
+        <div style={{ marginTop: "20px" }}>
+          <CustomButton
+            outline
+            width={150}
+            onClick={() => navigate("/invoices/1")}
+          >
+            View Order
+          </CustomButton>
+        </div>
+      </Modal>
     </PageLayout>
   );
 }

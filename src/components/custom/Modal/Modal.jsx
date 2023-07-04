@@ -2,7 +2,14 @@ import Popup from "reactjs-popup";
 import { Header, ModalContainer, Content } from "./Modal.styles";
 import { AiFillCloseCircle } from "react-icons/ai";
 
-export default function Modal({ open, title, onClose, children, ...rest }) {
+export default function Modal({
+  open,
+  title,
+  onClose,
+  children,
+  width,
+  ...rest
+}) {
   return (
     <Popup
       closeOnDocumentClick={true}
@@ -10,7 +17,7 @@ export default function Modal({ open, title, onClose, children, ...rest }) {
       open={open}
       modal
       onClose={onClose}
-      //   contentStyle={{ width: "fit-content" }}
+      contentStyle={{ width: width ? width : undefined }}
     >
       {(close) => (
         <ModalContainer>

@@ -1,4 +1,5 @@
 import { Container, InvoiceHead, Details, ItemsTable } from "./Invoice.styles";
+import SignatureCanvas from "react-signature-canvas";
 
 export default function Invoice() {
   return (
@@ -79,6 +80,13 @@ export default function Invoice() {
         <div>
           <strong>Amount Due:</strong>
           <strong>$300.00</strong>
+        </div>
+        <div>
+          <strong>Signature:</strong>
+          <SignatureCanvas
+            penColor="blue"
+            canvasProps={{ width: 500, height: 500, className: "sigCanvas" }}
+          />
         </div>
       </div>
     </Container>
