@@ -12,11 +12,14 @@ export default function AddVehicle() {
 
       <Content>
         <InputLeftLabel label="Name" mt={20} />
-        <InputLeftLabel label="Price" mt={20} />
+        <InputLeftLabel label="Price Per Day" mt={20} />
+        <InputLeftLabel label="Price Per Week" mt={20} />
+        <InputLeftLabel label="Price Per Month" mt={20} />
         <InputLeftLabel label="Registration Number" mt={20} />
         <InputLeftLabel label="Type" mt={20} />
         <InputLeftLabel label="Capacity" mt={20} />
         <TextArea row label="Description" mt={20} />
+        <InputLeftLabel label="Upload images" mt={20} type="file" multiple />
 
         <div
           style={{ display: "flex", justifyContent: "center", marginTop: 50 }}

@@ -1,6 +1,8 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import { useNavigate } from "react-router-dom";
+import { ChromePicker } from "react-color";
 
 // import "@fullcalendar/core/main.css";
 // import "@fullcalendar/daygrid/main.css";
@@ -12,7 +14,6 @@ import { useState } from "react";
 import Modal from "../../components/custom/Modal/Modal";
 import { BsArrowRightCircleFill } from "react-icons/bs";
 import CustomButton from "../../components/custom/CustomButton/CustomButton";
-import { useNavigate } from "react-router-dom";
 
 const events = [
   { title: "Nissan Cube", start: getDate("YEAR-MONTH-01") },
@@ -20,6 +21,7 @@ const events = [
     title: "Honda Civic",
     start: getDate("YEAR-MONTH-07"),
     end: getDate("YEAR-MONTH-10"),
+    color: "#888",
   },
   //   {
   //     groupId: "999",
@@ -62,11 +64,9 @@ function getDate(dayString) {
 
 export default function Calendar() {
   const [modal, setModal] = useState(false);
-
+  const [color, setColor] = useState("");
   const toggle = () => setModal(!modal);
-
   const navigate = useNavigate();
-
   return (
     <PageLayout>
       <Header pageTitle="Calendar"></Header>
@@ -120,6 +120,14 @@ export default function Calendar() {
         <OverviewSection>
           <strong>Paid</strong>
           <strong>$0.00</strong>
+        </OverviewSection>
+
+        <OverviewSection>
+          <strong>Choose color:</strong>
+          <ChromePicker
+            color={color}
+            onChange={(value) => setColor(value.hex)}
+          />
         </OverviewSection>
 
         <div style={{ marginTop: "20px" }}>

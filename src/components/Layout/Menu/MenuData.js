@@ -37,6 +37,11 @@ export const MenuData = [
     icon: <AiIcons.AiFillCar size={20} />,
   },
   {
+    title: "Service",
+    path: "/services",
+    icon: <MdIcons.MdOutlineLocalCarWash size={20} />,
+  },
+  {
     title: "Calendar",
     path: "/calendar",
     icon: <AiIcons.AiOutlineCalendar size={20} />,

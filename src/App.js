@@ -16,6 +16,7 @@ import AddVendor from "./features/Vendors/AddVendor/AddVendor";
 import AddVehicle from "./features/Vehicles/AddVehicle/AddVehicle";
 import Settings from "./features/Settings/Settings";
 import Calendar from "./features/Calendar/Calendar";
+import ServicesList from "./features/Service/List/List";
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/vehicles/add" element={<AddVehicle />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route path="/services" element={<ServicesList />} />
       </Routes>
     </>
   );
