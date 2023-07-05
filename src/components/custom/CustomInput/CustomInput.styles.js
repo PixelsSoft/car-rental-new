@@ -16,8 +16,16 @@ export const InputLabel = styled.label`
 
 export const Input = styled.input`
   background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.inputBorder};
   padding: 8px;
+  flex: 1;
+  border: none;
   border-radius: 9px;
-  width: 100%;
+  outline: none;
+`;
+
+export const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid ${({ theme }) => theme.colors.inputBorder};
+  border-radius: 9px;
 `;

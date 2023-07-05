@@ -13,9 +13,11 @@ export default function AddVehicle() {
       <Content>
         <InputLeftLabel label="Make" mt={20} />
         <InputLeftLabel label="Model" mt={20} />
-        <InputLeftLabel label="Price Per Day" mt={20} />
-        <InputLeftLabel label="Price Per Week" mt={20} />
-        <InputLeftLabel label="Price Per Month" mt={20} />
+
+        <InputLeftLabel label="Daily" mt={20} dollar />
+        <InputLeftLabel label="Weekly" mt={20} dollar />
+        <InputLeftLabel label="Monthly" mt={20} dollar />
+
         <InputLeftLabel label="Registration Number" mt={20} />
         <TextArea row label="Description" mt={20} />
         <InputLeftLabel label="Upload images" mt={20} type="file" multiple />

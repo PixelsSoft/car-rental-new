@@ -9,12 +9,13 @@ export default function InputLeftLabel({
   mb,
   ml,
   mr,
+  dollar,
   ...rest
 }) {
   return (
     <Container mt={mt} mb={mb} ml={ml} mr={mr} width={width}>
       <Label>{label}</Label>
-      <CustomInput {...rest} />
+      <CustomInput dollar={dollar} {...rest} />
     </Container>
   );
 }
