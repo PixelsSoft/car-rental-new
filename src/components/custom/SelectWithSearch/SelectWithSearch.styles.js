@@ -32,6 +32,7 @@ export const Dropdown = styled.div`
   left: 0;
   padding: 10px 0px;
   background-color: ${(props) => props.theme.colors.white};
+  z-index: 10;
   width: 100%;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);

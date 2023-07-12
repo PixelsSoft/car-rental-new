@@ -11,6 +11,9 @@ import SearchInput from "../SearchInput/SearchInput";
 const SelectWithSearch = ({
   width,
   placeholder,
+  items = [],
+  onItemSelect,
+  accessor,
   mt = 0,
   mb = 0,
   ml = 0,
@@ -26,6 +29,7 @@ const SelectWithSearch = ({
 
   const handleItemClick = (item) => {
     console.log(`You clicked on "${item}"`);
+    if (onItemSelect) onItemSelect(item);
     setIsOpen(false);
   };
 
@@ -59,15 +63,11 @@ const SelectWithSearch = ({
       </Button>
       <Dropdown isOpen={isOpen} ref={dropdownRef}>
         <SearchInput />
-        <DropdownItem onClick={() => handleItemClick("Item 1")}>
-          Transaction
-        </DropdownItem>
-        <DropdownItem onClick={() => handleItemClick("Item 2")}>
-          Invoice
-        </DropdownItem>
-        <DropdownItem onClick={() => handleItemClick("Item 3")}>
-          Bill
-        </DropdownItem>
+        {items.map((item, idx) => (
+          <DropdownItem key={idx} onClick={() => handleItemClick(item)}>
+            {item[accessor]}
+          </DropdownItem>
+        ))}
       </Dropdown>
     </Container>
   );

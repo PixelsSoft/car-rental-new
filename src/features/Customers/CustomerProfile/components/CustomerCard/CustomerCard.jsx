@@ -1,9 +1,14 @@
 import { useTheme } from "styled-components";
 import { Container, Details } from "./CustomerCard.styles";
 import { FaUser } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 export default function CustomerCard() {
   const theme = useTheme();
+
+  const { customerProfile } = useSelector((state) => ({
+    customerProfile: state.customers.customerProfile,
+  }));
   return (
     <Container>
       <FaUser size={100} />
@@ -14,9 +19,9 @@ export default function CustomerCard() {
         </strong>
 
         <div id="customer-details">
-          <strong>Anishka Mackey</strong>
-          <p>azayceia@gmail.com</p>
-          <p>242 4471987</p>
+          <strong>{customerProfile?.name}</strong>
+          <p>{customerProfile?.email}</p>
+          <p>{customerProfile?.phoneNumber}</p>
         </div>
       </Details>
     </Container>

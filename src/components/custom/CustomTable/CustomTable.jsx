@@ -10,10 +10,15 @@ export default function CustomTable({
   ml = 0,
   mr = 0,
   viewRoute,
+  headers = [],
+  data = [],
 }) {
   return (
     <Table mt={mt} mb={mb} ml={ml} mr={mr}>
       <TRow>
+        {headers.map((header) => (
+          <THead>{header}</THead>
+        ))}
         <THead>Status</THead>
         <THead>Due</THead>
         <THead>Date</THead>
@@ -40,6 +45,9 @@ export default function CustomTable({
             <TableActionDropdown viewRoute={viewRoute} />
           </div>
         </TDataAction>
+        {data.map((item) => (
+          <TData>{item}</TData>
+        ))}
       </TRow>
     </Table>
   );

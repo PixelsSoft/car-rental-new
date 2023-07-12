@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 import PageLayout from "../../../components/Layout/PageLayout/PageLayout";
 import CustomButton from "../../../components/custom/CustomButton/CustomButton";
 import Header from "../../../components/custom/Header/Header";
 import InputLeftLabel from "../../../components/custom/InputLeftLabel/InputLeftLabel";
 import TextArea from "../../../components/custom/TextArea/TextArea";
-import { Content } from "./AddVehicle.styles";
+import { Content } from "./EditVehicle.styles";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createNewItem,
+  editItem,
+  getItemById,
   reset as itemsReset,
 } from "../../../redux/items/reducer";
-import { toast } from "react-toastify";
 import Spinner from "../../../components/custom/Spinner/Spinner";
 
-export default function AddVehicle() {
+export default function EditVehicle() {
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [daily, setDaily] = useState(0);
@@ -23,12 +26,17 @@ export default function AddVehicle() {
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState([]);
 
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const { newItemCreated, message, loading } = useSelector((state) => ({
-    newItemCreated: state.items.newItemCreated,
-    message: state.items.message,
-    loading: state.items.loading,
-  }));
+  const navigate = useNavigate();
+  const { item, itemEditedSuccess, message, loading } = useSelector(
+    (state) => ({
+      item: state.items.item,
+      itemEditedSuccess: state.items.itemEditedSuccess,
+      message: state.items.message,
+      loading: state.items.loading,
+    })
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,7 +53,7 @@ export default function AddVehicle() {
       formData.append("images", files[i]);
     }
 
-    dispatch(createNewItem(formData));
+    dispatch(editItem({ id, formData }));
   };
 
   const handleFileChange = (e) => {
@@ -64,16 +72,33 @@ export default function AddVehicle() {
   };
 
   useEffect(() => {
-    if (newItemCreated) {
+    dispatch(getItemById(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (item) {
+      setMake(item.make);
+      setModel(item.model);
+      setDescription(item.description);
+      setDaily(item.daily);
+      setWeekly(item.weekly);
+      setMonthly(item.monthly);
+      setRegistrationNumber(item.registrationNumber);
+    }
+  }, [item]);
+
+  useEffect(() => {
+    if (itemEditedSuccess) {
       reset();
       toast.success(message);
       dispatch(itemsReset());
+      navigate("/vehicles");
     }
-  }, [newItemCreated, message, dispatch]);
+  }, [navigate, dispatch, itemEditedSuccess, message]);
 
   return (
     <PageLayout>
-      <Header pageTitle="Add Vehicle" />
+      <Header pageTitle="Edit Vehicle" />
 
       <Content onSubmit={handleSubmit}>
         {loading ? (

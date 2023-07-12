@@ -1,9 +1,9 @@
 const STATUS = {
-  PAID: "Paid",
-  PARTIAL: "Partial",
-  ACTIVE: "Active",
-  OVERDUE: "Overdue",
-  DUE: "Due",
+  PAID: "paid",
+  PARTIAL: "partial",
+  ACTIVE: "active",
+  OVERDUE: "overdue",
+  DUE: "due",
 };
 
 export default STATUS;

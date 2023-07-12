@@ -19,6 +19,11 @@ import Calendar from "./features/Calendar/Calendar";
 import ServicesList from "./features/Service/List/List";
 import CreateService from "./features/Service/CreateService/CreateService";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import EditVehicle from "./features/Vehicles/EditVehicle/EditVehicle";
+import EditCustomer from "./features/Customers/EditCustomer/EditCustomer";
+
 export default function App() {
   return (
     <>
@@ -33,16 +38,31 @@ export default function App() {
         <Route path="/customers" element={<CustomersList />} />
         <Route path="/customers/:id" element={<CustomerProfile />} />
         <Route path="/customers/add" element={<AddCustomer />} />
+        <Route path="/customers/edit/:id" element={<EditCustomer />} />
         <Route path="/bills" element={<BillsList />} />
         <Route path="/vendors" element={<VendorsList />} />
         <Route path="/vendors/add" element={<AddVendor />} />
         <Route path="/vehicles" element={<VehiclesList />} />
         <Route path="/vehicles/add" element={<AddVehicle />} />
+        <Route path="/vehicles/edit/:id" element={<EditVehicle />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/services" element={<ServicesList />} />
         <Route path="/services/add" element={<CreateService />} />
       </Routes>
+      <ToastContainer
+        position="top-center"
+        autoClose={2500}
+        limit={1}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }

@@ -10,7 +10,7 @@ export const THead = styled.th`
   border-bottom: 1px solid ${(props) => props.theme.colors.borders};
   padding-top: ${(props) => props.theme.spacing.s};
   padding-bottom: ${(props) => props.theme.spacing.s};
-  text-align: start;
+  text-align: ${(props) => (props.align ? props.align : "start")};
 `;
 
 export const TRow = styled.tr`
@@ -25,6 +25,7 @@ export const TRow = styled.tr`
 export const TData = styled.td`
   padding-top: ${(props) => props.theme.spacing.m};
   padding-bottom: ${(props) => props.theme.spacing.m};
+  text-align: ${(props) => (props.align ? props.align : "start")};
 `;
 
 export const TDataAction = styled.td`

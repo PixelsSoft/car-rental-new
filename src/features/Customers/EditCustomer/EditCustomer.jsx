@@ -7,14 +7,15 @@ import CustomButton from "../../../components/custom/CustomButton/CustomButton";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createCustomer,
+  getCustomer,
   reset as customersReset,
+  editCustomer,
 } from "../../../redux/customers/reducer";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../../../components/custom/Spinner/Spinner";
 
-export default function AddCustomer() {
+export default function EditCustomer() {
   const [customer, setCustomer] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -25,24 +26,31 @@ export default function AddCustomer() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { customerCreated, loading, error, message } = useSelector((state) => ({
-    customerCreated: state.customers.customerCreated,
-    loading: state.customers.loading,
-    error: state.customers.error,
-    message: state.customers.message,
-  }));
+  const { id } = useParams();
+
+  const { customerProfile, loading, error, customerEditSuccess, message } =
+    useSelector((state) => ({
+      customerProfile: state.customers.customerProfile,
+      loading: state.customers.loading,
+      error: state.customers.error,
+      customerEditSuccess: state.customers.customerEditSuccess,
+      message: state.customers.message,
+    }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
-      createCustomer({
-        name: customer,
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        accountNumber,
-        notes,
+      editCustomer({
+        id,
+        data: {
+          name: customer,
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          accountNumber,
+          notes,
+        },
       })
     );
   };
@@ -58,23 +66,37 @@ export default function AddCustomer() {
   };
 
   useEffect(() => {
-    if (customerCreated) {
-      toast.success(message);
+    dispatch(getCustomer(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (customerProfile) {
+      setCustomer(customerProfile.name);
+      setEmail(customerProfile.email);
+      setLastName(customerProfile.lastName);
+      setFirstName(customerProfile.firstName);
+      setPhoneNumber(customerProfile.phoneNumber);
+      setAccountNumber(customerProfile.accountNumber);
+      setNotes(customerProfile.notes);
+    }
+  }, [customerProfile]);
+
+  useEffect(() => {
+    if (customerEditSuccess) {
       reset();
+      toast.success(message);
       dispatch(customersReset());
       navigate("/customers");
     }
-  }, [customerCreated, message, dispatch, navigate]);
+  }, [customerEditSuccess, message, navigate, dispatch]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
+    if (error) toast.error(error);
   }, [error]);
 
   return (
     <PageLayout>
-      <Header pageTitle="New Customer"></Header>
+      <Header pageTitle="Edit Customer"></Header>
 
       <FormContainer onSubmit={handleSubmit}>
         {loading ? (
