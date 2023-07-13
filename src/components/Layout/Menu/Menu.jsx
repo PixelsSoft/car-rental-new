@@ -29,7 +29,7 @@ export default function Menu() {
               textAlign: "center",
               marginTop: 20,
               marginBottom: 20,
-              backgroundColor: theme.colors.black,
+              backgroundColor: theme.colors.primary,
               padding: 4,
               borderRadius: 10,
               width: "90%",

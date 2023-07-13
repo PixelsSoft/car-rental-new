@@ -14,12 +14,16 @@ export default function Login() {
   return (
     <PageContainer>
       <Container>
-        <img
-          src={require("../../../assets/images/logo.png")}
-          width={350}
-          height={150}
-          alt=""
-        />
+        <div
+          style={{ backgroundColor: theme.colors.primary, borderRadius: 10 }}
+        >
+          <img
+            src={require("../../../assets/images/logo-3.png")}
+            width={350}
+            height={150}
+            alt=""
+          />
+        </div>
         <FormContainer>
           <HeadingText>Sign In</HeadingText>
 
