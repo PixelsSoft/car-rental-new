@@ -1,15 +1,15 @@
 import calculateAmount from "../../../utils/calculateAmount";
-import { Container, InvoiceHead, Details, ItemsTable } from "./Invoice.styles";
+import {
+  Container,
+  InvoiceHead,
+  Details,
+  ItemsTable,
+} from "./InvoicePreview.styles";
 import SignatureCanvas from "react-signature-canvas";
+import formatToDate from "../../../utils/formatToDate";
 
-export default function Invoice({
-  selectedItems,
-  selectedCustomer,
-  dueDate,
-  notes,
-  isRecurring,
-}) {
-  console.log(selectedCustomer);
+export default function InvoicePreviewDetail({ invoice }) {
+  console.log(invoice);
   return (
     <Container>
       <InvoiceHead>
@@ -31,34 +31,34 @@ export default function Invoice({
         <div>
           <div>
             <h3>Bill To</h3>
-            <p>{selectedCustomer?.name}</p>
+            <p>{invoice?.customer?.name}</p>
           </div>
           <div>
-            <p>{selectedCustomer?.phoneNumber}</p>
-            <p>{selectedCustomer?.email}</p>
+            <p>{invoice?.customer?.phoneNumber}</p>
+            <p>{invoice?.customer?.email}</p>
           </div>
         </div>
 
         <div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <strong>Invoice Number:</strong>
-            <span style={{ marginLeft: 10 }}>Auto Generated</span>
+            <span style={{ marginLeft: 10 }}>{invoice?.invoiceNumber}</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <strong>Invoice Date:</strong>
-            <span style={{ marginLeft: 10 }}>Auto Generated</span>
+            <span style={{ marginLeft: 10 }}>
+              {formatToDate(invoice?.createdAt)}
+            </span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <strong>Payment Due:</strong>
             <span style={{ marginLeft: 10 }}>
-              {isRecurring ? "Auto Generated" : dueDate}
+              {formatToDate(invoice?.dueDate)}
             </span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <strong>Amount Due: </strong>
-            <span style={{ marginLeft: 10 }}>
-              ${calculateAmount(selectedItems)}
-            </span>
+            <span style={{ marginLeft: 10 }}>${invoice?.amountDue}</span>
           </div>
         </div>
       </Details>
@@ -72,7 +72,7 @@ export default function Invoice({
           </tr>
         </thead>
         <tbody>
-          {selectedItems.map(({ listItem, quantity, price }) => (
+          {invoice?.items?.map(({ listItem, quantity, price }) => (
             <tr>
               <td>
                 <p>
@@ -89,11 +89,11 @@ export default function Invoice({
       <div id="totals">
         <div>
           <strong>Total:</strong>
-          <span>${calculateAmount(selectedItems)}</span>
+          <span>${invoice?.total}</span>
         </div>
         <div>
           <strong>Amount Due:</strong>
-          <strong>${calculateAmount(selectedItems)}</strong>
+          <strong>${invoice?.amountDue}</strong>
         </div>
         <div
           style={{
@@ -119,7 +119,7 @@ export default function Invoice({
           marginTop: 10,
         }}
       >
-        {notes}
+        {invoice?.notes}
       </p>
     </Container>
   );

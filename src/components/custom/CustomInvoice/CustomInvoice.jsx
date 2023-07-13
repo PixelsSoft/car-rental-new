@@ -20,49 +20,144 @@ import SelectWithSearch from "../SelectWithSearch/SelectWithSearch";
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomers } from "../../../redux/customers/reducer";
 import { getItems } from "../../../redux/items/reducer";
+import calculateAmount from "../../../utils/calculateAmount";
+import SelectLeftLabel from "../../../components/custom/SelectLeftLabel/SelectLeftLabel";
+import {
+  createInvoice,
+  reset as invoicesReset,
+} from "../../../redux/invoices/reducer";
+import CustomButton from "../CustomButton/CustomButton";
+import { toast } from "react-toastify";
+import Spinner from "../../../components/custom/Spinner/Spinner";
 
-export default function CustomInvoice() {
+export default function CustomInvoice({
+  selectedItems,
+  setSelectedItems,
+  selectedCustomer,
+  setSelectedCustomer,
+  dueDate,
+  setDueDate,
+  notes,
+  setNotes,
+  isRecurring,
+  setIsRecurring,
+}) {
+  const recurringList = [
+    { id: 1, description: "Within 7 Days ", value: 7 },
+    { id: 2, description: "Within 14 Days", value: 14 },
+    { id: 3, description: "Within 30 Days", value: 30 },
+    { id: 4, description: "Within 45 Days", value: 45 },
+    { id: 5, description: "Within 60 Days", value: 60 },
+    { id: 6, description: "Within 90 Days", value: 90 },
+  ];
+
   const [showAddCustomer, setShowAddCustomer] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [showSelectItem, setShowSelectItem] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [dueWithin, setDueWithin] = useState(recurringList[0] || {});
+
+  const toggleRecurring = () => setIsRecurring(!isRecurring);
 
   /* 
     invoice states
   */
-  const [poSoNumber, setPoSoNumber] = useState("");
-  const [dueDate, setDueDate] = useState(null);
+  //   const [poSoNumber, setPoSoNumber] = useState("");
 
   const toggle = () => setShowAddCustomer(!showAddCustomer);
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { customers, loading, items } = useSelector((state) => ({
-    customers: state.customers.customers,
-    loading: state.customers.loading,
-    items: state.items.items,
-  }));
+  const { customers, loading, items, invoiceCreated, invoiceLoading, message } =
+    useSelector((state) => ({
+      customers: state.customers.customers,
+      loading: state.customers.loading,
+      items: state.items.items,
+      invoiceCreated: state.invoices.invoiceCreated,
+      invoiceLoading: state.invoices.loading,
+      message: state.invoices.message,
+    }));
 
   const handleItemSelect = (listItem) => {
     setSelectedItems((prev) => [
       ...prev,
-      { listItem, quantity: 1, price: listItem.daily },
+      { listItem: listItem, quantity: 1, price: listItem.daily },
     ]);
     setShowSelectItem(false);
   };
 
-  //   const handleQuantityChange = (e, id) => {
-  //     // setSelectedItems(prev => prev.find(previtem => previtem._))
-  //   };
+  const updateQuantity = (itemId, newQuantity) => {
+    setSelectedItems((prevItems) =>
+      prevItems.map((item) => {
+        if (item.listItem._id === itemId) {
+          return {
+            ...item,
+            quantity: newQuantity <= 0 ? 1 : parseInt(newQuantity),
+          };
+        }
+        return item;
+      })
+    );
+  };
 
-  console.log(loading);
+  const updatePrice = (itemId, price) => {
+    setSelectedItems((prevItems) =>
+      prevItems.map((item) => {
+        if (item.listItem._id === itemId) {
+          return {
+            ...item,
+            price,
+          };
+        }
+        return item;
+      })
+    );
+  };
+
+  const handleDueWithinSelect = (item) => setDueWithin(item);
+
+  const handleCreateInvoice = () => {
+    if (selectedItems.length < 1)
+      return toast.error("You have not selected any items.");
+
+    if (!selectedCustomer) return toast.error("Please select a customer first");
+    dispatch(
+      createInvoice({
+        dueAt: dueDate,
+        total: calculateAmount(selectedItems),
+        amountDue: calculateAmount(selectedItems),
+        notes,
+        customer: selectedCustomer._id,
+        items: selectedItems,
+        isRecurring,
+        nextInvoice: dueWithin.value && isRecurring ? dueWithin.value : 0,
+      })
+    );
+  };
 
   useEffect(() => {
     dispatch(getCustomers());
     dispatch(getItems());
   }, [dispatch]);
 
-  return (
+  const resetFields = () => {
+    setSelectedCustomer(null);
+    setSelectedItems([]);
+    setIsRecurring(false);
+    setShowAddCustomer(false);
+    setNotes("");
+  };
+
+  useEffect(() => {
+    if (invoiceCreated) {
+      dispatch(invoicesReset());
+      resetFields();
+      toast.success(message, { toastId: "invoice-created" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [invoiceCreated, dispatch]);
+
+  return invoiceLoading ? (
+    <Spinner />
+  ) : (
     <InvoiceContainer>
       <CustomerDetailsContainer>
         {selectedCustomer ? (
@@ -106,25 +201,46 @@ export default function CustomInvoice() {
             value="Auto Generated"
             disabled
           />
-          <InputLeftLabel
+          {/* <InputLeftLabel
             label="P.O./S.O. number"
             mt={10}
             value={poSoNumber}
             onChange={(e) => setPoSoNumber(e.target.value)}
-          />
+          /> */}
           <InputLeftLabel
             label="Invoice date"
             mt={10}
             value="Auto Generated"
             disabled
           />
-          <InputLeftLabel
-            label="Payment due"
-            mt={10}
-            value={dueDate}
-            type="date"
-            onChange={(e) => setDueDate(e.target.value)}
-          />
+          {isRecurring ? (
+            <SelectLeftLabel
+              label="Due Within"
+              placeholder="Select Due Within"
+              mt={10}
+              width={120}
+              items={recurringList}
+              accessor="description"
+              value={dueWithin?.description}
+              onItemSelect={handleDueWithinSelect}
+            />
+          ) : (
+            <InputLeftLabel
+              label="Payment due"
+              mt={10}
+              value={dueDate}
+              type="date"
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          )}
+
+          <div style={{ marginTop: 14, textAlign: "end" }}>
+            <LinkText style={{ fontSize: 14 }} onClick={toggleRecurring}>
+              {isRecurring
+                ? "Change to normal invoice"
+                : "Change to recurring invoice"}
+            </LinkText>
+          </div>
         </Right>
       </CustomerDetailsContainer>
 
@@ -143,16 +259,24 @@ export default function CustomInvoice() {
                 <span>{listItem.make}</span>
                 <OutlineCustomInput
                   value={listItem.description}
+                  disabled
                   width={250}
                   ml={30}
                 />
               </div>
             </TData>
             <TData>
-              <OutlineCustomInput value={quantity} />
+              <OutlineCustomInput
+                type="number"
+                value={quantity}
+                onChange={(e) => updateQuantity(listItem._id, e.target.value)}
+              />
             </TData>
             <TData>
-              <OutlineCustomInput value={price} />
+              <OutlineCustomInput
+                value={price}
+                onChange={(e) => updatePrice(listItem._id, e.target.value)}
+              />
             </TData>
             <TData>${price}</TData>
           </TRow>
@@ -204,7 +328,7 @@ export default function CustomInvoice() {
           }}
         >
           <span>Subtotal</span>
-          <span>$300.00</span>
+          <span>${calculateAmount(selectedItems)}</span>
         </div>
         <div
           style={{
@@ -215,7 +339,7 @@ export default function CustomInvoice() {
           }}
         >
           <strong>Total</strong>
-          <strong>$300.00</strong>
+          <strong>${calculateAmount(selectedItems)}</strong>
         </div>
       </div>
       <div>
@@ -224,14 +348,22 @@ export default function CustomInvoice() {
         </strong>
         <textarea
           placeholder="Enter notes or terms of service that are visible to your customers"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
           style={{
             width: "100%",
             border: "none",
             resize: "none",
             outline: "none",
             marginTop: 10,
+            height: "100px",
           }}
         />
+      </div>
+      <div>
+        <CustomButton outline onClick={handleCreateInvoice}>
+          Send
+        </CustomButton>
       </div>
     </InvoiceContainer>
   );

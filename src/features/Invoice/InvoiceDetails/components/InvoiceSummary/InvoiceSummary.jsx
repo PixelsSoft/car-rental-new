@@ -1,5 +1,6 @@
 import Status from "../../../../../components/custom/Status/Status";
-import STATUS from "../../../../../constants/status";
+import moment from "moment";
+
 import {
   Container,
   Title,
@@ -7,27 +8,27 @@ import {
   Wrapper,
 } from "./InvoiceSummary.styles";
 
-export default function InvoiceSummary() {
+export default function InvoiceSummary({ status, customer, amountDue, dueAt }) {
   return (
     <Container>
       <Wrapper>
         <Title>Status</Title>
-        <Status status={STATUS.OVERDUE} />
+        <Status status={status} />
       </Wrapper>
 
       <Wrapper>
         <Title>Customer</Title>
-        <Description>Anishka Mackey</Description>
+        <Description>{customer}</Description>
       </Wrapper>
 
       <Wrapper>
         <Title>Amount Due</Title>
-        <Description>$200.00</Description>
+        <Description>${amountDue}</Description>
       </Wrapper>
 
       <Wrapper>
         <Title>Due on</Title>
-        <Description>May 25, 2023</Description>
+        <Description>{moment(dueAt).format("LL")}</Description>
       </Wrapper>
     </Container>
   );

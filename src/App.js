@@ -33,7 +33,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/invoices" element={<Invoices />} />
         <Route path="/invoices/create" element={<CreateInvoice />} />
-        <Route path="/invoices/:id" element={<InvoiceDetails />} />
+        <Route path="/invoices/details/:id" element={<InvoiceDetails />} />
         <Route path="/recurring-invoices" element={<RecurringInvoice />} />
         <Route path="/customers" element={<CustomersList />} />
         <Route path="/customers/:id" element={<CustomerProfile />} />

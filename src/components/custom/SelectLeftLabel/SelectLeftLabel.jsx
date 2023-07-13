@@ -17,6 +17,11 @@ const SelectleftLabel = ({
   mb = 0,
   ml = 0,
   mr = 0,
+  items = [],
+  accessor,
+  value,
+  valueAccessor,
+  onItemSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -53,12 +58,14 @@ const SelectleftLabel = ({
     };
   }, []);
 
+  console.log(value);
+
   return (
     <Container width={width} ml={ml} mr={mr} mb={mb} mt={mt}>
       <Label>{label}</Label>
       <DropdownContainer>
         <Button onClick={handleButtonClick}>
-          {placeholder}
+          {value ? value : placeholder}
           {isOpen ? (
             <MdIcons.MdOutlineKeyboardArrowUp />
           ) : (
@@ -66,15 +73,11 @@ const SelectleftLabel = ({
           )}
         </Button>
         <Dropdown isOpen={isOpen} ref={dropdownRef}>
-          <DropdownItem onClick={() => handleItemClick("Item 1")}>
-            Transaction
-          </DropdownItem>
-          <DropdownItem onClick={() => handleItemClick("Item 2")}>
-            Invoice
-          </DropdownItem>
-          <DropdownItem onClick={() => handleItemClick("Item 3")}>
-            Bill
-          </DropdownItem>
+          {items.map((item) => (
+            <DropdownItem onClick={() => onItemSelect(item)}>
+              {item[accessor]}
+            </DropdownItem>
+          ))}
         </Dropdown>
       </DropdownContainer>
     </Container>

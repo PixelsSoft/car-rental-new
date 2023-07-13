@@ -29,7 +29,7 @@ export default function Menu() {
               textAlign: "center",
               marginTop: 20,
               marginBottom: 20,
-              backgroundColor: "#e3ebfd",
+              backgroundColor: theme.colors.black,
               padding: 4,
               borderRadius: 10,
               width: "90%",
@@ -38,8 +38,8 @@ export default function Menu() {
             }}
           >
             <img
-              src={require("../../../assets/images/logo.png")}
-              width={140}
+              src={require("../../../assets/images/logo-3.png")}
+              width={150}
               height={50}
               alt=""
             />

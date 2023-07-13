@@ -20,6 +20,9 @@ import { getAllInvoices } from "../../../redux/invoices/reducer";
 import Status from "../../../components/custom/Status/Status";
 import TableActionDropdown from "../../../components/custom/TableActionDropdown/TableActionDropdown";
 import RecordPayment from "../../../components/custom/RecordPayment/RecordPayment";
+import Spinner from "../../../components/custom/Spinner/Spinner";
+import { getAllPaymentMethods } from "../../../redux/payment-methods/reducer";
+import { getAllPaymentAccounts } from "../../../redux/payment-accounts/reducer";
 
 export default function Invoices() {
   const navigate = useNavigate();
@@ -31,10 +34,14 @@ export default function Invoices() {
 
   const dispatch = useDispatch();
 
-  const { loading, invoices } = useSelector((state) => ({
-    loading: state.invoices.loading,
-    invoices: state.invoices.invoices,
-  }));
+  const { loading, invoices, paymentMethods, paymentAccounts } = useSelector(
+    (state) => ({
+      loading: state.invoices.loading,
+      invoices: state.invoices.invoices,
+      paymentMethods: state.paymentMethods.paymentMethods,
+      paymentAccounts: state.paymentAccounts.paymentAccounts,
+    })
+  );
 
   const headers = [
     "Status",
@@ -49,6 +56,8 @@ export default function Invoices() {
 
   useEffect(() => {
     dispatch(getAllInvoices());
+    dispatch(getAllPaymentMethods());
+    dispatch(getAllPaymentAccounts());
   }, [dispatch]);
 
   return (
@@ -58,36 +67,48 @@ export default function Invoices() {
           Create invoice
         </CustomButton>
       </Header>
-      <Stats />
-      <Filters />
-      <CustomBreadCumb items={items} />
-      <Table mt={20}>
-        <TRow>
-          {headers.map((header) => (
-            <THead>{header}</THead>
-          ))}
-        </TRow>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Stats />
+          <Filters />
+          <CustomBreadCumb items={items} />
+          <Table mt={20}>
+            <TRow>
+              {headers.map((header) => (
+                <THead>{header}</THead>
+              ))}
+            </TRow>
 
-        {invoices.map((invoice) => (
-          <TRow>
-            <TData>
-              <Status status={invoice.status} />
-            </TData>
-            <TData>{moment(invoice.dueAt, "YYYYMMDD").fromNow()}</TData>
-            <TData>{moment(invoice.createdAt).format("LL")}</TData>
-            <TData>{invoice.invoiceNumber}</TData>
-            <TData>{invoice.customer.name}</TData>
-            <TData>{0}</TData>
-            <TData>${invoice.amountDue}</TData>
-            <TDataAction>
-              <div>
-                <RecordPayment />
-                <TableActionDropdown viewRoute="" />
-              </div>
-            </TDataAction>
-          </TRow>
-        ))}
-      </Table>
+            {invoices.map((invoice) => (
+              <TRow>
+                <TData>
+                  <Status status={invoice.status} />
+                </TData>
+                <TData>{moment(invoice.dueAt, "YYYYMMDD").fromNow()}</TData>
+                <TData>{moment(invoice.createdAt).format("LL")}</TData>
+                <TData>{invoice.invoiceNumber}</TData>
+                <TData>{invoice.customer.name}</TData>
+                <TData>{0}</TData>
+                <TData>${invoice.amountDue}</TData>
+                <TDataAction>
+                  <div>
+                    <RecordPayment
+                      paymentMethods={paymentMethods}
+                      paymentAccounts={paymentAccounts}
+                      invoice={invoice}
+                    />
+                    <TableActionDropdown
+                      viewRoute={`/invoices/details/${invoice._id}`}
+                    />
+                  </div>
+                </TDataAction>
+              </TRow>
+            ))}
+          </Table>
+        </>
+      )}
     </PageContainer>
   );
 }

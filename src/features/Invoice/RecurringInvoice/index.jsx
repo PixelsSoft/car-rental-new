@@ -6,9 +6,42 @@ import { Content } from "./styles";
 import SelectWithSearch from "../../../components/custom/SelectWithSearch/SelectWithSearch";
 import CustomTable from "../../../components/custom/CustomTable/CustomTable";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Status from "../../../components/custom/Status/Status";
+import TableActionDropdown from "../../../components/custom/TableActionDropdown/TableActionDropdown";
+import moment from "moment";
+import {
+  Table,
+  TData,
+  THead,
+  TRow,
+  TDataAction,
+} from "../../../components/custom/CustomTable/CustomTable.styles";
+import { useEffect } from "react";
+import { getRecurringInvoices } from "../../../redux/invoices/reducer";
 
 export default function RecurringInvoice() {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { recurringInvoices } = useSelector((state) => ({
+    recurringInvoices: state.invoices.recurringInvoices,
+  }));
+
+  const headers = [
+    "Status",
+    "Customer",
+    "Previous invoice",
+    "Invoice amount",
+    "Actions",
+  ];
+
+  useEffect(() => {
+    dispatch(getRecurringInvoices());
+  }, [dispatch]);
+
+  console.log(recurringInvoices);
   return (
     <PageLayout>
       <Header pageTitle="Recurring Invoice">
@@ -42,7 +75,33 @@ export default function RecurringInvoice() {
           />
         </div>
 
-        <CustomTable mt={20} />
+        <Table mt={20}>
+          <TRow>
+            {headers.map((header) => (
+              <THead>{header}</THead>
+            ))}
+          </TRow>
+
+          {recurringInvoices?.map((invoice) => (
+            <TRow>
+              <TData>
+                <Status status={invoice.status} />
+              </TData>
+              <TData>{invoice.customer.name}</TData>
+              <TData>
+                {moment(
+                  invoice.invoices[invoice.invoices.length - 1].createdAt
+                ).format("LL")}
+              </TData>
+              <TData>${invoice.amount}</TData>
+              <TDataAction>
+                <div>
+                  <TableActionDropdown viewRoute="" />
+                </div>
+              </TDataAction>
+            </TRow>
+          ))}
+        </Table>
       </Content>
     </PageLayout>
   );
