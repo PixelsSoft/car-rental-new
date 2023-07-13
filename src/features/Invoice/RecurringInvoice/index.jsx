@@ -4,7 +4,6 @@ import Header from "../../../components/custom/Header/Header";
 import CustomBreadcumb from "../../../components/custom/CustomBreadcumb/CustomBreadcumb";
 import { Content } from "./styles";
 import SelectWithSearch from "../../../components/custom/SelectWithSearch/SelectWithSearch";
-import CustomTable from "../../../components/custom/CustomTable/CustomTable";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Status from "../../../components/custom/Status/Status";

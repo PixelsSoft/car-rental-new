@@ -66,7 +66,7 @@ export default function CustomInvoice({
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { customers, loading, items, invoiceCreated, invoiceLoading, message } =
+  const { customers, items, invoiceCreated, invoiceLoading, message } =
     useSelector((state) => ({
       customers: state.customers.customers,
       loading: state.customers.loading,

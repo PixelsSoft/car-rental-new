@@ -34,14 +34,12 @@ export default function RecordPayment({
     setSelectedPaymentMethod(selection);
 
   const dispatch = useDispatch();
-  const { loading, paymentRecordCreated, message, error } = useSelector(
-    (state) => ({
-      loading: state.paymentRecords.loading,
-      paymentRecordCreated: state.paymentRecords.paymentRecordCreated,
-      message: state.paymentRecords.message,
-      error: state.paymentRecords.error,
-    })
-  );
+  const { paymentRecordCreated, message, error } = useSelector((state) => ({
+    loading: state.paymentRecords.loading,
+    paymentRecordCreated: state.paymentRecords.paymentRecordCreated,
+    message: state.paymentRecords.message,
+    error: state.paymentRecords.error,
+  }));
 
   const handleSubmit = () => {
     dispatch(

@@ -1,4 +1,3 @@
-import calculateAmount from "../../../utils/calculateAmount";
 import {
   Container,
   InvoiceHead,

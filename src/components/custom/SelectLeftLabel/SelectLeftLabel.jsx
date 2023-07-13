@@ -31,10 +31,10 @@ const SelectleftLabel = ({
     setIsOpen(!isOpen);
   };
 
-  const handleItemClick = (item) => {
-    console.log(`You clicked on "${item}"`);
-    setIsOpen(false);
-  };
+  //   const handleItemClick = (item) => {
+  //     console.log(`You clicked on "${item}"`);
+  //     setIsOpen(false);
+  //   };
 
   //   const handleClickOutside = (event) => {
   //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
