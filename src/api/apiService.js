@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiService = axios.create({
-  baseURL: "https://xpress-rental.onrender.com",
+  baseURL: "https://xpress-rental.onrender.com/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
