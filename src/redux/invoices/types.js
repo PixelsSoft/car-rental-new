@@ -4,6 +4,7 @@ const invoiceActionTypes = {
   GET_INVOICE_DETAILS: "@invoices/GET_INVOICE_DETAILS",
   DELETE_INVOICE: "@invoices/DELETE_INVOICE",
   GET_RECURRING_INVOICES: "@invoices/GET_RECURRING_INVOICES",
+  EDIT_INVOICE: "@invoices/EDIT_INVOICE",
 };
 
 export default invoiceActionTypes;

@@ -29,6 +29,7 @@ export const MenuData = [
     subNav: [
       { title: "Bills", path: "/bills" },
       { title: "Vendors", path: "/vendors" },
+      { title: "Products", path: "/billing-products" },
     ],
   },
   {

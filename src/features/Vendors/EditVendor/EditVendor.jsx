@@ -4,42 +4,57 @@ import CustomButton from "../../../components/custom/CustomButton/CustomButton";
 import Header from "../../../components/custom/Header/Header";
 import InputLeftLabel from "../../../components/custom/InputLeftLabel/InputLeftLabel";
 import TextArea from "../../../components/custom/TextArea/TextArea";
-import { Content, Form } from "./AddVendor.styles";
+import { Content, Form } from "./EditVendor.styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createVendor,
+  getVendorById,
+  editVendor,
   reset as vendorReset,
 } from "../../../redux/vendors/reducer";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../../../components/custom/Spinner/Spinner";
 
-export default function AddVendor() {
+export default function EditVendor() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { vendorCreated, error, message, loading } = useSelector((state) => ({
-    vendorCreated: state.vendors.vendorCreated,
-    message: state.vendors.message,
-    error: state.vendors.error,
-    loading: state.vendors.loading,
-  }));
+  const { id } = useParams();
 
-  const handleAddVendor = () => {
-    dispatch(createVendor({ name, description }));
+  const { vendorUpdated, error, message, loading, vendor } = useSelector(
+    (state) => ({
+      vendorUpdated: state.vendors.vendorUpdated,
+      message: state.vendors.message,
+      error: state.vendors.error,
+      loading: state.vendors.loading,
+      vendor: state.vendors.vendor,
+    })
+  );
+
+  const handleEditVendor = () => {
+    dispatch(editVendor({ id, name, description }));
   };
 
   useEffect(() => {
-    if (vendorCreated) {
-      toast.success(message, { toastId: "vendor-created" });
-      setName("");
-      setDescription("");
+    if (vendorUpdated) {
+      toast.success(message, { toastId: "vendor-updated" });
       dispatch(vendorReset());
     }
-  }, [dispatch, vendorCreated, message]);
+  }, [dispatch, vendorUpdated, message]);
+
+  useEffect(() => {
+    dispatch(getVendorById(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (vendor) {
+      setName(vendor.name);
+      setDescription(vendor.description);
+    }
+  }, [vendor]);
 
   useEffect(() => {
     if (error) toast.error(error, { toastId: "vendor-error" });
@@ -47,13 +62,13 @@ export default function AddVendor() {
 
   return (
     <PageLayout>
-      <Header pageTitle="New Vendor"></Header>
+      <Header pageTitle="Edit Vendor"></Header>
 
       <Content>
         {loading ? (
           <Spinner />
         ) : (
-          <Form onSubmit={handleAddVendor}>
+          <Form onSubmit={handleEditVendor}>
             <InputLeftLabel
               label="Vendor Name*"
               value={name}

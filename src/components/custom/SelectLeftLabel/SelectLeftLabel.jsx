@@ -58,13 +58,11 @@ const SelectleftLabel = ({
     };
   }, []);
 
-  console.log(value);
-
   return (
     <Container width={width} ml={ml} mr={mr} mb={mb} mt={mt}>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       <DropdownContainer>
-        <Button onClick={handleButtonClick}>
+        <Button onClick={handleButtonClick} type="button">
           {value ? value : placeholder}
           {isOpen ? (
             <MdIcons.MdOutlineKeyboardArrowUp />

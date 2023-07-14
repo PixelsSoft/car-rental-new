@@ -37,7 +37,9 @@ export default function TableActionDropdown({ viewRoute, onEdit, onDelete }) {
     <StyledActionButton onClick={toggleMenu} ref={dropdownRef}>
       <AiFillCaretDown size={14} />
       <DropdownList open={open}>
-        <DropdownItem onClick={navigateToView}>View</DropdownItem>
+        {viewRoute && (
+          <DropdownItem onClick={navigateToView}>View</DropdownItem>
+        )}
         <DropdownItem onClick={onEdit}>Edit</DropdownItem>
         <DropdownItem onClick={onDelete}>Delete</DropdownItem>
       </DropdownList>

@@ -23,6 +23,13 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EditVehicle from "./features/Vehicles/EditVehicle/EditVehicle";
 import EditCustomer from "./features/Customers/EditCustomer/EditCustomer";
+import EditInvoice from "./features/Invoice/EditInvoice/EditInvoice";
+import BillingItemsList from "./features/BillingItems/BillingItemsList/BillingItemList";
+import CreateBillingItem from "./features/BillingItems/CreateBillingItem/CreateBillingItem";
+import EditBillingItem from "./features/BillingItems/EditBillingItem/EditBillingItem";
+import EditVendor from "./features/Vendors/EditVendor/EditVendor";
+import AddBill from "./features/Bills/AddBill/AddBill";
+import EditBill from "./features/Bills/EditBill/EditBill";
 
 export default function App() {
   return (
@@ -34,14 +41,18 @@ export default function App() {
         <Route path="/invoices" element={<Invoices />} />
         <Route path="/invoices/create" element={<CreateInvoice />} />
         <Route path="/invoices/details/:id" element={<InvoiceDetails />} />
+        <Route path="/invoices/edit/:id" element={<EditInvoice />} />
         <Route path="/recurring-invoices" element={<RecurringInvoice />} />
         <Route path="/customers" element={<CustomersList />} />
         <Route path="/customers/:id" element={<CustomerProfile />} />
         <Route path="/customers/add" element={<AddCustomer />} />
         <Route path="/customers/edit/:id" element={<EditCustomer />} />
         <Route path="/bills" element={<BillsList />} />
+        <Route path="/bills/add" element={<AddBill />} />
+        <Route path="/bills/edit/:id" element={<EditBill />} />
         <Route path="/vendors" element={<VendorsList />} />
         <Route path="/vendors/add" element={<AddVendor />} />
+        <Route path="/vendors/edit/:id" element={<EditVendor />} />
         <Route path="/vehicles" element={<VehiclesList />} />
         <Route path="/vehicles/add" element={<AddVehicle />} />
         <Route path="/vehicles/edit/:id" element={<EditVehicle />} />
@@ -49,6 +60,12 @@ export default function App() {
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/services" element={<ServicesList />} />
         <Route path="/services/add" element={<CreateService />} />
+        <Route path="/billing-products" element={<BillingItemsList />} />
+        <Route path="/billing-products/new" element={<CreateBillingItem />} />
+        <Route
+          path="/billing-products/edit/:id"
+          element={<EditBillingItem />}
+        />
       </Routes>
       <ToastContainer
         position="top-center"

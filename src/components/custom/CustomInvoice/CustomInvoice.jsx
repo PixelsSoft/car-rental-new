@@ -24,6 +24,7 @@ import calculateAmount from "../../../utils/calculateAmount";
 import SelectLeftLabel from "../../../components/custom/SelectLeftLabel/SelectLeftLabel";
 import {
   createInvoice,
+  editInvoice,
   reset as invoicesReset,
 } from "../../../redux/invoices/reducer";
 import CustomButton from "../CustomButton/CustomButton";
@@ -41,6 +42,7 @@ export default function CustomInvoice({
   setNotes,
   isRecurring,
   setIsRecurring,
+  forEditInvoice,
 }) {
   const recurringList = [
     { id: 1, description: "Within 7 Days ", value: 7 },
@@ -66,15 +68,22 @@ export default function CustomInvoice({
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { customers, items, invoiceCreated, invoiceLoading, message } =
-    useSelector((state) => ({
-      customers: state.customers.customers,
-      loading: state.customers.loading,
-      items: state.items.items,
-      invoiceCreated: state.invoices.invoiceCreated,
-      invoiceLoading: state.invoices.loading,
-      message: state.invoices.message,
-    }));
+  const {
+    customers,
+    items,
+    invoiceCreated,
+    invoiceLoading,
+    invoiceEdited,
+    message,
+  } = useSelector((state) => ({
+    customers: state.customers.customers,
+    loading: state.customers.loading,
+    items: state.items.items,
+    invoiceCreated: state.invoices.invoiceCreated,
+    invoiceLoading: state.invoices.loading,
+    message: state.invoices.message,
+    invoiceEdited: state.invoices.invoiceEdited,
+  }));
 
   const handleItemSelect = (listItem) => {
     setSelectedItems((prev) => [
@@ -133,6 +142,31 @@ export default function CustomInvoice({
     );
   };
 
+  const handleEditInvoice = () => {
+    if (selectedItems.length < 1)
+      return toast.error("You have not selected any items.");
+
+    if (!selectedCustomer) return toast.error("Please select a customer first");
+    dispatch(
+      editInvoice({
+        id: forEditInvoice._id,
+        dueAt: dueDate,
+        total: calculateAmount(selectedItems),
+        amountDue:
+          calculateAmount(selectedItems) -
+          forEditInvoice?.paymentRecords.reduce(
+            (acc, record) => acc + record.amount,
+            0
+          ),
+        notes,
+        customer: selectedCustomer._id,
+        items: selectedItems,
+        isRecurring,
+        nextInvoice: dueWithin.value && isRecurring ? dueWithin.value : 0,
+      })
+    );
+  };
+
   useEffect(() => {
     dispatch(getCustomers());
     dispatch(getItems());
@@ -152,8 +186,14 @@ export default function CustomInvoice({
       resetFields();
       toast.success(message, { toastId: "invoice-created" });
     }
+
+    if (invoiceEdited) {
+      dispatch(invoicesReset());
+      resetFields();
+      toast.success(message, { toastId: "invoice-updated" });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [invoiceCreated, dispatch]);
+  }, [invoiceCreated, dispatch, invoiceEdited]);
 
   return invoiceLoading ? (
     <Spinner />
@@ -330,6 +370,25 @@ export default function CustomInvoice({
           <span>Subtotal</span>
           <span>${calculateAmount(selectedItems)}</span>
         </div>
+        {forEditInvoice && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "20%",
+              marginTop: 10,
+            }}
+          >
+            <span>Previous Payments:</span>
+            <span style={{ display: "flex" }}>
+              -$
+              {forEditInvoice?.paymentRecords.reduce((acc, record) => {
+                return acc + record.amount;
+              }, 0)}
+            </span>
+          </div>
+        )}
         <div
           style={{
             display: "flex",
@@ -339,7 +398,24 @@ export default function CustomInvoice({
           }}
         >
           <strong>Total</strong>
-          <strong>${calculateAmount(selectedItems)}</strong>
+          {forEditInvoice ? (
+            <strong>
+              $
+              {calculateAmount(selectedItems) -
+                forEditInvoice?.paymentRecords.reduce((acc, record) => {
+                  return acc + record.amount;
+                }, 0)}
+            </strong>
+          ) : (
+            <strong>${calculateAmount(selectedItems)}</strong>
+          )}
+          {/* <strong>
+            $
+            {calculateAmount(selectedItems) -
+              forEditInvoice?.paymentRecords.reduce((acc, record) => {
+                return acc + record.amount;
+              }, 0)}
+          </strong> */}
         </div>
       </div>
       <div>
@@ -360,9 +436,12 @@ export default function CustomInvoice({
           }}
         />
       </div>
-      <div>
-        <CustomButton outline onClick={handleCreateInvoice}>
-          Send
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <CustomButton
+          width={200}
+          onClick={forEditInvoice ? handleEditInvoice : handleCreateInvoice}
+        >
+          Save
         </CustomButton>
       </div>
     </InvoiceContainer>

@@ -6,7 +6,7 @@ const createPaymentRecord = createAsyncThunk(
   paymentRecordActionTypes.CREATE_RECORD,
   async (data) => {
     const result = await postService("/payment-record/create", data);
-    console.log(result);
+
     return result;
   }
 );

@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getService, postService, deleteService } from "../../api/apiService";
+import {
+  getService,
+  postService,
+  deleteService,
+  putService,
+} from "../../api/apiService";
 import invoiceActionTypes from "./types";
 
 // Thunks
@@ -48,6 +53,14 @@ const getRecurringInvoices = createAsyncThunk(
   }
 );
 
+const editInvoice = createAsyncThunk(
+  invoiceActionTypes.EDIT_INVOICE,
+  async (data) => {
+    const result = await putService("/invoices/edit/" + data.id, data);
+    return result;
+  }
+);
+
 const initialState = {
   loading: false,
   invoices: [],
@@ -63,6 +76,7 @@ const invoiceSlice = createSlice({
       state.invoices = [];
       state.invoiceCreated = false;
       state.invoiceDeleted = false;
+      state.invoiceEdited = false;
       state.error = null;
       state.invoice = null;
       state.message = null;
@@ -139,6 +153,21 @@ const invoiceSlice = createSlice({
         state.loading = false;
         state.error = action.error;
       });
+
+    builder
+      .addCase(editInvoice.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(editInvoice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.invoiceEdited = true;
+        state.message = action.payload.message;
+      })
+      .addCase(editInvoice.rejected, (state, action) => {
+        state.loading = false;
+        state.invoiceEdited = false;
+        state.error = action.error;
+      });
   },
 });
 
@@ -148,6 +177,7 @@ export {
   getInvoiceDetails,
   deleteInvoice,
   getRecurringInvoices,
+  editInvoice,
 };
 
 export const { reset } = invoiceSlice.actions;

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 
 import PageContainer from "../../../components/Layout/PageLayout/PageLayout";
@@ -16,15 +16,25 @@ import {
   TRow,
   TDataAction,
 } from "../../../components/custom/CustomTable/CustomTable.styles";
-import { getAllInvoices } from "../../../redux/invoices/reducer";
+import {
+  deleteInvoice,
+  getAllInvoices,
+  reset as InvoiceReset,
+} from "../../../redux/invoices/reducer";
 import Status from "../../../components/custom/Status/Status";
 import TableActionDropdown from "../../../components/custom/TableActionDropdown/TableActionDropdown";
 import RecordPayment from "../../../components/custom/RecordPayment/RecordPayment";
 import Spinner from "../../../components/custom/Spinner/Spinner";
 import { getAllPaymentMethods } from "../../../redux/payment-methods/reducer";
 import { getAllPaymentAccounts } from "../../../redux/payment-accounts/reducer";
+import Modal from "../../../components/custom/Modal/Modal";
+import { ButtonsContainer } from "./styles";
+import { toast } from "react-toastify";
 
 export default function Invoices() {
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [invoiceId, setInvoiceId] = useState(null);
+
   const navigate = useNavigate();
   const items = [
     { id: 1, title: "Unpaid", count: 10 },
@@ -34,14 +44,35 @@ export default function Invoices() {
 
   const dispatch = useDispatch();
 
-  const { loading, invoices, paymentMethods, paymentAccounts } = useSelector(
-    (state) => ({
-      loading: state.invoices.loading,
-      invoices: state.invoices.invoices,
-      paymentMethods: state.paymentMethods.paymentMethods,
-      paymentAccounts: state.paymentAccounts.paymentAccounts,
-    })
-  );
+  const onDelete = (id) => {
+    setInvoiceId(id);
+    setDeleteModal(true);
+  };
+
+  const onEdit = (id) => navigate("/invoices/edit/" + id);
+
+  const {
+    loading,
+    invoices,
+    paymentMethods,
+    paymentAccounts,
+    invoiceDeleted,
+    message,
+    error,
+  } = useSelector((state) => ({
+    loading: state.invoices.loading,
+    invoices: state.invoices.invoices,
+    paymentMethods: state.paymentMethods.paymentMethods,
+    paymentAccounts: state.paymentAccounts.paymentAccounts,
+    invoiceDeleted: state.invoices.invoiceDeleted,
+    error: state.invoices.error,
+    message: state.invoices.message,
+  }));
+
+  const closeDeleteModal = () => {
+    setInvoiceId(null);
+    setDeleteModal(false);
+  };
 
   const headers = [
     "Status",
@@ -60,55 +91,95 @@ export default function Invoices() {
     dispatch(getAllPaymentAccounts());
   }, [dispatch]);
 
-  return (
-    <PageContainer>
-      <Header pageTitle="Invoices">
-        <CustomButton width={200} onClick={() => navigate("/invoices/create")}>
-          Create invoice
-        </CustomButton>
-      </Header>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <>
-          <Stats />
-          <Filters />
-          <CustomBreadCumb items={items} />
-          <Table mt={20}>
-            <TRow>
-              {headers.map((header) => (
-                <THead>{header}</THead>
-              ))}
-            </TRow>
+  const handleDeleteInvoice = () => {
+    dispatch(deleteInvoice(invoiceId));
+    setDeleteModal(false);
+  };
 
-            {invoices.map((invoice) => (
+  useEffect(() => {
+    if (invoiceDeleted) {
+      toast.success(message);
+      dispatch(InvoiceReset());
+      dispatch(getAllInvoices());
+    }
+  }, [invoiceDeleted, message, dispatch]);
+
+  useEffect(() => {
+    if (error) toast.error(error, { toastId: "invoice-error" });
+  }, [error]);
+
+  return (
+    <>
+      <PageContainer>
+        <Header pageTitle="Invoices">
+          <CustomButton
+            width={200}
+            onClick={() => navigate("/invoices/create")}
+          >
+            Create invoice
+          </CustomButton>
+        </Header>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <Stats />
+            <Filters />
+            <CustomBreadCumb items={items} />
+            <Table mt={20}>
               <TRow>
-                <TData>
-                  <Status status={invoice.status} />
-                </TData>
-                <TData>{moment(invoice.dueAt, "YYYYMMDD").fromNow()}</TData>
-                <TData>{moment(invoice.createdAt).format("LL")}</TData>
-                <TData>{invoice.invoiceNumber}</TData>
-                <TData>{invoice.customer.name}</TData>
-                <TData>{0}</TData>
-                <TData>${invoice.amountDue}</TData>
-                <TDataAction>
-                  <div>
-                    <RecordPayment
-                      paymentMethods={paymentMethods}
-                      paymentAccounts={paymentAccounts}
-                      invoice={invoice}
-                    />
-                    <TableActionDropdown
-                      viewRoute={`/invoices/details/${invoice._id}`}
-                    />
-                  </div>
-                </TDataAction>
+                {headers.map((header) => (
+                  <THead>{header}</THead>
+                ))}
               </TRow>
-            ))}
-          </Table>
-        </>
-      )}
-    </PageContainer>
+
+              {invoices.map((invoice) => (
+                <TRow>
+                  <TData>
+                    <Status status={invoice.status} />
+                  </TData>
+                  <TData>{moment(invoice.dueAt, "YYYYMMDD").fromNow()}</TData>
+                  <TData>{moment(invoice.createdAt).format("LL")}</TData>
+                  <TData>{invoice.invoiceNumber}</TData>
+                  <TData>{invoice.customer.name}</TData>
+                  <TData>{0}</TData>
+                  <TData>${invoice.amountDue}</TData>
+                  <TDataAction>
+                    <div>
+                      <RecordPayment
+                        paymentMethods={paymentMethods}
+                        paymentAccounts={paymentAccounts}
+                        invoice={invoice}
+                      />
+                      <TableActionDropdown
+                        viewRoute={`/invoices/details/${invoice._id}`}
+                        onDelete={() => onDelete(invoice._id)}
+                        onEdit={() => onEdit(invoice._id)}
+                      />
+                    </div>
+                  </TDataAction>
+                </TRow>
+              ))}
+            </Table>
+          </>
+        )}
+      </PageContainer>
+      <Modal
+        title="Delete invoice?"
+        open={deleteModal}
+        onClose={closeDeleteModal}
+      >
+        <p>Are you sure you want to delete this invoice?</p>
+
+        <ButtonsContainer>
+          <CustomButton outline mr={10} width={100} onClick={closeDeleteModal}>
+            Cancel
+          </CustomButton>
+          <CustomButton width={100} onClick={handleDeleteInvoice}>
+            Confirm
+          </CustomButton>
+        </ButtonsContainer>
+      </Modal>
+    </>
   );
 }

@@ -4,58 +4,62 @@ import CustomButton from "../../../components/custom/CustomButton/CustomButton";
 import Header from "../../../components/custom/Header/Header";
 import InputLeftLabel from "../../../components/custom/InputLeftLabel/InputLeftLabel";
 import TextArea from "../../../components/custom/TextArea/TextArea";
-import { Content, Form } from "./AddVendor.styles";
+import { Content } from "./CreateBillingItem.styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createVendor,
-  reset as vendorReset,
-} from "../../../redux/vendors/reducer";
+  createBillingItem,
+  reset as billingItemsReset,
+} from "../../../redux/billing-items/reducer";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import Spinner from "../../../components/custom/Spinner/Spinner";
 
-export default function AddVendor() {
+export default function CreateBillingItem() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const { vendorCreated, error, message, loading } = useSelector((state) => ({
-    vendorCreated: state.vendors.vendorCreated,
-    message: state.vendors.message,
-    error: state.vendors.error,
-    loading: state.vendors.loading,
-  }));
+  const { loading, error, message, billingItemCreated } = useSelector(
+    (state) => ({
+      loading: state.billingItems.loading,
+      error: state.billingItems.error,
+      message: state.billingItems.message,
+      billingItemCreated: state.billingItems.billingItemCreated,
+    })
+  );
 
-  const handleAddVendor = () => {
-    dispatch(createVendor({ name, description }));
+  const handleAddBillingItem = (e) => {
+    e.preventDefault();
+    dispatch(createBillingItem({ name, description, price }));
   };
 
   useEffect(() => {
-    if (vendorCreated) {
-      toast.success(message, { toastId: "vendor-created" });
+    if (billingItemCreated) {
+      toast.success(message, { toastId: "billing-item-created" });
       setName("");
       setDescription("");
-      dispatch(vendorReset());
+      setPrice(0);
+      dispatch(billingItemsReset());
     }
-  }, [dispatch, vendorCreated, message]);
+  }, [billingItemCreated, dispatch, message]);
 
   useEffect(() => {
-    if (error) toast.error(error, { toastId: "vendor-error" });
+    if (error) toast.error(error, "billing-item-error");
   }, [error]);
 
   return (
     <PageLayout>
-      <Header pageTitle="New Vendor"></Header>
+      <Header pageTitle="Add new product" />
 
-      <Content>
+      <Content onSubmit={handleAddBillingItem}>
         {loading ? (
           <Spinner />
         ) : (
-          <Form onSubmit={handleAddVendor}>
+          <>
             <InputLeftLabel
-              label="Vendor Name*"
+              label="Name"
+              mt={20}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -67,29 +71,29 @@ export default function AddVendor() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+            <InputLeftLabel
+              label="Price"
+              mt={20}
+              dollar
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
 
             <div
               style={{
-                marginTop: 40,
                 display: "flex",
-                alignItems: "center",
                 justifyContent: "center",
+                marginTop: 50,
               }}
             >
-              <CustomButton
-                type="button"
-                outline
-                width={200}
-                mr={10}
-                onClick={() => navigate("/vendors")}
-              >
+              <CustomButton outline width={200} mr={10}>
                 Cancel
               </CustomButton>
               <CustomButton width={200} type="submit">
                 Save
               </CustomButton>
             </div>
-          </Form>
+          </>
         )}
       </Content>
     </PageLayout>

@@ -21,7 +21,6 @@ import { getRecurringInvoices } from "../../../redux/invoices/reducer";
 
 export default function RecurringInvoice() {
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const { recurringInvoices } = useSelector((state) => ({
@@ -89,7 +88,7 @@ export default function RecurringInvoice() {
               <TData>{invoice.customer.name}</TData>
               <TData>
                 {moment(
-                  invoice.invoices[invoice.invoices.length - 1].createdAt
+                  invoice?.invoices[invoice.invoices.length - 1]?.createdAt
                 ).format("LL")}
               </TData>
               <TData>${invoice.amount}</TData>

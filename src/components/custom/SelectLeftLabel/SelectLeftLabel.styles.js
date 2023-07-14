@@ -4,6 +4,8 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  /* border: 1px solid red; */
 
   margin: ${({ ml, mr, mt, mb }) => `${mt}px ${mr}px ${mb}px ${ml}px`};
 `;
@@ -16,7 +18,7 @@ export const Label = styled.label`
 
 export const DropdownContainer = styled.div`
   position: relative;
-  width: 100%;
+  width: 80%;
   text-align: center;
 `;
 

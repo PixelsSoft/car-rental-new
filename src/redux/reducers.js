@@ -6,6 +6,10 @@ import customersReducer from "./customers/reducer";
 import paymentMethodsReducer from "./payment-methods/reducer";
 import paymentAccountsReducer from "./payment-accounts/reducer";
 import paymentRecordsReducer from "./payment-records/reducer";
+import billsReducer from "./bills/reducer";
+import vendorsReducer from "./vendors/reducer";
+import billingItemsReducer from "./billing-items/reducer";
+import servicesReducer from "./service/reducer";
 
 const store = configureStore({
   reducer: {
@@ -15,6 +19,10 @@ const store = configureStore({
     paymentMethods: paymentMethodsReducer,
     paymentAccounts: paymentAccountsReducer,
     paymentRecords: paymentRecordsReducer,
+    bills: billsReducer,
+    billingItems: billingItemsReducer,
+    vendors: vendorsReducer,
+    services: servicesReducer,
   },
 });
 

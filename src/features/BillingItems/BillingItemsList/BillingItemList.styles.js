@@ -9,7 +9,6 @@ export const Content = styled.div`
     display: flex;
   }
 `;
-
 export const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;

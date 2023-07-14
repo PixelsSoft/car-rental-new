@@ -6,6 +6,7 @@ const getAllPaymentMethods = createAsyncThunk(
   paymentMethodsActionTypes.GET_ALL_PAYMENT_METHODS,
   async () => {
     const result = await getService("/payment-methods");
+    console.log(result);
     return result;
   }
 );
