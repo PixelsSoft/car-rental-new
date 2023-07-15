@@ -13,7 +13,7 @@ import {
 } from "../../../redux/billing-items/reducer";
 import { toast } from "react-toastify";
 import Spinner from "../../../components/custom/Spinner/Spinner";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditBillingItem() {
   const [name, setName] = useState("");
@@ -21,6 +21,7 @@ export default function EditBillingItem() {
   const [price, setPrice] = useState(0);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -103,7 +104,13 @@ export default function EditBillingItem() {
                 marginTop: 50,
               }}
             >
-              <CustomButton outline width={200} mr={10}>
+              <CustomButton
+                outline
+                width={200}
+                mr={10}
+                type="button"
+                onClick={() => navigate("/billing-products")}
+              >
                 Cancel
               </CustomButton>
               <CustomButton width={200} type="submit">

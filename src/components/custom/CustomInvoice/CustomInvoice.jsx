@@ -30,6 +30,7 @@ import {
 import CustomButton from "../CustomButton/CustomButton";
 import { toast } from "react-toastify";
 import Spinner from "../../../components/custom/Spinner/Spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function CustomInvoice({
   selectedItems,
@@ -67,6 +68,7 @@ export default function CustomInvoice({
   const toggle = () => setShowAddCustomer(!showAddCustomer);
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     customers,
@@ -191,6 +193,7 @@ export default function CustomInvoice({
       dispatch(invoicesReset());
       resetFields();
       toast.success(message, { toastId: "invoice-updated" });
+      navigate("/invoices");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [invoiceCreated, dispatch, invoiceEdited]);
@@ -308,12 +311,14 @@ export default function CustomInvoice({
             <TData>
               <OutlineCustomInput
                 type="number"
+                width={60}
                 value={quantity}
                 onChange={(e) => updateQuantity(listItem._id, e.target.value)}
               />
             </TData>
             <TData>
               <OutlineCustomInput
+                type="number"
                 value={price}
                 onChange={(e) => updatePrice(listItem._id, e.target.value)}
               />

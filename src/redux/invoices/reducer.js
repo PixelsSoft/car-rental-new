@@ -61,6 +61,14 @@ const editInvoice = createAsyncThunk(
   }
 );
 
+const endRecurringInvoice = createAsyncThunk(
+  invoiceActionTypes.END_RECURRING_INVOICE,
+  async (id) => {
+    const result = await putService("/recurring-invoice/end/" + id);
+    return result;
+  }
+);
+
 const initialState = {
   loading: false,
   invoices: [],
@@ -168,6 +176,19 @@ const invoiceSlice = createSlice({
         state.invoiceEdited = false;
         state.error = action.error;
       });
+
+    builder
+      .addCase(endRecurringInvoice.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(endRecurringInvoice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload.message;
+      })
+      .addCase(endRecurringInvoice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      });
   },
 });
 
@@ -178,6 +199,7 @@ export {
   deleteInvoice,
   getRecurringInvoices,
   editInvoice,
+  endRecurringInvoice,
 };
 
 export const { reset } = invoiceSlice.actions;

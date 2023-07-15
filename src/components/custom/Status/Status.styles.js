@@ -14,6 +14,9 @@ export const Container = styled.div`
       case STATUS.ACTIVE:
         return props.theme.colors.info;
 
+      case STATUS.INACTIVE:
+        return props.theme.colors.redStatusBg;
+
       case STATUS.DUE:
         return props.theme.colors.redStatusBg;
 

@@ -15,6 +15,7 @@ import SelectLeftLabel from "../../../components/custom/SelectLeftLabel/SelectLe
 import { getItems } from "../../../redux/items/reducer";
 import { toast } from "react-toastify";
 import Spinner from "../../../components/custom/Spinner/Spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateService() {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -22,6 +23,7 @@ export default function CreateService() {
   const [description, setDescription] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { items, serviceCreated, loading, error, message } = useSelector(
     (state) => ({
@@ -101,7 +103,13 @@ export default function CreateService() {
                 marginTop: 50,
               }}
             >
-              <CustomButton outline width={200} mr={10} type="button">
+              <CustomButton
+                outline
+                width={200}
+                mr={10}
+                type="button"
+                onClick={() => navigate("/services")}
+              >
                 Cancel
               </CustomButton>
               <CustomButton width={200} type="submit">

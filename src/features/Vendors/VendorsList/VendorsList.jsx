@@ -137,7 +137,7 @@ export default function VendorsList() {
         </p>
 
         <ButtonsContainer>
-          <CustomButton width={100} outline mr={10} onClick={() => {}}>
+          <CustomButton width={100} outline mr={10} onClick={closeDeleteModal}>
             Cancel
           </CustomButton>
           <CustomButton width={100} onClick={handleDelete}>

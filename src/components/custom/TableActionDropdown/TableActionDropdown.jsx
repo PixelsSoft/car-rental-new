@@ -7,7 +7,12 @@ import {
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function TableActionDropdown({ viewRoute, onEdit, onDelete }) {
+export default function TableActionDropdown({
+  viewRoute,
+  onEdit,
+  onDelete,
+  onEnd,
+}) {
   const [open, setOpen] = useState(false);
   const toggleMenu = () => setOpen(!open);
 
@@ -40,8 +45,9 @@ export default function TableActionDropdown({ viewRoute, onEdit, onDelete }) {
         {viewRoute && (
           <DropdownItem onClick={navigateToView}>View</DropdownItem>
         )}
-        <DropdownItem onClick={onEdit}>Edit</DropdownItem>
-        <DropdownItem onClick={onDelete}>Delete</DropdownItem>
+        {onEdit && <DropdownItem onClick={onEdit}>Edit</DropdownItem>}
+        {onDelete && <DropdownItem onClick={onDelete}>Delete</DropdownItem>}
+        {onEnd && <DropdownItem onClick={onEnd}>End</DropdownItem>}
       </DropdownList>
     </StyledActionButton>
   );

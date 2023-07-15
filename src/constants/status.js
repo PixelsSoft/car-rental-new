@@ -4,6 +4,7 @@ const STATUS = {
   ACTIVE: "active",
   OVERDUE: "overdue",
   DUE: "due",
+  INACTIVE: "inactive",
 };
 
 export default STATUS;

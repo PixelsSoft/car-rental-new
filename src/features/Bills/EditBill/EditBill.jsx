@@ -28,7 +28,7 @@ import {
 import calculateAmount from "../../../utils/calculateAmount";
 import { toast } from "react-toastify";
 import Spinner from "../../../components/custom/Spinner/Spinner";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditBill() {
   const [selectedVendor, setSelectedVendor] = useState(null);
@@ -39,6 +39,7 @@ export default function EditBill() {
 
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -319,7 +320,12 @@ export default function EditBill() {
             />
           </div>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <CustomButton width={200} outline mr={10}>
+            <CustomButton
+              width={200}
+              outline
+              mr={10}
+              onClick={() => navigate("/bills")}
+            >
               Cancel
             </CustomButton>
             <CustomButton width={200} onClick={handleSubmit}>

@@ -17,14 +17,21 @@ import {
   TDataAction,
 } from "../../../components/custom/CustomTable/CustomTable.styles";
 import { useEffect } from "react";
-import { getRecurringInvoices } from "../../../redux/invoices/reducer";
+import {
+  endRecurringInvoice,
+  getRecurringInvoices,
+} from "../../../redux/invoices/reducer";
+import Spinner from "../../../components/custom/Spinner/Spinner";
+import { toast } from "react-toastify";
 
 export default function RecurringInvoice() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { recurringInvoices } = useSelector((state) => ({
+  const { recurringInvoices, loading, error } = useSelector((state) => ({
     recurringInvoices: state.invoices.recurringInvoices,
+    loading: state.invoices.loading,
+    error: state.invoices.error,
   }));
 
   const headers = [
@@ -39,7 +46,9 @@ export default function RecurringInvoice() {
     dispatch(getRecurringInvoices());
   }, [dispatch]);
 
-  console.log(recurringInvoices);
+  useEffect(() => {
+    if (error) toast.error(error);
+  }, [error]);
   return (
     <PageLayout>
       <Header pageTitle="Recurring Invoice">
@@ -49,57 +58,65 @@ export default function RecurringInvoice() {
       </Header>
 
       <Content>
-        <SelectWithSearch
-          placeholder="All Customers"
-          width={300}
-          mt={20}
-          mb={20}
-        />
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <SelectWithSearch
+              placeholder="All Customers"
+              width={300}
+              mt={20}
+              mb={20}
+            />
 
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CustomBreadcumb
-            items={[
-              { id: 1, title: "Active", count: 15 },
-              { id: 2, title: "Draft", count: 15 },
-              { id: 3, title: "All recurring invoices" },
-            ]}
-          />
-        </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <CustomBreadcumb
+                items={[
+                  { id: 1, title: "Active", count: 15 },
+                  { id: 2, title: "Draft", count: 15 },
+                  { id: 3, title: "All recurring invoices" },
+                ]}
+              />
+            </div>
 
-        <Table mt={20}>
-          <TRow>
-            {headers.map((header) => (
-              <THead>{header}</THead>
-            ))}
-          </TRow>
+            <Table mt={20}>
+              <TRow>
+                {headers.map((header) => (
+                  <THead>{header}</THead>
+                ))}
+              </TRow>
 
-          {recurringInvoices?.map((invoice) => (
-            <TRow>
-              <TData>
-                <Status status={invoice.status} />
-              </TData>
-              <TData>{invoice.customer.name}</TData>
-              <TData>
-                {moment(
-                  invoice?.invoices[invoice.invoices.length - 1]?.createdAt
-                ).format("LL")}
-              </TData>
-              <TData>${invoice.amount}</TData>
-              <TDataAction>
-                <div>
-                  <TableActionDropdown viewRoute="" />
-                </div>
-              </TDataAction>
-            </TRow>
-          ))}
-        </Table>
+              {recurringInvoices?.map((invoice) => (
+                <TRow>
+                  <TData>
+                    <Status status={invoice.status} />
+                  </TData>
+                  <TData>{invoice.customer.name}</TData>
+                  <TData>
+                    {moment(
+                      invoice?.invoices[invoice.invoices.length - 1]?.createdAt
+                    ).format("LL")}
+                  </TData>
+                  <TData>${invoice.amount}</TData>
+                  <TDataAction>
+                    <div>
+                      <TableActionDropdown
+                        onEnd={() => dispatch(endRecurringInvoice(invoice._id))}
+                      />
+                    </div>
+                  </TDataAction>
+                </TRow>
+              ))}
+            </Table>
+          </>
+        )}
       </Content>
     </PageLayout>
   );

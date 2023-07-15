@@ -90,7 +90,7 @@ export default function EditVehicle() {
   useEffect(() => {
     if (itemEditedSuccess) {
       reset();
-      toast.success(message);
+      toast.success(message, { toastId: "vehicle-edited" });
       dispatch(itemsReset());
       navigate("/vehicles");
     }
@@ -169,7 +169,13 @@ export default function EditVehicle() {
                 marginTop: 50,
               }}
             >
-              <CustomButton outline width={200} mr={10}>
+              <CustomButton
+                outline
+                width={200}
+                mr={10}
+                type="button"
+                onClick={() => navigate("/vehicles")}
+              >
                 Cancel
               </CustomButton>
               <CustomButton width={200} type="submit">

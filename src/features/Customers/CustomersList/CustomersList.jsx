@@ -24,6 +24,7 @@ import Spinner from "../../../components/custom/Spinner/Spinner";
 import TableActionDropdown from "../../../components/custom/TableActionDropdown/TableActionDropdown";
 import { toast } from "react-toastify";
 import Modal from "../../../components/custom/Modal/Modal";
+import getDueBalance from "../../../utils/getDueBalance";
 
 export default function CustomersList() {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -127,7 +128,7 @@ export default function CustomersList() {
                     <TData>{customer.name}</TData>
                     <TData>{customer.email}</TData>
                     <TData>{customer.phoneNumber}</TData>
-                    <TData>$100</TData>
+                    <TData>${getDueBalance(customer)}</TData>
                     <TDataAction>
                       <div>
                         <TableActionDropdown
