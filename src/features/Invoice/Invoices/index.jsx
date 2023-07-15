@@ -30,10 +30,16 @@ import { getAllPaymentAccounts } from "../../../redux/payment-accounts/reducer";
 import Modal from "../../../components/custom/Modal/Modal";
 import { ButtonsContainer } from "./styles";
 import { toast } from "react-toastify";
+import getTotalOverdueBalance from "../../../utils/getTotalOverdueBalance";
+import calculateDuesWithin30Days from "../../../utils/calculateDuesWithin30Days";
 
 export default function Invoices() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [invoiceId, setInvoiceId] = useState(null);
+
+  const [totalOverdues, setTotalOverdues] = useState(0);
+  const [dueIn30Days, setDueIn30Days] = useState(0);
+  const [totalDueInvoices, setTotalDueInvoices] = useState(0);
 
   const navigate = useNavigate();
   const items = [
@@ -108,6 +114,18 @@ export default function Invoices() {
     if (error) toast.error(error, { toastId: "invoice-error" });
   }, [error]);
 
+  useEffect(() => {
+    if (invoices) {
+      setTotalOverdues(getTotalOverdueBalance(invoices));
+      setDueIn30Days(calculateDuesWithin30Days(invoices));
+      setTotalDueInvoices(
+        invoices.filter((invoice) => invoice.status === "due").length
+      );
+    }
+  }, [invoices]);
+
+  console.log(invoices);
+
   return (
     <>
       <PageContainer>
@@ -123,7 +141,12 @@ export default function Invoices() {
           <Spinner />
         ) : (
           <>
-            <Stats />
+            <Stats
+              totalOverdues={totalOverdues}
+              dueIn30Days={dueIn30Days}
+              totalDueInvoices={totalDueInvoices}
+              totalInvoices={invoices?.length}
+            />
             <Filters />
             <CustomBreadCumb items={items} />
             <Table mt={20}>
