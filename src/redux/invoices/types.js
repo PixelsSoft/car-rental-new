@@ -6,6 +6,8 @@ const invoiceActionTypes = {
   GET_RECURRING_INVOICES: "@invoices/GET_RECURRING_INVOICES",
   EDIT_INVOICE: "@invoices/EDIT_INVOICE",
   END_RECURRING_INVOICE: "@invoices/END_RECURRING_INVOICE",
+  GET_YEARLY_DATA: "@invoices/GET_YEARLY_DATA",
+  GET_CASHFLOW_DATA: "@invoices/GET_CASHFLOW_DATA",
 };
 
 export default invoiceActionTypes;

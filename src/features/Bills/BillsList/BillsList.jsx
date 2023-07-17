@@ -53,6 +53,7 @@ export default function BillsList() {
     billDeleted,
     message,
     loading,
+    billRecordCreated,
   } = useSelector((state) => ({
     bills: state.bills.bills,
     paymentMethods: state.paymentMethods.paymentMethods,
@@ -60,6 +61,7 @@ export default function BillsList() {
     billDeleted: state.bills.billDeleted,
     message: state.bills.message,
     loading: state.bills.loading,
+    billRecordCreated: state.bills.billRecordCreated,
   }));
 
   const handleDeleteBill = () => {
@@ -80,19 +82,22 @@ export default function BillsList() {
   useEffect(() => {
     dispatch(getAllPaymentAccounts());
     dispatch(getAllPaymentMethods());
+    console.log("first");
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(getBills());
+    console.log("second");
   }, [dispatch]);
 
   useEffect(() => {
-    if (billDeleted) {
-      toast.success(message);
+    if (billDeleted || billRecordCreated) {
+      toast.success(message, { toastId: "bill-success" });
       dispatch(billsReset());
       dispatch(getBills());
+      console.log("third");
     }
-  }, [dispatch, billDeleted, message]);
+  }, [dispatch, billDeleted, message, billRecordCreated]);
 
   return (
     <>

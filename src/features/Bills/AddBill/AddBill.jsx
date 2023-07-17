@@ -24,6 +24,7 @@ import { createBill, reset as billsReset } from "../../../redux/bills/reducer";
 import calculateAmount from "../../../utils/calculateAmount";
 import { toast } from "react-toastify";
 import Spinner from "../../../components/custom/Spinner/Spinner";
+import { getExpenseCategories } from "../../../redux/expense-category/reducer";
 
 export default function AddBill() {
   const [selectedVendor, setSelectedVendor] = useState(null);
@@ -31,6 +32,7 @@ export default function AddBill() {
   const [showSelectItem, setShowSelectItem] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [notes, setNotes] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -43,6 +45,7 @@ export default function AddBill() {
     message,
     error,
     billCreated,
+    categories,
   } = useSelector((state) => ({
     vendors: state.vendors.vendors,
     billingItems: state.billingItems.billingItems,
@@ -51,6 +54,7 @@ export default function AddBill() {
     error: state.bills.error,
     message: state.bills.message,
     billCreated: state.bills.billCreated,
+    categories: state.expenseCategories.categories,
   }));
 
   const handleVendorSelect = (selected) => {
@@ -102,10 +106,15 @@ export default function AddBill() {
         total: calculateAmount(selectedItems),
         amountDue: calculateAmount(selectedItems),
         notes,
-        vendor: selectedVendor._id,
+        vendor: selectedVendor?._id,
         items: selectedItems,
+        category: selectedCategory?._id,
       })
     );
+  };
+
+  const onCategorySelect = (item) => {
+    setSelectedCategory(item);
   };
 
   useEffect(() => {
@@ -127,6 +136,7 @@ export default function AddBill() {
   useEffect(() => {
     dispatch(getVendors());
     dispatch(getBillingItems());
+    dispatch(getExpenseCategories());
   }, [dispatch]);
 
   return (
@@ -152,6 +162,21 @@ export default function AddBill() {
                 onItemSelect={handleVendorSelect}
               />
             </div>
+            <div
+              style={{
+                //   paddingBottom: 10,
+                marginBottom: 10,
+              }}
+            >
+              <SelectleftLabel
+                label="Expense Category"
+                placeholder="Choose..."
+                items={categories}
+                accessor="name"
+                value={selectedCategory?.name}
+                onItemSelect={onCategorySelect}
+              />
+            </div>
             <InputLeftLabel label="Bill #" value="Auto Generated" disabled />
 
             <InputLeftLabel
@@ -173,6 +198,7 @@ export default function AddBill() {
           <InvoiceTable>
             <TRow>
               <THead size={60}>Items</THead>
+
               <THead>Quantity</THead>
               <THead>Price</THead>
               <THead>Amount</THead>
@@ -192,6 +218,7 @@ export default function AddBill() {
                     />
                   </div>
                 </TData>
+
                 <TData>
                   <OutlineCustomInput
                     type="number"

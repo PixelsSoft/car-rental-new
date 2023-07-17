@@ -32,6 +32,7 @@ import { ButtonsContainer } from "./styles";
 import { toast } from "react-toastify";
 import getTotalOverdueBalance from "../../../utils/getTotalOverdueBalance";
 import calculateDuesWithin30Days from "../../../utils/calculateDuesWithin30Days";
+import { getCustomers } from "../../../redux/customers/reducer";
 
 export default function Invoices() {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -40,6 +41,8 @@ export default function Invoices() {
   const [totalOverdues, setTotalOverdues] = useState(0);
   const [dueIn30Days, setDueIn30Days] = useState(0);
   const [totalDueInvoices, setTotalDueInvoices] = useState(0);
+
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
   const navigate = useNavigate();
   const items = [
@@ -65,6 +68,7 @@ export default function Invoices() {
     invoiceDeleted,
     message,
     error,
+    customers,
   } = useSelector((state) => ({
     loading: state.invoices.loading,
     invoices: state.invoices.invoices,
@@ -73,6 +77,7 @@ export default function Invoices() {
     invoiceDeleted: state.invoices.invoiceDeleted,
     error: state.invoices.error,
     message: state.invoices.message,
+    customers: state.customers.customers,
   }));
 
   const closeDeleteModal = () => {
@@ -95,6 +100,7 @@ export default function Invoices() {
     dispatch(getAllInvoices());
     dispatch(getAllPaymentMethods());
     dispatch(getAllPaymentAccounts());
+    dispatch(getCustomers());
   }, [dispatch]);
 
   const handleDeleteInvoice = () => {
@@ -124,7 +130,14 @@ export default function Invoices() {
     }
   }, [invoices]);
 
-  console.log(invoices);
+  //   console.log(invoices[0]?.customer.name);
+  //   console.log(selectedCustomer?.name);
+
+  //   console.log(
+  //     invoices[0]?.customer.name
+  //       .toLowerCase()
+  //       .includes(selectedCustomer?.name.toLowerCase())
+  //   );
 
   return (
     <>
@@ -147,7 +160,10 @@ export default function Invoices() {
               totalDueInvoices={totalDueInvoices}
               totalInvoices={invoices?.length}
             />
-            <Filters />
+            <Filters
+              customers={customers}
+              setSelectedCustomer={setSelectedCustomer}
+            />
             <CustomBreadCumb items={items} />
             <Table mt={20}>
               <TRow>
@@ -156,33 +172,71 @@ export default function Invoices() {
                 ))}
               </TRow>
 
-              {invoices.map((invoice) => (
-                <TRow>
-                  <TData>
-                    <Status status={invoice.status} />
-                  </TData>
-                  <TData>{moment(invoice.dueAt, "YYYYMMDD").fromNow()}</TData>
-                  <TData>{moment(invoice.createdAt).format("LL")}</TData>
-                  <TData>{invoice.invoiceNumber}</TData>
-                  <TData>{invoice.customer.name}</TData>
-                  <TData>{0}</TData>
-                  <TData>${invoice.amountDue}</TData>
-                  <TDataAction>
-                    <div>
-                      <RecordPayment
-                        paymentMethods={paymentMethods}
-                        paymentAccounts={paymentAccounts}
-                        invoice={invoice}
-                      />
-                      <TableActionDropdown
-                        viewRoute={`/invoices/details/${invoice._id}`}
-                        onDelete={() => onDelete(invoice._id)}
-                        onEdit={() => onEdit(invoice._id)}
-                      />
-                    </div>
-                  </TDataAction>
-                </TRow>
-              ))}
+              {selectedCustomer
+                ? invoices
+                    .filter((invoice) =>
+                      invoice?.customer?.name
+                        ?.toLowerCase()
+                        .includes(selectedCustomer?.name?.toLowerCase())
+                    )
+                    .map((invoice) => (
+                      <TRow>
+                        <TData>
+                          <Status status={invoice.status} />
+                        </TData>
+                        <TData>
+                          {moment(invoice.dueAt, "YYYYMMDD").fromNow()}
+                        </TData>
+                        <TData>{moment(invoice.createdAt).format("LL")}</TData>
+                        <TData>{invoice.invoiceNumber}</TData>
+                        <TData>{invoice.customer.name}</TData>
+                        <TData>{0}</TData>
+                        <TData>${invoice.amountDue}</TData>
+                        <TDataAction>
+                          <div>
+                            <RecordPayment
+                              paymentMethods={paymentMethods}
+                              paymentAccounts={paymentAccounts}
+                              invoice={invoice}
+                            />
+                            <TableActionDropdown
+                              viewRoute={`/invoices/details/${invoice._id}`}
+                              onDelete={() => onDelete(invoice._id)}
+                              onEdit={() => onEdit(invoice._id)}
+                            />
+                          </div>
+                        </TDataAction>
+                      </TRow>
+                    ))
+                : invoices.map((invoice) => (
+                    <TRow>
+                      <TData>
+                        <Status status={invoice.status} />
+                      </TData>
+                      <TData>
+                        {moment(invoice.dueAt, "YYYYMMDD").fromNow()}
+                      </TData>
+                      <TData>{moment(invoice.createdAt).format("LL")}</TData>
+                      <TData>{invoice.invoiceNumber}</TData>
+                      <TData>{invoice.customer.name}</TData>
+                      <TData>{0}</TData>
+                      <TData>${invoice.amountDue}</TData>
+                      <TDataAction>
+                        <div>
+                          <RecordPayment
+                            paymentMethods={paymentMethods}
+                            paymentAccounts={paymentAccounts}
+                            invoice={invoice}
+                          />
+                          <TableActionDropdown
+                            viewRoute={`/invoices/details/${invoice._id}`}
+                            onDelete={() => onDelete(invoice._id)}
+                            onEdit={() => onEdit(invoice._id)}
+                          />
+                        </div>
+                      </TDataAction>
+                    </TRow>
+                  ))}
             </Table>
           </>
         )}

@@ -10,6 +10,8 @@ import billsReducer from "./bills/reducer";
 import vendorsReducer from "./vendors/reducer";
 import billingItemsReducer from "./billing-items/reducer";
 import servicesReducer from "./service/reducer";
+import authReducer from "./auth/reducer";
+import expenseCategoryReducer from "./expense-category/reducer";
 
 const store = configureStore({
   reducer: {
@@ -23,6 +25,8 @@ const store = configureStore({
     billingItems: billingItemsReducer,
     vendors: vendorsReducer,
     services: servicesReducer,
+    auth: authReducer,
+    expenseCategories: expenseCategoryReducer,
   },
 });
 

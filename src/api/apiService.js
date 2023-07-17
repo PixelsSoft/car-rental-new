@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const PRODUCTION_API = "https://xpress-rental.onrender.com/api/v1";
-// const LOCAL_API = "http://localhost:8001/api/v1";
+// const PRODUCTION_API = "https://xpress-rental.onrender.com/api/v1";
+const LOCAL_API = "http://localhost:8001/api/v1";
 
 const apiService = axios.create({
-  baseURL: PRODUCTION_API,
+  baseURL: LOCAL_API,
   headers: {
     "Content-Type": "application/json",
   },
@@ -44,6 +44,7 @@ export const postService = async (url, data, headers) => {
     const response = await apiService.post(url, data, headers);
     return response.data;
   } catch (err) {
+    console.log(err);
     throw new Error(err.response?.data?.error || "An error occured");
   }
 };

@@ -7,7 +7,11 @@ import TextArea from "../TextArea/TextArea";
 import CustomButton from "../CustomButton/CustomButton";
 import { ButtonsContainer } from "./BillRecordPayment.styles";
 import { useDispatch, useSelector } from "react-redux";
-import { createBillRecord, getBills } from "../../../redux/bills/reducer";
+import {
+  createBillRecord,
+  getBills,
+  reset as billReset,
+} from "../../../redux/bills/reducer";
 import { toast } from "react-toastify";
 
 export default function BillRecordPayment({
@@ -58,14 +62,8 @@ export default function BillRecordPayment({
   //   };
 
   useEffect(() => {
-    if (billRecordCreated) {
-      toast.success(message, { toastId: "success-message" });
-      dispatch(getBills());
-    }
-  }, [message, billRecordCreated, dispatch]);
-
-  useEffect(() => {
     if (error) {
+      console.log("fifth");
       toast.error(error);
     }
   }, [error]);

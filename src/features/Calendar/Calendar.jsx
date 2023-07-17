@@ -10,17 +10,19 @@ import { ChromePicker } from "react-color";
 import PageLayout from "../../components/Layout/PageLayout/PageLayout";
 import Header from "../../components/custom/Header/Header";
 import { Content, OverviewSection } from "./Calendar.styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../../components/custom/Modal/Modal";
 import { BsArrowRightCircleFill } from "react-icons/bs";
 import CustomButton from "../../components/custom/CustomButton/CustomButton";
+import { getAllInvoices } from "../../redux/invoices/reducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const events = [
-  { title: "Nissan Cube", start: getDate("YEAR-MONTH-01") },
+  { title: "Nissan Cube", start: getDate("2023-07-05") },
   {
     title: "Honda Civic",
-    start: getDate("YEAR-MONTH-07"),
-    end: getDate("YEAR-MONTH-10"),
+    start: getDate("2023-07-14"),
+    end: getDate("2023-07-23"),
     color: "#888",
   },
   //   {
@@ -65,8 +67,38 @@ function getDate(dayString) {
 export default function Calendar() {
   const [modal, setModal] = useState(false);
   const [color, setColor] = useState("");
-  const toggle = () => setModal(!modal);
+  const [data, setData] = useState([]);
+  //   const [selectedEvent, setSelectedEvent] = useState({});
+
+  const toggle = (data) => {
+    // setSelectedEvent(data.event._def);
+    setModal(!modal);
+  };
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { invoices, error, loading } = useSelector((state) => ({
+    invoices: state.invoices.invoices,
+    loading: state.invoices.loading,
+    error: state.invoices.error,
+  }));
+
+  useEffect(() => {
+    dispatch(getAllInvoices());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (invoices) {
+      let calendarEvents = invoices.map((invoice) => ({
+        title: `${invoice?.items[0]?.listItem?.make} - ${invoice?.customer.name} - $${invoice.total}`,
+        start: getDate(invoice.createdAt),
+        end: getDate(invoice.dueAt),
+        color: "#ff8c00",
+      }));
+      setData(calendarEvents);
+    }
+  }, [invoices]);
+
   return (
     <PageLayout>
       <Header pageTitle="Calendar"></Header>
@@ -82,8 +114,8 @@ export default function Calendar() {
           plugins={[dayGridPlugin, interactionPlugin]}
           editable={true}
           selectable={true}
-          eventClick={toggle}
-          events={events}
+          //   eventClick={toggle}
+          events={data}
           //   dateClick={toggle}
           height={"700px"}
         />

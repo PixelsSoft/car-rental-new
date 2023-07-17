@@ -69,6 +69,27 @@ const endRecurringInvoice = createAsyncThunk(
   }
 );
 
+const getYearlyData = createAsyncThunk(
+  invoiceActionTypes.GET_YEARLY_DATA,
+  async (year) => {
+    const result = await getService(
+      "/invoices/year-data/" + new Date().getFullYear()
+    );
+
+    return result;
+  }
+);
+
+const getCashFlowData = createAsyncThunk(
+  invoiceActionTypes.GET_CASHFLOW_DATA,
+  async () => {
+    const result = await getService(
+      "/invoices/cashflow-data/" + new Date().getFullYear()
+    );
+    return result;
+  }
+);
+
 const initialState = {
   loading: false,
   invoices: [],
@@ -88,6 +109,7 @@ const invoiceSlice = createSlice({
       state.error = null;
       state.invoice = null;
       state.message = null;
+      state.monthlyData = {};
     },
   },
   extraReducers: (builder) => {
@@ -189,17 +211,45 @@ const invoiceSlice = createSlice({
         state.loading = false;
         state.error = action.error;
       });
+
+    builder
+      .addCase(getYearlyData.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getYearlyData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.monthlyData = action.payload.monthlyData;
+      })
+      .addCase(getYearlyData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      });
+
+    builder
+      .addCase(getCashFlowData.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getCashFlowData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cashFlowData = action.payload.data;
+      })
+      .addCase(getCashFlowData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
   },
 });
 
 export {
   getAllInvoices,
+  getYearlyData,
   createInvoice,
   getInvoiceDetails,
   deleteInvoice,
   getRecurringInvoices,
   editInvoice,
   endRecurringInvoice,
+  getCashFlowData,
 };
 
 export const { reset } = invoiceSlice.actions;

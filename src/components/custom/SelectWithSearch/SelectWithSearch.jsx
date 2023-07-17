@@ -20,7 +20,7 @@ const SelectWithSearch = ({
   mr = 0,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [searchValue, setSearchValue] = useState("");
   const dropdownRef = useRef();
 
   const toggleDropdown = () => {
@@ -28,15 +28,8 @@ const SelectWithSearch = ({
   };
 
   const handleItemClick = (item) => {
-    console.log(`You clicked on "${item}"`);
     if (onItemSelect) onItemSelect(item);
     setIsOpen(false);
-  };
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
   };
 
   const handleButtonClick = (event) => {
@@ -45,11 +38,40 @@ const SelectWithSearch = ({
   };
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.selectWithSearchComponents =
+      document.selectWithSearchComponents || [];
+    document.selectWithSearchComponents.push({
+      ref: dropdownRef,
+      isOpen,
+      setIsOpen,
+    });
+
     document.addEventListener("click", handleClickOutside);
+
     return () => {
+      document.selectWithSearchComponents =
+        document.selectWithSearchComponents.filter(
+          (item) => item.ref !== dropdownRef
+        );
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.selectWithSearchComponents.forEach((item) => {
+        if (item.ref !== dropdownRef && item.isOpen) {
+          item.setIsOpen(false);
+        }
+      });
+    }
+  }, [isOpen]);
 
   return (
     <Container width={width} ml={ml} mr={mr} mb={mb} mt={mt}>
@@ -62,12 +84,27 @@ const SelectWithSearch = ({
         )}
       </Button>
       <Dropdown isOpen={isOpen} ref={dropdownRef}>
-        <SearchInput />
-        {items.map((item, idx) => (
-          <DropdownItem key={idx} onClick={() => handleItemClick(item)}>
-            {item[accessor]}
-          </DropdownItem>
-        ))}
+        <SearchInput
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        {searchValue.length === 0
+          ? items.map((item, idx) => (
+              <DropdownItem key={idx} onClick={() => handleItemClick(item)}>
+                {item[accessor]}
+              </DropdownItem>
+            ))
+          : items
+              .filter((item, idx) => {
+                return item[accessor]
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase());
+              })
+              .map((item, idx) => (
+                <DropdownItem key={idx} onClick={() => handleItemClick(item)}>
+                  {item[accessor]}
+                </DropdownItem>
+              ))}
       </Dropdown>
     </Container>
   );
