@@ -17,40 +17,40 @@ import CustomButton from "../../components/custom/CustomButton/CustomButton";
 import { getAllInvoices } from "../../redux/invoices/reducer";
 import { useDispatch, useSelector } from "react-redux";
 
-const events = [
-  { title: "Nissan Cube", start: getDate("2023-07-05") },
-  {
-    title: "Honda Civic",
-    start: getDate("2023-07-14"),
-    end: getDate("2023-07-23"),
-    color: "#888",
-  },
-  //   {
-  //     groupId: "999",
-  //     title: "Repeating Event",
-  //     start: getDate("YEAR-MONTH-09T16:00:00+00:00"),
-  //   },
-  //   {
-  //     groupId: "999",
-  //     title: "Repeating Event",
-  //     start: getDate("YEAR-MONTH-16T16:00:00+00:00"),
-  //   },
-  //   {
-  //     title: "Conference",
-  //     start: "YEAR-MONTH-17",
-  //     end: getDate("YEAR-MONTH-19"),
-  //   },
-  //   {
-  //     title: "Meeting",
-  //     start: getDate("YEAR-MONTH-18T10:30:00+00:00"),
-  //     end: getDate("YEAR-MONTH-18T12:30:00+00:00"),
-  //   },
-  //   { title: "Lunch", start: getDate("YEAR-MONTH-18T12:00:00+00:00") },
-  //   { title: "Birthday Party", start: getDate("YEAR-MONTH-19T07:00:00+00:00") },
-  //   { title: "Meeting", start: getDate("YEAR-MONTH-18T14:30:00+00:00") },
-  //   { title: "Happy Hour", start: getDate("YEAR-MONTH-18T17:30:00+00:00") },
-  //   { title: "Dinner", start: getDate("YEAR-MONTH-18T20:00:00+00:00") },
-];
+// const events = [
+//   { title: "Nissan Cube", start: getDate("2023-07-05") },
+//   {
+//     title: "Honda Civic",
+//     start: getDate("2023-07-14"),
+//     end: getDate("2023-07-23"),
+//     color: "#888",
+//   },
+//   //   {
+//   //     groupId: "999",
+//   //     title: "Repeating Event",
+//   //     start: getDate("YEAR-MONTH-09T16:00:00+00:00"),
+//   //   },
+//   //   {
+//   //     groupId: "999",
+//   //     title: "Repeating Event",
+//   //     start: getDate("YEAR-MONTH-16T16:00:00+00:00"),
+//   //   },
+//   //   {
+//   //     title: "Conference",
+//   //     start: "YEAR-MONTH-17",
+//   //     end: getDate("YEAR-MONTH-19"),
+//   //   },
+//   //   {
+//   //     title: "Meeting",
+//   //     start: getDate("YEAR-MONTH-18T10:30:00+00:00"),
+//   //     end: getDate("YEAR-MONTH-18T12:30:00+00:00"),
+//   //   },
+//   //   { title: "Lunch", start: getDate("YEAR-MONTH-18T12:00:00+00:00") },
+//   //   { title: "Birthday Party", start: getDate("YEAR-MONTH-19T07:00:00+00:00") },
+//   //   { title: "Meeting", start: getDate("YEAR-MONTH-18T14:30:00+00:00") },
+//   //   { title: "Happy Hour", start: getDate("YEAR-MONTH-18T17:30:00+00:00") },
+//   //   { title: "Dinner", start: getDate("YEAR-MONTH-18T20:00:00+00:00") },
+// ];
 
 function getDate(dayString) {
   const today = new Date();
@@ -77,7 +77,7 @@ export default function Calendar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { invoices, error, loading } = useSelector((state) => ({
+  const { invoices } = useSelector((state) => ({
     invoices: state.invoices.invoices,
     loading: state.invoices.loading,
     error: state.invoices.error,

@@ -7,11 +7,7 @@ import TextArea from "../TextArea/TextArea";
 import CustomButton from "../CustomButton/CustomButton";
 import { ButtonsContainer } from "./BillRecordPayment.styles";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createBillRecord,
-  getBills,
-  reset as billReset,
-} from "../../../redux/bills/reducer";
+import { createBillRecord } from "../../../redux/bills/reducer";
 import { toast } from "react-toastify";
 
 export default function BillRecordPayment({
@@ -34,7 +30,7 @@ export default function BillRecordPayment({
     setSelectedPaymentMethod(selection);
 
   const dispatch = useDispatch();
-  const { billRecordCreated, message, error } = useSelector((state) => ({
+  const { error } = useSelector((state) => ({
     loading: state.bills.loading,
     billRecordCreated: state.bills.billRecordCreated,
     message: state.bills.message,

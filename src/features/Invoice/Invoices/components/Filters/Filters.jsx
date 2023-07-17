@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FiltersContainer } from "./Filters.styles";
 import SelectWithSearch from "../../../../../components/custom/SelectWithSearch/SelectWithSearch";
 import OutlineCustomInput from "../../../../../components/custom/OutlineCustomInput/OutlineCustomInput";
