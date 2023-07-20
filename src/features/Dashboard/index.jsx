@@ -12,17 +12,17 @@ import { getExpenseBreakdown } from "../../redux/expense-category/reducer";
 export default function Dashboard() {
   const dispatch = useDispatch();
 
-  const { monthlyData, cashFlowData, breakdown } = useSelector((state) => ({
+  const { monthlyData, cashFlowData, breakdown } = useSelector( ( state ) => ( {
     monthlyData: state.invoices.monthlyData,
     cashFlowData: state.invoices.cashFlowData,
     breakdown: state.expenseCategories.breakdown,
-  }));
+  } ) );
 
-  useEffect(() => {
-    dispatch(getYearlyData());
-    dispatch(getCashFlowData());
-    dispatch(getExpenseBreakdown());
-  }, [dispatch]);
+  useEffect( () => {
+    dispatch( getYearlyData() );
+    dispatch( getCashFlowData() );
+    dispatch( getExpenseBreakdown() );
+  }, [dispatch] );
 
   return (
     <PageLayout>

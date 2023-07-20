@@ -7,17 +7,18 @@ import { Content } from "./styles";
 import Invoice from "../../../components/custom/Invoice/Invoice";
 
 export default function CreateInvoice() {
-  const [preview, setPreview] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [dueDate, setDueDate] = useState(null);
-  const [notes, setNotes] = useState("");
-  const [isRecurring, setIsRecurring] = useState(false);
+  const [preview, setPreview] = useState( false );
+  const [selectedItems, setSelectedItems] = useState( [] );
+  const [selectedCustomer, setSelectedCustomer] = useState( null );
+  const [dueDate, setDueDate] = useState( null );
+  const [invoiceDate, setInvoiceDate] = useState( new Date() );
+  const [notes, setNotes] = useState( "" );
+  const [isRecurring, setIsRecurring] = useState( false );
 
-  const togglePreview = () => setPreview(!preview);
+  const togglePreview = () => setPreview( !preview );
   return (
     <PageLayout>
-      <Header pageTitle="Create invoice">
+      <Header pageTitle="Create agreement">
         {preview ? (
           <CustomButton outline width={150} mr={10} onClick={togglePreview}>
             Edit
@@ -46,6 +47,8 @@ export default function CreateInvoice() {
             selectedCustomer={selectedCustomer}
             setSelectedCustomer={setSelectedCustomer}
             dueDate={dueDate}
+            setInvoiceDate={setInvoiceDate}
+            invoiceDate={invoiceDate}
             setDueDate={setDueDate}
             notes={notes}
             setNotes={setNotes}

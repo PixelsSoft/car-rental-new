@@ -35,14 +35,14 @@ import calculateDuesWithin30Days from "../../../utils/calculateDuesWithin30Days"
 import { getCustomers } from "../../../redux/customers/reducer";
 
 export default function Invoices() {
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [invoiceId, setInvoiceId] = useState(null);
+  const [deleteModal, setDeleteModal] = useState( false );
+  const [invoiceId, setInvoiceId] = useState( null );
 
-  const [totalOverdues, setTotalOverdues] = useState(0);
-  const [dueIn30Days, setDueIn30Days] = useState(0);
-  const [totalDueInvoices, setTotalDueInvoices] = useState(0);
+  const [totalOverdues, setTotalOverdues] = useState( 0 );
+  const [dueIn30Days, setDueIn30Days] = useState( 0 );
+  const [totalDueInvoices, setTotalDueInvoices] = useState( 0 );
 
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState( null );
 
   const navigate = useNavigate();
   const items = [
@@ -53,12 +53,12 @@ export default function Invoices() {
 
   const dispatch = useDispatch();
 
-  const onDelete = (id) => {
-    setInvoiceId(id);
-    setDeleteModal(true);
+  const onDelete = ( id ) => {
+    setInvoiceId( id );
+    setDeleteModal( true );
   };
 
-  const onEdit = (id) => navigate("/invoices/edit/" + id);
+  const onEdit = ( id ) => navigate( "/invoices/edit/" + id );
 
   const {
     loading,
@@ -69,7 +69,7 @@ export default function Invoices() {
     message,
     error,
     customers,
-  } = useSelector((state) => ({
+  } = useSelector( ( state ) => ( {
     loading: state.invoices.loading,
     invoices: state.invoices.invoices,
     paymentMethods: state.paymentMethods.paymentMethods,
@@ -78,11 +78,11 @@ export default function Invoices() {
     error: state.invoices.error,
     message: state.invoices.message,
     customers: state.customers.customers,
-  }));
+  } ) );
 
   const closeDeleteModal = () => {
-    setInvoiceId(null);
-    setDeleteModal(false);
+    setInvoiceId( null );
+    setDeleteModal( false );
   };
 
   const headers = [
@@ -96,39 +96,39 @@ export default function Invoices() {
     "Actions",
   ];
 
-  useEffect(() => {
-    dispatch(getAllInvoices());
-    dispatch(getAllPaymentMethods());
-    dispatch(getAllPaymentAccounts());
-    dispatch(getCustomers());
-  }, [dispatch]);
+  useEffect( () => {
+    dispatch( getAllInvoices() );
+    dispatch( getAllPaymentMethods() );
+    dispatch( getAllPaymentAccounts() );
+    dispatch( getCustomers() );
+  }, [dispatch] );
 
   const handleDeleteInvoice = () => {
-    dispatch(deleteInvoice(invoiceId));
-    setDeleteModal(false);
+    dispatch( deleteInvoice( invoiceId ) );
+    setDeleteModal( false );
   };
 
-  useEffect(() => {
-    if (invoiceDeleted) {
-      toast.success(message);
-      dispatch(InvoiceReset());
-      dispatch(getAllInvoices());
+  useEffect( () => {
+    if ( invoiceDeleted ) {
+      toast.success( message );
+      dispatch( InvoiceReset() );
+      dispatch( getAllInvoices() );
     }
-  }, [invoiceDeleted, message, dispatch]);
+  }, [invoiceDeleted, message, dispatch] );
 
-  useEffect(() => {
-    if (error) toast.error(error, { toastId: "invoice-error" });
-  }, [error]);
+  useEffect( () => {
+    if ( error ) toast.error( error, { toastId: "invoice-error" } );
+  }, [error] );
 
-  useEffect(() => {
-    if (invoices) {
-      setTotalOverdues(getTotalOverdueBalance(invoices));
-      setDueIn30Days(calculateDuesWithin30Days(invoices));
+  useEffect( () => {
+    if ( invoices ) {
+      setTotalOverdues( getTotalOverdueBalance( invoices ) );
+      setDueIn30Days( calculateDuesWithin30Days( invoices ) );
       setTotalDueInvoices(
-        invoices.filter((invoice) => invoice.status === "due").length
+        invoices.filter( ( invoice ) => invoice.status === "due" ).length
       );
     }
-  }, [invoices]);
+  }, [invoices] );
 
   //   console.log(invoices[0]?.customer.name);
   //   console.log(selectedCustomer?.name);
@@ -142,12 +142,12 @@ export default function Invoices() {
   return (
     <>
       <PageContainer>
-        <Header pageTitle="Invoices">
+        <Header pageTitle="Rental agreement">
           <CustomButton
             width={200}
-            onClick={() => navigate("/invoices/create")}
+            onClick={() => navigate( "/invoices/create" )}
           >
-            Create invoice
+            Create agreement
           </CustomButton>
         </Header>
         {loading ? (
@@ -167,56 +167,27 @@ export default function Invoices() {
             <CustomBreadCumb items={items} />
             <Table mt={20}>
               <TRow>
-                {headers.map((header) => (
+                {headers.map( ( header ) => (
                   <THead>{header}</THead>
-                ))}
+                ) )}
               </TRow>
 
               {selectedCustomer
                 ? invoices
-                    .filter((invoice) =>
-                      invoice?.customer?.name
-                        ?.toLowerCase()
-                        .includes(selectedCustomer?.name?.toLowerCase())
-                    )
-                    .map((invoice) => (
-                      <TRow>
-                        <TData>
-                          <Status status={invoice.status} />
-                        </TData>
-                        <TData>
-                          {moment(invoice.dueAt, "YYYYMMDD").fromNow()}
-                        </TData>
-                        <TData>{moment(invoice.createdAt).format("LL")}</TData>
-                        <TData>{invoice.invoiceNumber}</TData>
-                        <TData>{invoice.customer.name}</TData>
-                        <TData>{0}</TData>
-                        <TData>${invoice.amountDue}</TData>
-                        <TDataAction>
-                          <div>
-                            <RecordPayment
-                              paymentMethods={paymentMethods}
-                              paymentAccounts={paymentAccounts}
-                              invoice={invoice}
-                            />
-                            <TableActionDropdown
-                              viewRoute={`/invoices/details/${invoice._id}`}
-                              onDelete={() => onDelete(invoice._id)}
-                              onEdit={() => onEdit(invoice._id)}
-                            />
-                          </div>
-                        </TDataAction>
-                      </TRow>
-                    ))
-                : invoices.map((invoice) => (
+                  .filter( ( invoice ) =>
+                    invoice?.customer?.name
+                      ?.toLowerCase()
+                      .includes( selectedCustomer?.name?.toLowerCase() )
+                  )
+                  .map( ( invoice ) => (
                     <TRow>
                       <TData>
                         <Status status={invoice.status} />
                       </TData>
                       <TData>
-                        {moment(invoice.dueAt, "YYYYMMDD").fromNow()}
+                        {moment( invoice.dueAt, "YYYYMMDD" ).fromNow()}
                       </TData>
-                      <TData>{moment(invoice.createdAt).format("LL")}</TData>
+                      <TData>{moment( invoice.createdAt ).format( "LL" )}</TData>
                       <TData>{invoice.invoiceNumber}</TData>
                       <TData>{invoice.customer.name}</TData>
                       <TData>{0}</TData>
@@ -230,13 +201,42 @@ export default function Invoices() {
                           />
                           <TableActionDropdown
                             viewRoute={`/invoices/details/${invoice._id}`}
-                            onDelete={() => onDelete(invoice._id)}
-                            onEdit={() => onEdit(invoice._id)}
+                            onDelete={() => onDelete( invoice._id )}
+                            onEdit={() => onEdit( invoice._id )}
                           />
                         </div>
                       </TDataAction>
                     </TRow>
-                  ))}
+                  ) )
+                : invoices.map( ( invoice ) => (
+                  <TRow>
+                    <TData>
+                      <Status status={invoice.status} />
+                    </TData>
+                    <TData>
+                      {moment( invoice.dueAt, "YYYYMMDD" ).fromNow()}
+                    </TData>
+                    <TData>{moment( invoice.createdAt ).format( "LL" )}</TData>
+                    <TData>{invoice.invoiceNumber}</TData>
+                    <TData>{invoice.customer.name}</TData>
+                    <TData>{0}</TData>
+                    <TData>${invoice.amountDue}</TData>
+                    <TDataAction>
+                      <div>
+                        <RecordPayment
+                          paymentMethods={paymentMethods}
+                          paymentAccounts={paymentAccounts}
+                          invoice={invoice}
+                        />
+                        <TableActionDropdown
+                          viewRoute={`/invoices/details/${invoice._id}`}
+                          onDelete={() => onDelete( invoice._id )}
+                          onEdit={() => onEdit( invoice._id )}
+                        />
+                      </div>
+                    </TDataAction>
+                  </TRow>
+                ) )}
             </Table>
           </>
         )}

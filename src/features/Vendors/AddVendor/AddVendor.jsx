@@ -15,35 +15,37 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../../../components/custom/Spinner/Spinner";
 
 export default function AddVendor() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState( "" );
+  const [email, setEmail] = useState( "" );
+  const [phoneNo, setPhoneNo] = useState( "" );
+  const [description, setDescription] = useState( "" );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { vendorCreated, error, message, loading } = useSelector((state) => ({
+  const { vendorCreated, error, message, loading } = useSelector( ( state ) => ( {
     vendorCreated: state.vendors.vendorCreated,
     message: state.vendors.message,
     error: state.vendors.error,
     loading: state.vendors.loading,
-  }));
+  } ) );
 
   const handleAddVendor = () => {
-    dispatch(createVendor({ name, description }));
+    dispatch( createVendor( { name, description } ) );
   };
 
-  useEffect(() => {
-    if (vendorCreated) {
-      toast.success(message, { toastId: "vendor-created" });
-      setName("");
-      setDescription("");
-      dispatch(vendorReset());
+  useEffect( () => {
+    if ( vendorCreated ) {
+      toast.success( message, { toastId: "vendor-created" } );
+      setName( "" );
+      setDescription( "" );
+      dispatch( vendorReset() );
     }
-  }, [dispatch, vendorCreated, message]);
+  }, [dispatch, vendorCreated, message] );
 
-  useEffect(() => {
-    if (error) toast.error(error, { toastId: "vendor-error" });
-  }, [error]);
+  useEffect( () => {
+    if ( error ) toast.error( error, { toastId: "vendor-error" } );
+  }, [error] );
 
   return (
     <PageLayout>
@@ -57,7 +59,17 @@ export default function AddVendor() {
             <InputLeftLabel
               label="Vendor Name*"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={( e ) => setName( e.target.value )}
+            />
+            <InputLeftLabel
+              label="Email*"
+              value={email}
+              onChange={( e ) => setEmail( e.target.value )}
+            />
+            <InputLeftLabel
+              label="Phone no*"
+              value={phoneNo}
+              onChange={( e ) => setPhoneNo( e.target.value )}
             />
             <TextArea
               row
@@ -65,7 +77,7 @@ export default function AddVendor() {
               width={250}
               mt={20}
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={( e ) => setDescription( e.target.value )}
             />
 
             <div
@@ -81,7 +93,7 @@ export default function AddVendor() {
                 outline
                 width={200}
                 mr={10}
-                onClick={() => navigate("/vendors")}
+                onClick={() => navigate( "/vendors" )}
               >
                 Cancel
               </CustomButton>

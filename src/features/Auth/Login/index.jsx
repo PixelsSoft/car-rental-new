@@ -12,8 +12,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState( "" );
+  const [password, setPassword] = useState( "" );
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -21,25 +21,25 @@ export default function Login() {
   const dispatch = useDispatch();
 
   const signIn = () => {
-    dispatch(login({ email, password }));
+    dispatch( login( { email, password } ) );
   };
 
-  const { token, user, loading, error } = useSelector((state) => ({
+  const { token, user, loading, error } = useSelector( ( state ) => ( {
     token: state.auth.token,
     user: state.auth.user,
     loading: state.auth.loading,
     error: state.auth.error,
-  }));
+  } ) );
 
-  useEffect(() => {
-    if (user && token) {
-      navigate("/dashboard");
+  useEffect( () => {
+    if ( user && token ) {
+      navigate( "/dashboard" );
     }
-  }, [token, user, navigate]);
+  }, [token, user, navigate] );
 
-  useEffect(() => {
-    if (error) toast.error(error, { toastId: "auth-error" });
-  }, [error]);
+  useEffect( () => {
+    if ( error ) toast.error( error, { toastId: "auth-error" } );
+  }, [error] );
 
   return (
     <PageContainer>
@@ -50,12 +50,12 @@ export default function Login() {
           <>
             <div
               style={{
-                backgroundColor: theme.colors.primary,
+                // backgroundColor: theme.colors.primary,
                 borderRadius: 10,
               }}
             >
               <img
-                src={require("../../../assets/images/logo-3.png")}
+                src={require( "../../../assets/images/cityspace-logo.png" )}
                 width={350}
                 height={150}
                 alt=""
@@ -69,14 +69,14 @@ export default function Login() {
                   placeholder="Email"
                   mt={20}
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={( e ) => setEmail( e.target.value )}
                 />
                 <CustomInput
                   placeholder="Password"
                   mt={10}
                   mb={20}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={( e ) => setPassword( e.target.value )}
                 />
                 <CustomButton type="button" onClick={signIn}>
                   Sign in

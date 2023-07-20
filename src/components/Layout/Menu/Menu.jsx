@@ -4,7 +4,7 @@ import SubMenu from "./SubMenu";
 import { AiOutlineLogout } from "react-icons/ai";
 
 const MenuNav = styled.nav`
-  background-color: ${(props) => props.theme.colors.secondary};
+  background-color: ${( props ) => props.theme.colors.secondary};
   width: 270px;
   height: 100vh;
   position: fixed;
@@ -29,7 +29,6 @@ export default function Menu() {
               textAlign: "center",
               marginTop: 20,
               marginBottom: 20,
-              backgroundColor: theme.colors.primary,
               padding: 4,
               borderRadius: 10,
               width: "90%",
@@ -38,15 +37,17 @@ export default function Menu() {
             }}
           >
             <img
-              src={require("../../../assets/images/logo-3.png")}
+              src={require( "../../../assets/images/cityspace-logo.png" )}
               width={150}
               height={50}
               alt=""
             />
           </div>
-          {MenuData.map((item, idx) => {
+
+
+          {MenuData.map( ( item, idx ) => {
             return <SubMenu item={item} key={idx} />;
-          })}
+          } )}
           {/* <div
             style={{
               display: "flex",
@@ -60,6 +61,7 @@ export default function Menu() {
 
           <div
             style={{
+              position: "fixed",
               padding: theme.spacing.m,
               marginLeft: 10,
               marginRight: 10,
@@ -71,7 +73,10 @@ export default function Menu() {
               color: theme.colors.white,
               fontWeight: "bold",
               borderRadius: 10,
+              bottom: 10,
               marginTop: "100%",
+
+
             }}
           >
             <AiOutlineLogout size={20} />

@@ -1,14 +1,14 @@
 import Chart from "react-apexcharts";
 
-export default function Basic({ monthlyData = {}, text, subtitle }) {
+export default function Basic( { monthlyData = {}, text, subtitle } ) {
   const options = {
     chart: {
       id: "basic-bar",
     },
     tooltip: {
       y: {
-        formatter: function (val) {
-          return "$" + val.toFixed(2); // Adding the dollar sign and fixing the decimal to 2 places.
+        formatter: function ( val ) {
+          return "$" + val.toFixed( 2 ); // Adding the dollar sign and fixing the decimal to 2 places.
         },
       },
     },
@@ -94,18 +94,19 @@ export default function Basic({ monthlyData = {}, text, subtitle }) {
   //     { name: "Outflow", data: [30, 40, 50, 22, 449, 222, 212, 299] },
   //   ];
 
-  const months = Array.from({ length: 12 }, (_, i) => i + 1); // Create an array from 1 to 12
+  const months = Array.from( { length: 12 }, ( _, i ) => i + 1 ); // Create an array from 1 to 12
   const series = [
     {
       name: "Inflow",
       data: months.map(
-        (month) => monthlyData[new Date().getFullYear()]?.[month]?.profit || 0
+        ( month ) =>
+          monthlyData[new Date().getFullYear()]?.[month]?.profit || 0
       ),
     },
     {
       name: "Outflow",
       data: months.map(
-        (month) => monthlyData[new Date().getFullYear()]?.[month]?.expense || 0
+        ( month ) => monthlyData[new Date().getFullYear()]?.[month]?.expense || 0
       ),
     },
   ];

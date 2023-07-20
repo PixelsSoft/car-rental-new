@@ -20,21 +20,26 @@ export default function ServicesList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { services, loading, error } = useSelector((state) => ({
+  const { services, loading, error } = useSelector( ( state ) => ( {
     services: state.services.services,
     loading: state.services.loading,
     error: state.services.error,
-  }));
+  } ) );
 
-  const headers = ["Item", "Date", "Return Date", "Description"];
+  const headers = ["Vehicles",
+    "Service Date",
+    // "Return Date",
+    "Description"];
 
-  useEffect(() => {
-    dispatch(getServices());
-  }, [dispatch]);
 
-  useEffect(() => {
-    if (error) toast.error(error);
-  }, [error]);
+
+  useEffect( () => {
+    dispatch( getServices() );
+  }, [dispatch] );
+
+  useEffect( () => {
+    if ( error ) toast.error( error );
+  }, [error] );
 
   return (
     <PageLayout>
@@ -42,7 +47,7 @@ export default function ServicesList() {
         <CustomButton
           outline
           width={150}
-          onClick={() => navigate("/services/add")}
+          onClick={() => navigate( "/services/add" )}
         >
           Add new
         </CustomButton>
@@ -54,19 +59,19 @@ export default function ServicesList() {
         ) : (
           <Table mt={10}>
             <TRow>
-              {headers.map((header) => (
+              {headers.map( ( header ) => (
                 <THead>{header}</THead>
-              ))}
+              ) )}
             </TRow>
 
-            {services?.map((service) => (
+            {services?.map( ( service ) => (
               <TRow>
                 <TData>{service?.item.make}</TData>
-                <TData>{formatToDate(service.createdAt)}</TData>
-                <TData>{formatToDate(service.returnDate)}</TData>
+                <TData>{formatToDate( service.createdAt )}</TData>
+                {/* <TData>{formatToDate( service.returnDate )}</TData> */}
                 <TData>{service.description}</TData>
               </TRow>
-            ))}
+            ) )}
           </Table>
         )}
       </Content>

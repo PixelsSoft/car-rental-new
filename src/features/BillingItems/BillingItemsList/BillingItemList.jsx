@@ -25,17 +25,17 @@ import { useTheme } from "styled-components";
 import Modal from "../../../components/custom/Modal/Modal";
 
 export default function BillingItemsList() {
-  const [productId, setProductId] = useState(null);
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [productId, setProductId] = useState( null );
+  const [deleteModal, setDeleteModal] = useState( false );
 
   const closeDeleteModal = () => {
-    setProductId(null);
-    setDeleteModal(false);
+    setProductId( null );
+    setDeleteModal( false );
   };
 
-  const openModal = (id) => {
-    setProductId(id);
-    setDeleteModal(true);
+  const openModal = ( id ) => {
+    setProductId( id );
+    setDeleteModal( true );
   };
 
   const navigate = useNavigate();
@@ -43,44 +43,44 @@ export default function BillingItemsList() {
   const theme = useTheme();
 
   const { billingItems, loading, error, billingItemDeleted, message } =
-    useSelector((state) => ({
+    useSelector( ( state ) => ( {
       billingItems: state.billingItems.billingItems,
       billingItemDeleted: state.billingItems.billingItemDeleted,
       loading: state.billingItems.loading,
       error: state.billingItems.error,
       message: state.billingItems.message,
-    }));
+    } ) );
 
   const handleDelete = () => {
-    dispatch(deleteBillingItem(productId));
+    dispatch( deleteBillingItem( productId ) );
     closeDeleteModal();
   };
 
-  useEffect(() => {
-    if (billingItemDeleted) {
-      toast.success(message);
-      dispatch(billingItemsReset());
-      dispatch(getBillingItems());
+  useEffect( () => {
+    if ( billingItemDeleted ) {
+      toast.success( message );
+      dispatch( billingItemsReset() );
+      dispatch( getBillingItems() );
     }
-  }, [billingItemDeleted, message, dispatch]);
+  }, [billingItemDeleted, message, dispatch] );
 
-  useEffect(() => {
-    dispatch(getBillingItems());
-  }, [dispatch]);
+  useEffect( () => {
+    dispatch( getBillingItems() );
+  }, [dispatch] );
 
-  useEffect(() => {
-    if (error) toast.error(error, { toastId: "billing-items-error" });
-  }, [error]);
+  useEffect( () => {
+    if ( error ) toast.error( error, { toastId: "billing-items-error" } );
+  }, [error] );
 
   return (
     <>
       <PageLayout>
-        <Header pageTitle="Billing Products">
+        <Header pageTitle="Billing Parts">
           <CustomButton
             width={200}
-            onClick={() => navigate("/billing-products/new")}
+            onClick={() => navigate( "/billing-products/new" )}
           >
-            Add New Product
+            Add New Part
           </CustomButton>
         </Header>
 
@@ -95,7 +95,7 @@ export default function BillingItemsList() {
                 <THead align="end">Actions</THead>
               </TRow>
 
-              {billingItems?.map((item) => (
+              {billingItems?.map( ( item ) => (
                 <TRow key={item._id}>
                   <TData>{item.name}</TData>
                   <TData>${item.price}</TData>
@@ -112,17 +112,17 @@ export default function BillingItemsList() {
                       style={{ marginRight: 10 }}
                       color={theme.colors.primary}
                       onClick={() =>
-                        navigate("/billing-products/edit/" + item._id)
+                        navigate( "/billing-products/edit/" + item._id )
                       }
                     />
                     <RiDeleteBin6Line
                       size={20}
                       color={theme.colors.primary}
-                      onClick={() => openModal(item._id)}
+                      onClick={() => openModal( item._id )}
                     />
                   </TData>
                 </TRow>
-              ))}
+              ) )}
             </Table>
           )}
         </Content>
@@ -150,8 +150,8 @@ export default function BillingItemsList() {
             outline
             mr={10}
             onClick={() => {
-              setDeleteModal(false);
-              setProductId(null);
+              setDeleteModal( false );
+              setProductId( null );
             }}
           >
             Cancel

@@ -2,26 +2,26 @@ import calculateAmount from "../../../utils/calculateAmount";
 import { Container, InvoiceHead, Details, ItemsTable } from "./Invoice.styles";
 import SignatureCanvas from "react-signature-canvas";
 
-export default function Invoice({
+export default function Invoice( {
   selectedItems,
   selectedCustomer,
   dueDate,
   notes,
   isRecurring,
-}) {
-  console.log(selectedCustomer);
+} ) {
+  console.log( selectedCustomer );
   return (
     <Container>
       <InvoiceHead>
         <img
-          src={require("../../../assets/images/logo.png")}
+          src={require( "../../../assets/images/cityspace-logo.png" )}
           alt=""
           width={250}
           height={100}
         />
 
         <div>
-          <h2>Invoice</h2>
+          <h2>Agreement</h2>
           <span>Xpress Car Rental</span>
           <span>United States</span>
         </div>
@@ -41,11 +41,11 @@ export default function Invoice({
 
         <div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <strong>Invoice Number:</strong>
+            <strong>Agreement Number:</strong>
             <span style={{ marginLeft: 10 }}>Auto Generated</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <strong>Invoice Date:</strong>
+            <strong>Agreement Date:</strong>
             <span style={{ marginLeft: 10 }}>Auto Generated</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -57,7 +57,7 @@ export default function Invoice({
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <strong>Amount Due: </strong>
             <span style={{ marginLeft: 10 }}>
-              ${calculateAmount(selectedItems)}
+              ${calculateAmount( selectedItems )}
             </span>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function Invoice({
           </tr>
         </thead>
         <tbody>
-          {selectedItems.map(({ listItem, quantity, price }) => (
+          {selectedItems.map( ( { listItem, quantity, price } ) => (
             <tr>
               <td>
                 <p>
@@ -83,17 +83,17 @@ export default function Invoice({
               <td style={{ textAlign: "end" }}>${price}</td>
               <td style={{ textAlign: "end" }}>${price}</td>
             </tr>
-          ))}
+          ) )}
         </tbody>
       </ItemsTable>
       <div id="totals">
         <div>
           <strong>Total:</strong>
-          <span>${calculateAmount(selectedItems)}</span>
+          <span>${calculateAmount( selectedItems )}</span>
         </div>
         <div>
           <strong>Amount Due:</strong>
-          <strong>${calculateAmount(selectedItems)}</strong>
+          <strong>${calculateAmount( selectedItems )}</strong>
         </div>
         <div
           style={{

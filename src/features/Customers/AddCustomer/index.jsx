@@ -15,27 +15,27 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../../../components/custom/Spinner/Spinner";
 
 export default function AddCustomer() {
-  const [customer, setCustomer] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [notes, setNotes] = useState("");
+  const [customer, setCustomer] = useState( "" );
+  const [firstName, setFirstName] = useState( "" );
+  const [lastName, setLastName] = useState( "" );
+  const [email, setEmail] = useState( "" );
+  const [phoneNumber, setPhoneNumber] = useState( "" );
+  const [accountNumber, setAccountNumber] = useState( "" );
+  const [notes, setNotes] = useState( "" );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { customerCreated, loading, error, message } = useSelector((state) => ({
+  const { customerCreated, loading, error, message } = useSelector( ( state ) => ( {
     customerCreated: state.customers.customerCreated,
     loading: state.customers.loading,
     error: state.customers.error,
     message: state.customers.message,
-  }));
+  } ) );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = ( e ) => {
     e.preventDefault();
     dispatch(
-      createCustomer({
+      createCustomer( {
         name: customer,
         firstName,
         lastName,
@@ -43,34 +43,40 @@ export default function AddCustomer() {
         phoneNumber,
         accountNumber,
         notes,
-      })
+      } )
     );
   };
 
   const reset = () => {
-    setCustomer("");
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPhoneNumber("");
-    setAccountNumber("");
-    setNotes("");
+    setCustomer( "" );
+    setFirstName( "" );
+    setLastName( "" );
+    setEmail( "" );
+    setPhoneNumber( "" );
+    setAccountNumber( "" );
+    setNotes( "" );
+
   };
 
-  useEffect(() => {
-    if (customerCreated) {
-      toast.success(message);
+  useEffect( () => {
+    if ( customerCreated ) {
+      toast.success( message );
       reset();
-      dispatch(customersReset());
-      navigate("/customers");
+      dispatch( customersReset() );
+      navigate( "/customers" );
     }
-  }, [customerCreated, message, dispatch, navigate]);
+  }, [customerCreated, message, dispatch, navigate] );
+  const [files, setFiles] = useState( [] );
+  console.log( "files", files )
+  useEffect( () => {
+    if ( error ) {
+      toast.error( error );
+    }
+  }, [error] );
+  const handleFileChange = ( e ) => {
+    setFiles( [...e.target.files] );
+  };
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
 
   return (
     <PageLayout>
@@ -84,54 +90,62 @@ export default function AddCustomer() {
             <Section>
               <SectionTitle>Basic information</SectionTitle>
               <Form>
-                <InputLeftLabel
+                {/* <InputLeftLabel
                   label="Customer*"
                   width={250}
                   value={customer}
-                  onChange={(e) => setCustomer(e.target.value)}
-                />
+                  onChange={( e ) => setCustomer( e.target.value )}
+                /> */}
                 <InputLeftLabel
-                  label="First Name"
+                  label="First Name*"
                   width={250}
                   mt={12}
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={( e ) => setFirstName( e.target.value )}
                 />
                 <InputLeftLabel
-                  label="Last Name"
+                  label="Last Name*"
                   width={250}
                   mt={12}
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={( e ) => setLastName( e.target.value )}
                 />
                 <InputLeftLabel
                   label="Email"
                   width={250}
                   mt={12}
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={( e ) => setEmail( e.target.value )}
                 />
                 <InputLeftLabel
-                  label="Phone Number"
+                  label="Phone Number*"
                   width={250}
                   mt={12}
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onChange={( e ) => setPhoneNumber( e.target.value )}
                 />
                 <InputLeftLabel
-                  label="Account Number"
+                  label="Driving licence*"
+                  mt={20}
+                  type="file"
+                  name="images"
+                  multiple
+                  onChange={handleFileChange}
+                />
+                {/* <InputLeftLabel
+                  label="Driving licence"
                   width={250}
                   mt={12}
                   value={accountNumber}
-                  onChange={(e) => setAccountNumber(e.target.value)}
-                />
+                  onChange={( e ) => setAccountNumber( e.target.value )}
+                /> */}
                 <TextArea
                   label="Notes"
                   row
                   width={250}
                   mt={12}
                   value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
+                  onChange={( e ) => setNotes( e.target.value )}
                 />
               </Form>
             </Section>
@@ -142,7 +156,7 @@ export default function AddCustomer() {
                 width={100}
                 onClick={() => {
                   reset();
-                  navigate("/customers");
+                  navigate( "/customers" );
                 }}
               >
                 Cancel

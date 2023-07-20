@@ -21,47 +21,47 @@ import Modal from "../../../components/custom/Modal/Modal";
 import { toast } from "react-toastify";
 
 export default function VendorsList() {
-  const [vendorId, setVendorId] = useState(null);
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [vendorId, setVendorId] = useState( null );
+  const [deleteModal, setDeleteModal] = useState( false );
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const { vendors, loading, vendorDeleted, message } = useSelector((state) => ({
+  const { vendors, loading, vendorDeleted, message } = useSelector( ( state ) => ( {
     vendors: state.vendors.vendors,
     loading: state.vendors.loading,
     vendorDeleted: state.vendors.vendorDeleted,
     message: state.vendors.message,
     error: state.vendors.error,
-  }));
+  } ) );
 
   const closeDeleteModal = () => {
-    setVendorId(null);
-    setDeleteModal(false);
+    setVendorId( null );
+    setDeleteModal( false );
   };
 
-  const openModal = (id) => {
-    setVendorId(id);
-    setDeleteModal(true);
+  const openModal = ( id ) => {
+    setVendorId( id );
+    setDeleteModal( true );
   };
 
   const handleDelete = () => {
-    dispatch(deleteVendor(vendorId));
+    dispatch( deleteVendor( vendorId ) );
     closeDeleteModal();
   };
 
-  useEffect(() => {
-    dispatch(getVendors());
-  }, [dispatch]);
+  useEffect( () => {
+    dispatch( getVendors() );
+  }, [dispatch] );
 
-  useEffect(() => {
-    if (vendorDeleted) {
-      toast.success(message, { toastId: "vendor-deleted" });
-      dispatch(getVendors());
+  useEffect( () => {
+    if ( vendorDeleted ) {
+      toast.success( message, { toastId: "vendor-deleted" } );
+      dispatch( getVendors() );
     }
-  }, [vendorDeleted, dispatch, message]);
+  }, [vendorDeleted, dispatch, message] );
 
   return (
     <>
@@ -70,7 +70,7 @@ export default function VendorsList() {
           <CustomButton outline width={200} mr={10}>
             Import from CSV
           </CustomButton>
-          <CustomButton width={200} onClick={() => navigate("/vendors/add")}>
+          <CustomButton width={200} onClick={() => navigate( "/vendors/add" )}>
             Add a vendor
           </CustomButton>
         </Header>
@@ -83,11 +83,12 @@ export default function VendorsList() {
               <TRow>
                 <THead>Name</THead>
                 <THead>Email</THead>
+                <THead>Phone no</THead>
                 <THead>Description</THead>
                 <THead align="end">Actions</THead>
               </TRow>
 
-              {vendors.map((vendor) => (
+              {vendors.map( ( vendor ) => (
                 <TRow key={vendor._id}>
                   <TData>{vendor.name}</TData>
                   <TData>{vendor.email}</TData>
@@ -105,16 +106,16 @@ export default function VendorsList() {
                       size={24}
                       style={{ marginRight: 10, marginLeft: 10 }}
                       color={theme.colors.primary}
-                      onClick={() => navigate(`/vendors/edit/${vendor._id}`)}
+                      onClick={() => navigate( `/vendors/edit/${vendor._id}` )}
                     />
                     <RiDeleteBin6Line
                       size={20}
                       color={theme.colors.primary}
-                      onClick={() => openModal(vendor._id)}
+                      onClick={() => openModal( vendor._id )}
                     />
                   </TData>
                 </TRow>
-              ))}
+              ) )}
             </Table>
           )}
         </Content>
