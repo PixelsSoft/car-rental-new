@@ -12,38 +12,36 @@ import { getExpenseBreakdown } from "../../redux/expense-category/reducer";
 export default function Dashboard() {
   const dispatch = useDispatch();
 
-  const { monthlyData, cashFlowData, breakdown } = useSelector( ( state ) => ( {
+  const { monthlyData, cashFlowData, breakdown } = useSelector((state) => ({
     monthlyData: state.invoices.monthlyData,
     cashFlowData: state.invoices.cashFlowData,
     breakdown: state.expenseCategories.breakdown,
-  } ) );
-
-  useEffect( () => {
-    dispatch( getYearlyData() );
-    dispatch( getCashFlowData() );
-    dispatch( getExpenseBreakdown() );
-  }, [dispatch] );
+  }));
+  useEffect(() => {
+    dispatch(getYearlyData());
+    dispatch(getCashFlowData());
+    dispatch(getExpenseBreakdown());
+  }, [dispatch]);
 
   return (
     <PageLayout>
       <Header pageTitle="Dashboard">
         <Select label="Create a new" />
       </Header>
-
       <Content>
-        <Section>
-          <Basic
-            monthlyData={monthlyData}
-            text="Net Profit"
-            subtitle="Income and expenses only (includes unpaid invoices and bills)."
-          />
-          <ShortTable />
-        </Section>
         <Section>
           <Basic
             text="Cash Flow"
             monthlyData={cashFlowData}
             subtitle="Cash coming in and going out of your business."
+          />
+          <ShortTable />
+        </Section>
+        <Section>
+          <Basic
+            monthlyData={monthlyData}
+            text="Profit And Loss "
+            subtitle="Income and expenses only (includes unpaid invoices and bills)."
           />
           <PieChart categoryBreakdown={breakdown} />
         </Section>

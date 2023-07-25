@@ -48,6 +48,7 @@ export default function CreateService() {
       // returnDate,
       description
     } ) );
+    navigate("/services")
   };
 
   useEffect( () => {
@@ -125,7 +126,7 @@ export default function CreateService() {
               >
                 Cancel
               </CustomButton>
-              <CustomButton width={200} type="submit">
+              <CustomButton  width={200} type="submit">
                 Save
               </CustomButton>
             </div>

@@ -89,6 +89,7 @@ export default function CustomInvoice( {
     invoiceLoading,
     invoiceEdited,
     message,
+    invoices
   } = useSelector( ( state ) => ( {
     customers: state.customers.customers,
     loading: state.customers.loading,
@@ -97,6 +98,7 @@ export default function CustomInvoice( {
     invoiceLoading: state.invoices.loading,
     message: state.invoices.message,
     invoiceEdited: state.invoices.invoiceEdited,
+    invoices: state.invoices.invoices,
   } ) );
 
   const handleItemSelect = ( listItem ) => {
@@ -154,6 +156,7 @@ export default function CustomInvoice( {
         nextInvoice: dueWithin.value && isRecurring ? dueWithin.value : 0,
       } )
     );
+    navigate("/invoices");
   };
 
   const handleEditInvoice = () => {
@@ -253,7 +256,7 @@ export default function CustomInvoice( {
         <Right>
           <InputLeftLabel
             label="Invoice Number"
-            value="Auto Generated"
+            value={invoices.length +1}
             disabled
           />
           {/* <InputLeftLabel

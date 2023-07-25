@@ -171,7 +171,6 @@ export default function Invoices() {
                   <THead>{header}</THead>
                 ) )}
               </TRow>
-
               {selectedCustomer
                 ? invoices
                   .filter( ( invoice ) =>

@@ -51,7 +51,6 @@ const SelectleftLabel = ({
     const closeAllDropdowns = () => {
       setIsOpen(false);
     };
-
     document.addEventListener("click", closeAllDropdowns);
     return () => {
       document.removeEventListener("click", closeAllDropdowns);
@@ -72,7 +71,12 @@ const SelectleftLabel = ({
         </Button>
         <Dropdown isOpen={isOpen} ref={dropdownRef}>
           {items.map((item) => (
-            <DropdownItem onClick={() => onItemSelect(item)}>
+            <DropdownItem
+              onClick={() => {
+                onItemSelect(item);
+                toggleDropdown();
+              }}
+            >
               {item[accessor]}
             </DropdownItem>
           ))}

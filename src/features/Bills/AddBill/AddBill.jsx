@@ -33,7 +33,7 @@ export default function AddBill() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [notes, setNotes] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
-
+  const [date, setDate] = useState( new Date() );
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -177,13 +177,17 @@ export default function AddBill() {
                 onItemSelect={onCategorySelect}
               />
             </div>
-            <InputLeftLabel label="Bill #" value="Auto Generated" disabled />
+            <InputLeftLabel 
+              label="Bill #"
+              value="Auto Generated"
+              disabled />
 
             <InputLeftLabel
               label="Date"
               mt={10}
-              value="Auto Generated"
-              disabled
+              value={date.toISOString().slice( 0, 10 )}
+              type='date'
+              // disabled
             />
 
             <InputLeftLabel

@@ -66,7 +66,7 @@ export default function ServicesList() {
 
             {services?.map( ( service ) => (
               <TRow>
-                <TData>{service?.item.make}</TData>
+                <TData>{service?.item?.make}</TData>
                 <TData>{formatToDate( service.createdAt )}</TData>
                 {/* <TData>{formatToDate( service.returnDate )}</TData> */}
                 <TData>{service.description}</TData>

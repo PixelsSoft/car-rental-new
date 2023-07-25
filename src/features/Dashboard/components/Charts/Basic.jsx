@@ -80,7 +80,6 @@ export default function Basic( { monthlyData = {}, text, subtitle } ) {
         offsetY: 0,
       },
     },
-
     fill: {
       colors: ["rgb(35, 199, 112)", "rgb(138, 162, 178)"],
     },

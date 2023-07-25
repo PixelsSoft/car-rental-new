@@ -2,6 +2,7 @@ import paymentMethodsActionTypes from "./types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getService } from "../../api/apiService";
 
+
 const getAllPaymentMethods = createAsyncThunk(
   paymentMethodsActionTypes.GET_ALL_PAYMENT_METHODS,
   async () => {
@@ -10,7 +11,6 @@ const getAllPaymentMethods = createAsyncThunk(
     return result;
   }
 );
-
 const initialState = {
   loading: false,
   paymentMethods: [],

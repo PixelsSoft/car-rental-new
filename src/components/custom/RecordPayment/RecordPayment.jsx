@@ -21,17 +21,14 @@ export default function RecordPayment({
 }) {
   const [open, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!open);
-
   const [selectedPaymentAccount, setSelectedPaymentAccount] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [memo, setMemo] = useState("");
+  const [date, setDate] = useState( new Date() );
 
-  const selectPaymentAccount = (selection) =>
-    setSelectedPaymentAccount(selection);
-
-  const selectPaymentMethod = (selection) =>
-    setSelectedPaymentMethod(selection);
+  const selectPaymentAccount = (selection) => setSelectedPaymentAccount(selection);
+  const selectPaymentMethod = (selection) =>  setSelectedPaymentMethod(selection);
 
   const dispatch = useDispatch();
   const { paymentRecordCreated, message, error } = useSelector((state) => ({
@@ -74,6 +71,7 @@ export default function RecordPayment({
     if (error) {
       toast.error(error);
     }
+    setAmount(invoice?.amountDue);
   }, [error]);
 
   return (
@@ -90,9 +88,9 @@ export default function RecordPayment({
           <InputLeftLabel
             width={300}
             label="Payment Date"
-            value="Auto Generated"
-            disabled
-          />
+            value={date.toISOString().slice( 0, 10 )}
+            type='date'
+            />
           <InputLeftLabel
             width={295}
             label="Amount"
@@ -100,7 +98,7 @@ export default function RecordPayment({
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             type="number"
-          />
+           />
           <SelectLeftLabel
             label="Payment Account"
             placeholder="Select payment account"
@@ -110,7 +108,7 @@ export default function RecordPayment({
             accessor="name"
             value={selectedPaymentAccount?.name}
             onItemSelect={selectPaymentAccount}
-          />
+            />
           <SelectLeftLabel
             label="Payment Method"
             placeholder="Select payment method"
@@ -120,8 +118,7 @@ export default function RecordPayment({
             value={selectedPaymentMethod?.name}
             onItemSelect={selectPaymentMethod}
             width={300}
-          />
-
+            />
           <TextArea
             label="Memo"
             row={true}
@@ -129,7 +126,7 @@ export default function RecordPayment({
             mt={30}
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
-          />
+            />
         </div>
         <ButtonsContainer>
           <CustomButton
