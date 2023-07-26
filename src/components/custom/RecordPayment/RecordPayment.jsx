@@ -14,65 +14,68 @@ import {
 import { toast } from "react-toastify";
 import { getAllInvoices } from "../../../redux/invoices/reducer";
 
-export default function RecordPayment({
+export default function RecordPayment( {
   paymentMethods,
   paymentAccounts,
   invoice,
-}) {
-  const [open, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!open);
-  const [selectedPaymentAccount, setSelectedPaymentAccount] = useState(null);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  const [amount, setAmount] = useState("");
-  const [memo, setMemo] = useState("");
-  const [date, setDate] = useState( new Date() );
+} ) {
+  const [open, setIsOpen] = useState( false );
+  const toggle = () => setIsOpen( !open );
+  const [selectedPaymentAccount, setSelectedPaymentAccount] = useState( null );
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState( null );
+  const [amount, setAmount] = useState( "" );
+  const [memo, setMemo] = useState( "" );
 
-  const selectPaymentAccount = (selection) => setSelectedPaymentAccount(selection);
-  const selectPaymentMethod = (selection) =>  setSelectedPaymentMethod(selection);
+  const date = new Date();
+  const selectPaymentAccount = ( selection ) => setSelectedPaymentAccount( selection );
+  const selectPaymentMethod = ( selection ) => setSelectedPaymentMethod( selection );
 
   const dispatch = useDispatch();
-  const { paymentRecordCreated, message, error } = useSelector((state) => ({
+  const { paymentRecordCreated, message, error } = useSelector( ( state ) => ( {
     loading: state.paymentRecords.loading,
     paymentRecordCreated: state.paymentRecords.paymentRecordCreated,
     message: state.paymentRecords.message,
     error: state.paymentRecords.error,
-  }));
+  } ) );
+
 
   const handleSubmit = () => {
     dispatch(
-      createPaymentRecord({
+      createPaymentRecord( {
         invoice,
         paymentAccount: selectedPaymentAccount,
         paymentMethod: selectedPaymentMethod,
         amount,
         memo,
-      })
+      } )
     );
-    setIsOpen(false);
+    setIsOpen( false );
   };
 
   const reset = () => {
-    setMemo("");
-    setSelectedPaymentMethod(null);
-    setSelectedPaymentAccount(null);
-    setAmount(0);
+    setMemo( "" );
+    setSelectedPaymentMethod( null );
+    setSelectedPaymentAccount( null );
+    setAmount( 0 );
   };
 
-  useEffect(() => {
-    if (paymentRecordCreated) {
-      toast.success(message, { toastId: "success-message" });
+  useEffect( () => {
+    if ( paymentRecordCreated ) {
+      toast.success( message, { toastId: "success-message" } );
       reset();
-      dispatch(paymentRecordsReset());
-      dispatch(getAllInvoices());
+      dispatch( paymentRecordsReset() );
+      dispatch( getAllInvoices() );
     }
-  }, [message, paymentRecordCreated, dispatch]);
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
+  }, [message, paymentRecordCreated, dispatch] );
+
+  useEffect( () => {
+    if ( error ) {
+      toast.error( error );
     }
-    setAmount(invoice?.amountDue);
-  }, [error]);
+    setAmount( invoice?.amountDue );
+  }, [error, invoice?.amountDue] );
+
 
   return (
     <>
@@ -82,7 +85,7 @@ export default function RecordPayment({
       <Modal
         open={open}
         title="Record a payment for this invoice"
-        onClose={() => setIsOpen(false)}
+        onClose={() => setIsOpen( false )}
       >
         <div style={{ width: "50%" }}>
           <InputLeftLabel
@@ -90,15 +93,15 @@ export default function RecordPayment({
             label="Payment Date"
             value={date.toISOString().slice( 0, 10 )}
             type='date'
-            />
+          />
           <InputLeftLabel
             width={295}
             label="Amount"
             mt={30}
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={( e ) => setAmount( e.target.value )}
             type="number"
-           />
+          />
           <SelectLeftLabel
             label="Payment Account"
             placeholder="Select payment account"
@@ -108,7 +111,7 @@ export default function RecordPayment({
             accessor="name"
             value={selectedPaymentAccount?.name}
             onItemSelect={selectPaymentAccount}
-            />
+          />
           <SelectLeftLabel
             label="Payment Method"
             placeholder="Select payment method"
@@ -118,22 +121,22 @@ export default function RecordPayment({
             value={selectedPaymentMethod?.name}
             onItemSelect={selectPaymentMethod}
             width={300}
-            />
+          />
           <TextArea
             label="Memo"
             row={true}
             width={300}
             mt={30}
             value={memo}
-            onChange={(e) => setMemo(e.target.value)}
-            />
+            onChange={( e ) => setMemo( e.target.value )}
+          />
         </div>
         <ButtonsContainer>
           <CustomButton
             width={150}
             outline
             mr={10}
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsOpen( false )}
             type="button"
           >
             Cancel

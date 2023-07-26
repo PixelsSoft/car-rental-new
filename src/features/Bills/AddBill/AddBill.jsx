@@ -27,13 +27,14 @@ import Spinner from "../../../components/custom/Spinner/Spinner";
 import { getExpenseCategories } from "../../../redux/expense-category/reducer";
 
 export default function AddBill() {
-  const [selectedVendor, setSelectedVendor] = useState(null);
-  const [dueDate, setDueDate] = useState("");
-  const [showSelectItem, setShowSelectItem] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [notes, setNotes] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [date, setDate] = useState( new Date() );
+  const [selectedVendor, setSelectedVendor] = useState( null );
+  const [dueDate, setDueDate] = useState( "" );
+  const [showSelectItem, setShowSelectItem] = useState( false );
+  const [selectedItems, setSelectedItems] = useState( [] );
+  const [notes, setNotes] = useState( "" );
+  const [selectedCategory, setSelectedCategory] = useState( null );
+
+  const date = new Date();
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -46,7 +47,7 @@ export default function AddBill() {
     error,
     billCreated,
     categories,
-  } = useSelector((state) => ({
+  } = useSelector( ( state ) => ( {
     vendors: state.vendors.vendors,
     billingItems: state.billingItems.billingItems,
     vendorsLoading: state.vendors.loading,
@@ -55,89 +56,89 @@ export default function AddBill() {
     message: state.bills.message,
     billCreated: state.bills.billCreated,
     categories: state.expenseCategories.categories,
-  }));
+  } ) );
 
-  const handleVendorSelect = (selected) => {
-    setSelectedVendor(selected);
+  const handleVendorSelect = ( selected ) => {
+    setSelectedVendor( selected );
   };
 
-  const handleSelectItem = (listItem) => {
-    setSelectedItems((prev) => [
+  const handleSelectItem = ( listItem ) => {
+    setSelectedItems( ( prev ) => [
       ...prev,
       { listItem: listItem, quantity: 1, price: listItem.price },
-    ]);
+    ] );
 
-    setShowSelectItem(false);
+    setShowSelectItem( false );
   };
 
-  const updateQuantity = (itemId, newQuantity) => {
-    setSelectedItems((prevItems) =>
-      prevItems.map((item) => {
-        if (item.listItem._id === itemId) {
+  const updateQuantity = ( itemId, newQuantity ) => {
+    setSelectedItems( ( prevItems ) =>
+      prevItems.map( ( item ) => {
+        if ( item.listItem._id === itemId ) {
           return {
             ...item,
-            quantity: newQuantity <= 0 ? 1 : parseInt(newQuantity),
+            quantity: newQuantity <= 0 ? 1 : parseInt( newQuantity ),
           };
         }
         return item;
-      })
+      } )
     );
   };
 
-  const updatePrice = (itemId, price) => {
-    setSelectedItems((prevItems) =>
-      prevItems.map((item) => {
-        if (item.listItem._id === itemId) {
+  const updatePrice = ( itemId, price ) => {
+    setSelectedItems( ( prevItems ) =>
+      prevItems.map( ( item ) => {
+        if ( item.listItem._id === itemId ) {
           return {
             ...item,
             price,
           };
         }
         return item;
-      })
+      } )
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = ( e ) => {
     e.preventDefault();
     dispatch(
-      createBill({
+      createBill( {
         dueAt: dueDate,
-        total: calculateAmount(selectedItems),
-        amountDue: calculateAmount(selectedItems),
+        total: calculateAmount( selectedItems ),
+        amountDue: calculateAmount( selectedItems ),
         notes,
         vendor: selectedVendor?._id,
         items: selectedItems,
         category: selectedCategory?._id,
-      })
+      } )
     );
   };
 
-  const onCategorySelect = (item) => {
-    setSelectedCategory(item);
+  const onCategorySelect = ( item ) => {
+    setSelectedCategory( item );
   };
 
-  useEffect(() => {
-    if (billCreated) {
-      toast.success(message);
+  useEffect( () => {
+    if ( billCreated ) {
+      toast.success( message );
 
-      setSelectedItems([]);
-      setNotes("");
-      setSelectedVendor(null);
-      setShowSelectItem(false);
-      dispatch(billsReset());
+      setSelectedItems( [] );
+      setNotes( "" );
+      setSelectedVendor( null );
+      setShowSelectItem( false );
+      dispatch( billsReset() );
     }
-  }, [billCreated, message, dispatch]);
+  }, [billCreated, message, dispatch] );
 
-  useEffect(() => {
-    if (error) toast.error(error);
-  }, [error]);
+  useEffect( () => {
+    if ( error ) toast.error( error );
+  }, [error] );
 
-  useEffect(() => {
-    dispatch(getVendors());
-    dispatch(getBillingItems());
-    dispatch(getExpenseCategories());
-  }, [dispatch]);
+  useEffect( () => {
+    dispatch( getVendors() );
+    dispatch( getBillingItems() );
+    dispatch( getExpenseCategories() );
+  }, [dispatch] );
 
   return (
     <PageLayout>
@@ -177,7 +178,7 @@ export default function AddBill() {
                 onItemSelect={onCategorySelect}
               />
             </div>
-            <InputLeftLabel 
+            <InputLeftLabel
               label="Bill #"
               value="Auto Generated"
               disabled />
@@ -187,7 +188,7 @@ export default function AddBill() {
               mt={10}
               value={date.toISOString().slice( 0, 10 )}
               type='date'
-              // disabled
+            // disabled
             />
 
             <InputLeftLabel
@@ -195,7 +196,7 @@ export default function AddBill() {
               mt={10}
               type="date"
               value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
+              onChange={( e ) => setDueDate( e.target.value )}
             />
           </InputsContainer>
 
@@ -209,7 +210,7 @@ export default function AddBill() {
               <THead></THead>
             </TRow>
 
-            {selectedItems.map(({ listItem, quantity, price }) => (
+            {selectedItems.map( ( { listItem, quantity, price } ) => (
               <TRow>
                 <TData>
                   <div style={{ display: "flex" }}>
@@ -227,8 +228,8 @@ export default function AddBill() {
                   <OutlineCustomInput
                     type="number"
                     value={quantity}
-                    onChange={(e) =>
-                      updateQuantity(listItem._id, e.target.value)
+                    onChange={( e ) =>
+                      updateQuantity( listItem._id, e.target.value )
                     }
                   />
                 </TData>
@@ -236,12 +237,12 @@ export default function AddBill() {
                   <OutlineCustomInput
                     type="number"
                     value={price}
-                    onChange={(e) => updatePrice(listItem._id, e.target.value)}
+                    onChange={( e ) => updatePrice( listItem._id, e.target.value )}
                   />
                 </TData>
                 <TData>${price}</TData>
               </TRow>
-            ))}
+            ) )}
 
             {/* ADD ITEM ROW */}
             <TRow>
@@ -262,7 +263,7 @@ export default function AddBill() {
                     }}
                   >
                     <RiAddCircleLine size={20} color={theme.colors.primary} />
-                    <LinkText ml={5} onClick={() => setShowSelectItem(true)}>
+                    <LinkText ml={5} onClick={() => setShowSelectItem( true )}>
                       Add an item
                     </LinkText>
                   </div>
@@ -293,7 +294,7 @@ export default function AddBill() {
               }}
             >
               <span>Subtotal</span>
-              <span>${calculateAmount(selectedItems)}</span>
+              <span>${calculateAmount( selectedItems )}</span>
             </div>
 
             <div
@@ -305,7 +306,7 @@ export default function AddBill() {
               }}
             >
               <strong>Total</strong>
-              <strong>${calculateAmount(selectedItems)}</strong>
+              <strong>${calculateAmount( selectedItems )}</strong>
             </div>
           </div>
           <div>
@@ -315,7 +316,7 @@ export default function AddBill() {
             <textarea
               placeholder="Enter notes or terms of service that are visible to your customers"
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={( e ) => setNotes( e.target.value )}
               style={{
                 width: "100%",
                 border: "none",

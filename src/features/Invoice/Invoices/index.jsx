@@ -41,13 +41,14 @@ export default function Invoices() {
   const [totalOverdues, setTotalOverdues] = useState( 0 );
   const [dueIn30Days, setDueIn30Days] = useState( 0 );
   const [totalDueInvoices, setTotalDueInvoices] = useState( 0 );
+  // const [totalDueInvoices, setTotalDueInvoices] = useState( 0 );
 
   const [selectedCustomer, setSelectedCustomer] = useState( null );
 
   const navigate = useNavigate();
   const items = [
-    { id: 1, title: "Unpaid", count: 10 },
-    { id: 2, title: "Draft", count: 2 },
+    { id: 1, title: "Unpaid", count: totalDueInvoices },
+    { id: 2, title: "Draft", count: 0 },
     { id: 3, title: "All Invoices" },
   ];
 
@@ -138,6 +139,8 @@ export default function Invoices() {
   //       .toLowerCase()
   //       .includes(selectedCustomer?.name.toLowerCase())
   //   );
+
+
 
   return (
     <>
