@@ -33,6 +33,7 @@ import Spinner from "../../../components/custom/Spinner/Spinner";
 import { useNavigate } from "react-router-dom";
 
 
+
 export default function CustomInvoice( {
   selectedItems,
   setSelectedItems,
@@ -40,7 +41,10 @@ export default function CustomInvoice( {
   setSelectedCustomer,
   dueDate,
   setDueDate,
-
+  dropOffDate,
+  pickUpDate,
+  setPickUpDate,
+  setDropOffDate,
   notes,
   setNotes,
   isRecurring,
@@ -56,14 +60,14 @@ export default function CustomInvoice( {
     { id: 6, description: "Within 90 Days", value: 90 },
   ];
 
-
+  /* eslint-disable */
+  console.log( 'JavaScript debug log' );
+  console.log( 'eslint is disabled now' );
 
   const [showAddCustomer, setShowAddCustomer] = useState( false );
   const [showSelectItem, setShowSelectItem] = useState( false );
+  const [itemId, setItemId] = useState( 0 );
   const [dueWithin, setDueWithin] = useState( recurringList[0] || {} );
-
-
-
 
   /////// Get current date////
   const currentDate = new Date().toISOString().slice( 0, 10 );
@@ -109,21 +113,41 @@ export default function CustomInvoice( {
     setShowSelectItem( false );
   };
 
-  const updateQuantity = ( itemId, newQuantity ) => {
-    setSelectedItems( ( prevItems ) =>
-      prevItems.map( ( item ) => {
-        if ( item.listItem._id === itemId ) {
-          return {
-            ...item,
-            quantity: newQuantity <= 0 ? 1 : parseInt( newQuantity ),
-          };
-        }
-        return item;
-      } )
-    );
-  };
+  // const updateQuantity = ( itemId, newQuantity ) => {
+  //   setSelectedItems( ( prevItems ) =>
+  //     prevItems.map( ( item ) => {
+  //       if ( item.listItem._id === itemId ) {
+  //         return {
+  //           ...item,
+  //           quantity: newQuantity <= 0 ? 1 : parseInt( newQuantity ),
+  //         };
+  //       }
+  //       return item;
+  //     } )
+  //   );
+  // };
 
-  const updatePrice = ( itemId, price ) => {
+  // const updatePrice = ( itemId, price ) => {
+  //   setSelectedItems( ( prevItems ) =>
+  //     prevItems.map( ( item ) => {
+  //       if ( item.listItem._id === itemId ) {
+  //         return {
+  //           ...item,
+  //           price,
+  //         };
+  //       }
+  //       return item;
+  //     } )
+  //   );
+  // };
+
+
+  const updatePrice = ( itemId, days ) => {
+    const vehicle = items.filter( ( item ) => item._id === itemId )
+    const price = vehicle[0]?.daily * days
+
+
+
     setSelectedItems( ( prevItems ) =>
       prevItems.map( ( item ) => {
         if ( item.listItem._id === itemId ) {
@@ -156,7 +180,7 @@ export default function CustomInvoice( {
         nextInvoice: dueWithin.value && isRecurring ? dueWithin.value : 0,
       } )
     );
-    navigate("/invoices");
+    navigate( "/invoices" );
   };
 
   const handleEditInvoice = () => {
@@ -189,6 +213,13 @@ export default function CustomInvoice( {
     dispatch( getItems() );
   }, [dispatch] );
 
+
+  useEffect( () => {
+
+    updatePrice( itemId, calculateDaysBetweenDates( pickUpDate, dropOffDate ) )
+
+  }, [dropOffDate] );
+
   const resetFields = () => {
     setSelectedCustomer( null );
     setSelectedItems( [] );
@@ -212,6 +243,22 @@ export default function CustomInvoice( {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [invoiceCreated, dispatch, invoiceEdited] );
+
+  /////////////Calculate number ofs Days/////////
+  function calculateDaysBetweenDates( pickUpDate, dropOffDate ) {
+    // Convert the date strings to Date objects
+    const startDate = new Date( pickUpDate );
+    const endDate = new Date( dropOffDate );
+
+    // Calculate the difference in milliseconds between the two dates
+    const timeDifference = endDate.getTime() - startDate.getTime();
+
+    // Convert the difference to days
+    const daysDifference = Math.floor( timeDifference / ( 1000 * 3600 * 24 ) );
+
+    return daysDifference;
+  }
+
 
   return invoiceLoading ? (
     <Spinner />
@@ -256,7 +303,7 @@ export default function CustomInvoice( {
         <Right>
           <InputLeftLabel
             label="Invoice Number"
-            value={invoices.length +1}
+            value={invoices.length + 1}
             disabled
           />
           {/* <InputLeftLabel
@@ -309,8 +356,9 @@ export default function CustomInvoice( {
       <InvoiceTable>
         <TRow>
           <THead size={60}>Vehicle</THead>
-          <THead>Days</THead>
-          <THead>Price</THead>
+          <THead>Pick up Date </THead>
+          <THead>Drop off Date</THead>
+          {/* <THead>Price</THead> */}
           <THead>Amount</THead>
           <THead></THead>
         </TRow>
@@ -319,29 +367,48 @@ export default function CustomInvoice( {
             <TData>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <span>{listItem.make}</span>
-                <OutlineCustomInput
+                {/* <OutlineCustomInput
                   value={listItem.description}
                   disabled
                   width={250}
                   ml={30}
-                />
+                /> */}
               </div>
             </TData>
             <TData>
               <OutlineCustomInput
-                type="number"
-                width={60}
-                value={quantity}
-                onChange={( e ) => updateQuantity( listItem._id, e.target.value )}
+                min={new Date().toISOString().slice( 0, -8 )}
+                // min={new Date().toISOString().split( 'T' )[0]}
+                type="datetime-local"
+                // type="date"
+                // width={60}
+                value={pickUpDate}
+                onChange={( e ) => setPickUpDate( e.target.value )}
               />
             </TData>
             <TData>
+              <OutlineCustomInput
+                min={new Date( pickUpDate ).toISOString().slice( 0, -8 )}
+
+                type="datetime-local"
+                // type="date"
+                // width={60}
+                value={dropOffDate}
+                onChange={( e ) => {
+                  setDropOffDate( e.target.value )
+                  setItemId( listItem._id )
+
+
+                }}
+              />
+            </TData>
+            {/* <TData>
               <OutlineCustomInput
                 type="number"
                 value={price}
                 onChange={( e ) => updatePrice( listItem._id, e.target.value )}
               />
-            </TData>
+            </TData> */}
             <TData>${price}</TData>
           </TRow>
         ) )}

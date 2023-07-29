@@ -9,7 +9,11 @@ import "reactjs-popup/dist/index.css";
 import { Provider } from "react-redux";
 import store from "./redux/reducers";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+/* eslint-disable */
+console.log( 'JavaScript debug log' );
+console.log( 'eslint is disabled now' );
+
+const root = ReactDOM.createRoot( document.getElementById( "root" ) );
 root.render(
   <React.StrictMode>
     <Provider store={store}>

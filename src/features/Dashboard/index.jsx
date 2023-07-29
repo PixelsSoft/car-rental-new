@@ -9,19 +9,20 @@ import { Content, Section } from "./styles";
 import { useEffect } from "react";
 import { getCashFlowData, getYearlyData } from "../../redux/invoices/reducer";
 import { getExpenseBreakdown } from "../../redux/expense-category/reducer";
+import BarAndLineChart from "./components/Charts/BarAndLineChart";
 export default function Dashboard() {
   const dispatch = useDispatch();
 
-  const { monthlyData, cashFlowData, breakdown } = useSelector((state) => ({
+  const { monthlyData, cashFlowData, breakdown } = useSelector( ( state ) => ( {
     monthlyData: state.invoices.monthlyData,
     cashFlowData: state.invoices.cashFlowData,
     breakdown: state.expenseCategories.breakdown,
-  }));
-  useEffect(() => {
-    dispatch(getYearlyData());
-    dispatch(getCashFlowData());
-    dispatch(getExpenseBreakdown());
-  }, [dispatch]);
+  } ) );
+  useEffect( () => {
+    dispatch( getYearlyData() );
+    dispatch( getCashFlowData() );
+    dispatch( getExpenseBreakdown() );
+  }, [dispatch] );
 
   return (
     <PageLayout>
@@ -30,7 +31,7 @@ export default function Dashboard() {
       </Header>
       <Content>
         <Section>
-          <Basic
+          <BarAndLineChart
             text="Cash Flow"
             monthlyData={cashFlowData}
             subtitle="Cash coming in and going out of your business."

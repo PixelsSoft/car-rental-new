@@ -11,6 +11,8 @@ export default function CreateInvoice() {
   const [selectedItems, setSelectedItems] = useState( [] );
   const [selectedCustomer, setSelectedCustomer] = useState( null );
   const [dueDate, setDueDate] = useState( null );
+  const [pickUpDate, setPickUpDate] = useState( new Date() );
+  const [dropOffDate, setDropOffDate] = useState( new Date() );
   const [invoiceDate, setInvoiceDate] = useState( new Date() );
   const [notes, setNotes] = useState( "" );
   const [isRecurring, setIsRecurring] = useState( false );
@@ -42,6 +44,10 @@ export default function CreateInvoice() {
           />
         ) : (
           <CustomInvoice
+            dropOffDate={dropOffDate}
+            pickUpDate={pickUpDate}
+            setPickUpDate={setPickUpDate}
+            setDropOffDate={setDropOffDate}
             selectedItems={selectedItems}
             setSelectedItems={setSelectedItems}
             selectedCustomer={selectedCustomer}
