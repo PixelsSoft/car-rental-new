@@ -61,9 +61,7 @@ export default function CustomInvoice( {
   ];
 
   /* eslint-disable */
-  console.log( 'JavaScript debug log' );
-  console.log( 'eslint is disabled now' );
-
+ 
   const [showAddCustomer, setShowAddCustomer] = useState( false );
   const [showSelectItem, setShowSelectItem] = useState( false );
   const [itemId, setItemId] = useState( 0 );
@@ -112,6 +110,7 @@ export default function CustomInvoice( {
     ] );
     setShowSelectItem( false );
   };
+ 
 
   // const updateQuantity = ( itemId, newQuantity ) => {
   //   setSelectedItems( ( prevItems ) =>
@@ -414,7 +413,7 @@ export default function CustomInvoice( {
         ) )}
 
         {/* ADD ITEM ROW */}
-        <TRow>
+        {selectedItems?.length===0 && <TRow>
           <TData>
             {showSelectItem ? (
               <SelectWithSearch
@@ -433,14 +432,16 @@ export default function CustomInvoice( {
                 </LinkText>
               </div>
             )}
-            {/* <div
-              style={{ display: "flex", alignItems: "center", marginTop: 10 }}
-            >
-              <RiAddCircleLine size={20} color={theme.colors.primary} />
-              <LinkText ml={5}>Add an item</LinkText>
-            </div> */}
+          
           </TData>
         </TRow>
+        
+        
+        
+        
+        
+        }
+        
       </InvoiceTable>
       <div
         style={{

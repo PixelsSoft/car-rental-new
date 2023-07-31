@@ -1,15 +1,21 @@
+import moment from "moment/moment";
 import calculateAmount from "../../../utils/calculateAmount";
 import { Container, InvoiceHead, Details, ItemsTable } from "./Invoice.styles";
 import SignatureCanvas from "react-signature-canvas";
+import { useSelector } from "react-redux";
 
 export default function Invoice( {
   selectedItems,
   selectedCustomer,
   dueDate,
   notes,
+  dropOffDate,
+  pickUpDate,
+  invoiceDate,
   isRecurring,
 } ) {
-  console.log( selectedCustomer );
+  const {invoices} = useSelector( ( state ) => ( {    invoices: state.invoices.invoices} ) );
+
   return (
     <Container>
       <InvoiceHead>
@@ -42,11 +48,21 @@ export default function Invoice( {
         <div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <strong>Agreement Number:</strong>
-            <span style={{ marginLeft: 10 }}>Auto Generated</span>
+            <span style={{ marginLeft: 10 }}>{invoices.length+1}</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <strong>Agreement Date:</strong>
-            <span style={{ marginLeft: 10 }}>Auto Generated</span>
+            <span style={{ marginLeft: 10 }}>{moment(invoiceDate).format("DD/MM/YYYY ")}</span>
+
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <strong>pick Up Date:</strong>
+            <span style={{ marginLeft: 10 }}>{moment(pickUpDate).format("DD/MM/YYYY HH:mm a")}</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <strong>Drop-Off Date:</strong>
+            <span style={{ marginLeft: 10 }}>{moment(dropOffDate).format("DD/MM/YYYY HH:mm a")}</span>
+
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <strong>Payment Due:</strong>

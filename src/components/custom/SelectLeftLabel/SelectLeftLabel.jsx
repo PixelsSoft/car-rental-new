@@ -8,6 +8,7 @@ import {
   Label,
 } from "./SelectLeftLabel.styles";
 import * as MdIcons from "react-icons/md";
+import CustomButton from "../CustomButton/CustomButton";
 
 const SelectleftLabel = ({
   width,
@@ -21,6 +22,8 @@ const SelectleftLabel = ({
   accessor,
   value,
   valueAccessor,
+  buttonTitle,
+  onButtonClick,
   onItemSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,6 +83,17 @@ const SelectleftLabel = ({
               {item[accessor]}
             </DropdownItem>
           ))}
+          {buttonTitle &&
+            <CustomButton
+            outline
+            onClick={onButtonClick}
+>
+{buttonTitle}
+
+
+</CustomButton>
+          }
+          
         </Dropdown>
       </DropdownContainer>
     </Container>

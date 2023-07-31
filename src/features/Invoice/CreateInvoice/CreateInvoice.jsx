@@ -11,7 +11,7 @@ export default function CreateInvoice() {
   const [selectedItems, setSelectedItems] = useState( [] );
   const [selectedCustomer, setSelectedCustomer] = useState( null );
   const [dueDate, setDueDate] = useState( null );
-  const [pickUpDate, setPickUpDate] = useState( new Date() );
+  const [pickUpDate, setPickUpDate] = useState( new Date().toISOString().slice( 0, -8 ) );
   const [dropOffDate, setDropOffDate] = useState( new Date() );
   const [invoiceDate, setInvoiceDate] = useState( new Date() );
   const [notes, setNotes] = useState( "" );
@@ -39,6 +39,9 @@ export default function CreateInvoice() {
             selectedItems={selectedItems}
             selectedCustomer={selectedCustomer}
             notes={notes}
+            invoiceDate={invoiceDate}
+            dropOffDate={dropOffDate}
+            pickUpDate={pickUpDate}
             dueDate={dueDate}
             isRecurring={isRecurring}
           />

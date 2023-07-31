@@ -25,6 +25,7 @@ import calculateAmount from "../../../utils/calculateAmount";
 import { toast } from "react-toastify";
 import Spinner from "../../../components/custom/Spinner/Spinner";
 import { getExpenseCategories } from "../../../redux/expense-category/reducer";
+import { useNavigate } from "react-router-dom";
 
 export default function AddBill() {
   const [selectedVendor, setSelectedVendor] = useState( null );
@@ -33,7 +34,7 @@ export default function AddBill() {
   const [selectedItems, setSelectedItems] = useState( [] );
   const [notes, setNotes] = useState( "" );
   const [selectedCategory, setSelectedCategory] = useState( null );
-
+  const navigate = useNavigate();
   const date = new Date();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -155,13 +156,19 @@ export default function AddBill() {
               }}
             >
               <SelectleftLabel
+              buttonTitle={"Add vendor"}
+              onButtonClick={()=>{
+                navigate( "/vendors/add" )
+              }}
                 label="Vendor"
                 placeholder="Select vendors"
                 items={vendors}
                 accessor="name"
                 value={selectedVendor?.name}
                 onItemSelect={handleVendorSelect}
+
               />
+         
             </div>
             <div
               style={{
