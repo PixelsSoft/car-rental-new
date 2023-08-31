@@ -9,9 +9,9 @@ export default function BarAndLineChart( { monthlyData = {}, text, subtitle } ) 
     };
     const options = {
         chart: {
-            // id: "basic-bar",
+            id: "basic-bar",
             height: 350,
-            type: "line",
+            // type: "line",
             stacked: false
         },
         tooltip: {
@@ -96,16 +96,14 @@ export default function BarAndLineChart( { monthlyData = {}, text, subtitle } ) 
 
         },
         stroke: {
-            width: [0, 0, 4]
+            width: [0, 0, 2]
         },
         dataLabels: {
             enabled: false,
         },
         yaxis: [
             {
-                tickAmount: 4,
-
-
+                tickAmount: 5,
                 seriesName: "Inflow",
                 labels: {
                     formatter: labelFormatter,

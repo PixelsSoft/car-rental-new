@@ -4,6 +4,7 @@ export default function Basic( { monthlyData = {}, text, subtitle } ) {
   const options = {
     chart: {
       id: "basic-bar",
+
     },
     tooltip: {
       y: {

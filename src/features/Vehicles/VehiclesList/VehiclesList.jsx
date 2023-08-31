@@ -3,6 +3,7 @@ import PageLayout from "../../../components/Layout/PageLayout/PageLayout";
 import CustomButton from "../../../components/custom/CustomButton/CustomButton";
 import Header from "../../../components/custom/Header/Header";
 import { Content, ButtonsContainer } from "./VehiclesList.styles";
+import Image from 'react-bootstrap/Image';
 import {
   Table,
   TData,
@@ -24,43 +25,43 @@ import { toast } from "react-toastify";
 import Spinner from "../../../components/custom/Spinner/Spinner";
 
 export default function VehiclesList() {
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [itemId, setItemId] = useState(null);
+  const [deleteModal, setDeleteModal] = useState( false );
+  const [itemId, setItemId] = useState( null );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const theme = useTheme();
 
-  const { items, itemDeleted, message, loading } = useSelector((state) => ({
+  const { items, itemDeleted, message, loading } = useSelector( ( state ) => ( {
     items: state.items.items,
     itemDeleted: state.items.itemDeleted,
     message: state.items.message,
     loading: state.items.loading,
-  }));
-  console.log("items", items);
+  } ) );
+  console.log( "items", items[6]?.images[0] );
 
   const handleDelete = () => {
-    dispatch(deleteItem(itemId));
+    dispatch( deleteItem( itemId ) );
   };
 
-  useEffect(() => {
-    dispatch(getItems());
-  }, [dispatch]);
+  useEffect( () => {
+    dispatch( getItems() );
+  }, [dispatch] );
 
-  useEffect(() => {
-    if (itemDeleted) {
-      toast.success(message);
-      setDeleteModal(false);
-      dispatch(itemsReset());
-      dispatch(getItems(message));
+  useEffect( () => {
+    if ( itemDeleted ) {
+      toast.success( message );
+      setDeleteModal( false );
+      dispatch( itemsReset() );
+      dispatch( getItems( message ) );
     }
-  }, [dispatch, itemDeleted, message]);
+  }, [dispatch, itemDeleted, message] );
 
   return (
     <>
       <PageLayout>
         <Header pageTitle="Vehicles">
-          <CustomButton width={200} onClick={() => navigate("/vehicles/add")}>
+          <CustomButton width={200} onClick={() => navigate( "/vehicles/add" )}>
             Add a vehicle
           </CustomButton>
         </Header>
@@ -79,9 +80,14 @@ export default function VehiclesList() {
                 <THead>Price per month</THead>
                 <THead align="end">Actions</THead>
               </TRow>
-              {items.map((item) => (
+              {items.map( ( item ) => (
+
                 <TRow key={item._id}>
-                  <TData>{item?.image ? item?.image : "No Image Found"}</TData>
+                  {item.images[0] === undefined ?
+                    <TData>{"No Image Found"}</TData> :
+                    <Image src={item.images[0]?.url} style={{ width: "40px", height: "40px" }} rounded />
+                  }
+
                   <TData>{item.make}</TData>
                   <TData>${item.daily}</TData>
                   <TData>${item.weekly}</TData>
@@ -98,19 +104,19 @@ export default function VehiclesList() {
                       size={24}
                       style={{ marginRight: 10 }}
                       color={theme.colors.primary}
-                      onClick={() => navigate("/vehicles/edit/" + item._id)}
+                      onClick={() => navigate( "/vehicles/edit/" + item._id )}
                     />
                     <RiDeleteBin6Line
                       size={20}
                       color={theme.colors.primary}
                       onClick={() => {
-                        setDeleteModal(true);
-                        setItemId(item._id);
+                        setDeleteModal( true );
+                        setItemId( item._id );
                       }}
                     />
                   </TData>
                 </TRow>
-              ))}
+              ) )}
             </Table>
           )}
         </Content>
@@ -118,7 +124,7 @@ export default function VehiclesList() {
       <Modal
         open={deleteModal}
         title="Delete item?"
-        onClose={() => setDeleteModal(false)}
+        onClose={() => setDeleteModal( false )}
       >
         <p style={{ padding: 10 }}>Are you sure you want to delete?</p>
         <p
@@ -138,8 +144,8 @@ export default function VehiclesList() {
             outline
             mr={10}
             onClick={() => {
-              setDeleteModal(false);
-              setItemId(null);
+              setDeleteModal( false );
+              setItemId( null );
             }}
           >
             Cancel

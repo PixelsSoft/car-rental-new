@@ -16,14 +16,15 @@ import Spinner from "../../../components/custom/Spinner/Spinner";
 
 export default function AddVehicle() {
   const navigate = useNavigate();
-  const [make, setMake] = useState( "" );
-  const [model, setModel] = useState( "" );
-  const [daily, setDaily] = useState( 0 );
-  const [weekly, setWeekly] = useState( 0 );
-  const [monthly, setMonthly] = useState( 0 );
-  const [registrationNumber, setRegistrationNumber] = useState( "" );
+  const [make, setMake] = useState( "honda" );
+  const [model, setModel] = useState( "honda" );
+  const [daily, setDaily] = useState( 60 );
+  const [weekly, setWeekly] = useState( 300 );
+  const [monthly, setMonthly] = useState( 600 );
+  const [registrationNumber, setRegistrationNumber] = useState( "123" );
   const [description, setDescription] = useState( "" );
   const [files, setFiles] = useState( [] );
+
 
   const dispatch = useDispatch();
   const { newItemCreated, message, loading } = useSelector( ( state ) => ( {
@@ -32,7 +33,7 @@ export default function AddVehicle() {
     loading: state.items.loading,
   } ) );
 
-  const handleSubmit = ( e ) => {
+  const handleSubmit = async ( e ) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -43,11 +44,13 @@ export default function AddVehicle() {
     formData.append( "monthly", monthly );
     formData.append( "registrationNumber", registrationNumber );
     formData.append( "description", description );
+
     for ( let i = 0; i < files.length; i++ ) {
       formData.append( "images", files[i] );
     }
 
-    dispatch( createNewItem( formData ) );
+    await dispatch( createNewItem( formData ) );
+    navigate( -1 )
   };
 
   const handleFileChange = ( e ) => {
