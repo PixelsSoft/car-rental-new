@@ -1,10 +1,10 @@
 import axios from "axios";
 
 const PRODUCTION_API = "https://xpress-rental.onrender.com/api/v1";
-const LOCAL_API = "http://localhost:8002/api/v1";
+// const LOCAL_API = "http://localhost:8002/api/v1";
 
 const apiService = axios.create( {
-  baseURL: LOCAL_API,
+  baseURL: PRODUCTION_API,
   headers: {
     "Content-Type": "application/json",
   },
