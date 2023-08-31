@@ -12,7 +12,7 @@ export default function BarAndLineChart( { monthlyData = {}, text, subtitle } ) 
             id: "basic-bar",
             height: 350,
             // type: "line",
-            stacked: false
+            stacked: true
         },
         tooltip: {
             y: {

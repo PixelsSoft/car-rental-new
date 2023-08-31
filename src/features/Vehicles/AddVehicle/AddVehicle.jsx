@@ -16,12 +16,12 @@ import Spinner from "../../../components/custom/Spinner/Spinner";
 
 export default function AddVehicle() {
   const navigate = useNavigate();
-  const [make, setMake] = useState( "honda" );
-  const [model, setModel] = useState( "honda" );
-  const [daily, setDaily] = useState( 60 );
-  const [weekly, setWeekly] = useState( 300 );
-  const [monthly, setMonthly] = useState( 600 );
-  const [registrationNumber, setRegistrationNumber] = useState( "123" );
+  const [make, setMake] = useState( "" );
+  const [model, setModel] = useState( "" );
+  const [daily, setDaily] = useState();
+  const [weekly, setWeekly] = useState();
+  const [monthly, setMonthly] = useState();
+  const [registrationNumber, setRegistrationNumber] = useState( "" );
   const [description, setDescription] = useState( "" );
   const [files, setFiles] = useState( [] );
 
