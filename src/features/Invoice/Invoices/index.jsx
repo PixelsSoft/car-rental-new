@@ -84,7 +84,7 @@ export default function Invoices() {
     setInvoiceId( null );
     setDeleteModal( false );
   };
-  console.log( "selectedCustomer", invoices )
+  console.log( "selectedCustomer===", invoices )
 
   const headers = [
     "Status",
