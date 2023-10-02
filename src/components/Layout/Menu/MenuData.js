@@ -38,8 +38,8 @@ export const MenuData = [
     icon: <AiIcons.AiFillCar size={20} />,
   },
   {
-    title: "Manifest",
-    path: "/Manifest",
+    title: "Reservation",
+    path: "/Reservation",
     icon: <BsIcons.BsReceiptCutoff size={20} />,
   },
   {

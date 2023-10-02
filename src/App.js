@@ -16,7 +16,7 @@ import AddVendor from "./features/Vendors/AddVendor/AddVendor";
 import AddVehicle from "./features/Vehicles/AddVehicle/AddVehicle";
 import Settings from "./features/Settings/Settings";
 import Calendar from "./features/Calendar/Calendar";
-import Manifest from "./features/Manifest/Manifest";
+import Reservation from "./features/Reservation/Reservation";
 import ServicesList from "./features/Service/List/List";
 import CreateService from "./features/Service/CreateService/CreateService";
 import { ToastContainer } from "react-toastify";
@@ -59,7 +59,7 @@ export default function App() {
           <Route path="/vehicles/edit/:id" element={<EditVehicle />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/calendar" element={<Calendar />} />
-          <Route path="/Manifest" element={<Manifest />} />
+          <Route path="/Reservation" element={<Reservation />} />
           <Route path="/services" element={<ServicesList />} />
           <Route path="/services/add" element={<CreateService />} />
           <Route path="/billing-products" element={<BillingItemsList />} />

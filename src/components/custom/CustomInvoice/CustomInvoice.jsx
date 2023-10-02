@@ -61,7 +61,7 @@ export default function CustomInvoice( {
   ];
 
   /* eslint-disable */
- 
+
   const [showAddCustomer, setShowAddCustomer] = useState( false );
   const [showSelectItem, setShowSelectItem] = useState( false );
   const [itemId, setItemId] = useState( 0 );
@@ -110,7 +110,7 @@ export default function CustomInvoice( {
     ] );
     setShowSelectItem( false );
   };
- 
+
 
   // const updateQuantity = ( itemId, newQuantity ) => {
   //   setSelectedItems( ( prevItems ) =>
@@ -170,6 +170,8 @@ export default function CustomInvoice( {
     dispatch(
       createInvoice( {
         dueAt: dueDate,
+        PickUpDate: pickUpDate,
+        DropOffDate: dropOffDate,
         total: calculateAmount( selectedItems ),
         amountDue: calculateAmount( selectedItems ),
         notes,
@@ -361,11 +363,12 @@ export default function CustomInvoice( {
           <THead>Amount</THead>
           <THead></THead>
         </TRow>
-        {selectedItems.map( ( { listItem, quantity, price } ) => (
+
+        {selectedItems?.map( ( { listItem, quantity, price } ) => (
           <TRow>
             <TData>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <span>{listItem.make}</span>
+                <span>{listItem?.make}</span>
                 {/* <OutlineCustomInput
                   value={listItem.description}
                   disabled
@@ -394,6 +397,7 @@ export default function CustomInvoice( {
                 // width={60}
                 value={dropOffDate}
                 onChange={( e ) => {
+                  console.log( "e=======", e.target.value )
                   setDropOffDate( e.target.value )
                   setItemId( listItem._id )
 
@@ -413,7 +417,7 @@ export default function CustomInvoice( {
         ) )}
 
         {/* ADD ITEM ROW */}
-        {selectedItems?.length===0 && <TRow>
+        {selectedItems?.length === 0 && <TRow>
           <TData>
             {showSelectItem ? (
               <SelectWithSearch
@@ -432,16 +436,16 @@ export default function CustomInvoice( {
                 </LinkText>
               </div>
             )}
-          
+
           </TData>
         </TRow>
-        
-        
-        
-        
-        
+
+
+
+
+
         }
-        
+
       </InvoiceTable>
       <div
         style={{

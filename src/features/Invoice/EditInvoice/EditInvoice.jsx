@@ -10,41 +10,43 @@ import { toast } from "react-toastify";
 
 export default function EditInvoice() {
   //   const [preview, setPreview] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [dueDate, setDueDate] = useState(null);
-  const [notes, setNotes] = useState("");
-  const [isRecurring, setIsRecurring] = useState(false);
+  const [selectedItems, setSelectedItems] = useState( [] );
+  const [selectedCustomer, setSelectedCustomer] = useState( null );
+  const [dueDate, setDueDate] = useState( null );
+  const [pickUpDate, setPickUpDate] = useState( new Date().toISOString().slice( 0, -8 ) );
+  const [dropOffDate, setDropOffDate] = useState( new Date() );
+  const [notes, setNotes] = useState( "" );
+  const [isRecurring, setIsRecurring] = useState( false );
 
   //   const togglePreview = () => setPreview(!preview);
 
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const { invoice, error } = useSelector((state) => ({
+  const { invoice, error } = useSelector( ( state ) => ( {
     invoice: state.invoices.invoice,
     loading: state.invoices.loading,
     error: state.invoices.error,
-  }));
+  } ) );
 
-  useEffect(() => {
-    dispatch(getInvoiceDetails(id));
-  }, [dispatch, id]);
+  useEffect( () => {
+    dispatch( getInvoiceDetails( id ) );
+  }, [dispatch, id] );
 
-  useEffect(() => {
-    if (invoice) {
-      setSelectedCustomer(invoice.customer);
-      setSelectedItems(invoice.items);
-      setNotes(invoice.notes);
-      setIsRecurring(invoice.isRecurring);
+  useEffect( () => {
+    if ( invoice ) {
+      setSelectedCustomer( invoice.customer );
+      setSelectedItems( invoice.items );
+      setNotes( invoice.notes );
+      setIsRecurring( invoice.isRecurring );
     }
-  }, [invoice]);
+  }, [invoice] );
 
-  useEffect(() => {
-    if (error) toast.error(error, { toastId: "invoice-error" });
-  }, [error]);
+  useEffect( () => {
+    if ( error ) toast.error( error, { toastId: "invoice-error" } );
+  }, [error] );
 
-  console.log(invoice);
+  console.log( invoice );
   return (
     <PageLayout>
       <Header pageTitle="Edit invoice">
@@ -71,6 +73,10 @@ export default function EditInvoice() {
           />
         ) : ( */}
         <CustomInvoice
+          dropOffDate={dropOffDate}
+          pickUpDate={pickUpDate}
+          setPickUpDate={setPickUpDate}
+          setDropOffDate={setDropOffDate}
           selectedItems={selectedItems}
           setSelectedItems={setSelectedItems}
           selectedCustomer={selectedCustomer}
