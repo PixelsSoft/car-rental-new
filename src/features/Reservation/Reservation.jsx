@@ -21,30 +21,47 @@ import Modal from '../../components/custom/Modal/Modal';
 
 export default function Reservation() {
     const navigate = useNavigate();
-    const [deleteModal, setDeleteModal] = useState( false );
-    const [invoiceId, setInvoiceId] = useState( null );
-    const [value, setvalue] = useState( " 0" )
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [invoiceId, setInvoiceId] = useState(null);
+    const [value, setValue] = useState(" 0")
 
 
-    const onEdit = ( id ) => navigate( "/invoices/edit/" + id );
-    const onDelete = ( id ) => {
-        setInvoiceId( id );
-        setDeleteModal( true );
+    const onEdit = (id) => navigate("/invoices/edit/" + id);
+    const onDelete = (id) => {
+        setInvoiceId(id);
+        setDeleteModal(true);
     };
     const handleDeleteInvoice = () => {
-        dispatch( deleteInvoice( invoiceId ) );
-        setDeleteModal( false );
+        dispatch(deleteInvoice(invoiceId));
+        setDeleteModal(false);
     };
 
     const {
         invoices,
-    } = useSelector( ( state ) => ( {
+    } = useSelector((state) => ({
         invoices: state.invoices.invoices,
-    } ) );
+    }));
+
+    const filteredInvoices = invoices.filter((invoice) => {
+        // console.log(invoice, "invoice")
+        const today = moment().startOf('day');
+        const pickUpDate = moment(invoice.PickUpDate);
+        const dropOffDate = moment(invoice.DropOffDate);
+        // console.log(today , pickUpDate, dropOffDate)
+
+        if (value === "Today Return") {
+            return pickUpDate.isSame(today, 'day') || dropOffDate.isSame(today, 'day');
+        } else if (value === "Tomorrow Return") {
+            const tomorrow = moment().startOf('day').add(1, 'day');
+            return pickUpDate.isSame(tomorrow, 'day') || dropOffDate.isSame(tomorrow, 'day');
+        } else {
+            return true;
+        }
+    });
     const dispatch = useDispatch();
-    useEffect( () => {
-        dispatch( getAllInvoices() );
-    }, [dispatch] );
+    useEffect(() => {
+        dispatch(getAllInvoices());
+    }, [dispatch]);
     const headers = [
         "Customer Name",
         "Pick up ",
@@ -54,51 +71,63 @@ export default function Reservation() {
         "Actions",
     ];
     const closeDeleteModal = () => {
-        setInvoiceId( null );
-        setDeleteModal( false );
+        setInvoiceId(null);
+        setDeleteModal(false);
     };
 
-    return ( <>
+    return (<>
         <PageLayout>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs
                     value={value}
-                    onChange={( e ) => setvalue( e.target.value )}
+                    onChange={(e, newValue) => setValue(newValue)}
                     aria-label="basic tabs example">
-                    <Tab label="All" />
-                    <Tab label="Today Return" />
-                    <Tab label="Tomorrow Return" />
+                    <Tab label="All" value="All" />
+                    <Tab label="Today Return" value="Today Return" />
+                    <Tab label="Tomorrow Return" value="Tomorrow Return" />
                 </Tabs>
             </Box>
             <Table mt={20}>
                 <TRow>
-                    {headers.map( ( header ) => (
-                        <THead>{header}</THead>
-                    ) )}
+                    {headers.map((header) => (
+                        <THead >{header}</THead>
+                    ))}
                 </TRow>
 
-                {invoices.map( ( invoice ) => (
-                    <TRow>
-                        <TData>{invoice.customer.name}</TData>
+                {
+                    filteredInvoices.length === 0 ? (
+                        <TRow>
+                            <TData colSpan={headers.length}
+                                style={{ textAlign: 'center' }}
+                            >No invoices yet.</TData>
+                        </TRow>
+                    ) :
+                        (
+                            filteredInvoices.map((invoice) => (
+                                <TRow>
+                                    <TData>{invoice.customer.name}</TData>
 
-                        <TData>
-                            {moment( invoice.PickUpDate ).format( "LL" )}
-                        </TData>
-                        <TData>{moment( invoice.DropOffDate ).format( "LL" )}</TData>
-                        <TData>{invoice?.items[0]?.listItem?.make}</TData>
-                        <TData>${invoice?.total}</TData>
-                        <TDataAction>
-                            <div>
-                                <TableActionDropdown
-                                    viewRoute={`/invoices/details/${invoice._id}`}
-                                    onDelete={() => onDelete( invoice._id )}
-                                    onEdit={() => onEdit( invoice._id )}
-                                />
-                            </div>
-                        </TDataAction>
+                                    <TData>
+                                        {moment(invoice.PickUpDate).format("LL")}
+                                    </TData>
+                                    <TData>{moment(invoice.DropOffDate).format("LL")}</TData>
+                                    <TData>{invoice?.items[0]?.listItem?.make}</TData>
+                                    <TData>${invoice?.total}</TData>
+                                    <TDataAction>
+                                        <div>
+                                            <TableActionDropdown
+                                                viewRoute={`/invoices/details/${invoice._id}`}
+                                                onDelete={() => onDelete(invoice._id)}
+                                                onEdit={() => onEdit(invoice._id)}
+                                            />
+                                        </div>
+                                    </TDataAction>
 
-                    </TRow>
-                ) )}
+                                </TRow>
+                            ))
+                        )
+                }
+
             </Table>
             <Modal
                 title="Delete invoice?"
