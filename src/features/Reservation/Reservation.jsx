@@ -50,10 +50,10 @@ export default function Reservation() {
         // console.log(today , pickUpDate, dropOffDate)
 
         if (value === "Today Return") {
-            return pickUpDate.isSame(today, 'day') || dropOffDate.isSame(today, 'day');
+            return dropOffDate.isSame(today, 'day');
         } else if (value === "Tomorrow Return") {
             const tomorrow = moment().startOf('day').add(1, 'day');
-            return pickUpDate.isSame(tomorrow, 'day') || dropOffDate.isSame(tomorrow, 'day');
+            return dropOffDate.isSame(tomorrow, 'day');
         } else {
             return true;
         }
